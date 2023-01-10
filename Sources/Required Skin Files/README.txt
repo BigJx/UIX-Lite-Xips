@@ -1,0 +1,1 @@
+These two files form the base of the skin.xip and are required in each skin xip conversion.

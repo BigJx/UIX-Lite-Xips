@@ -1,0 +1,75 @@
+// UIX Lite skin preloader. //
+function initialize()
+{ 
+    var a = GetSkin();
+    var b = "";
+    b = "Q:/Skins" + "/" + a + "/Skin/" + "default.xap";
+    theSkin.archive = "Q:/Skins" + "/" + a + "/Skin.xip";
+    theSkinPath.url = b;
+    GetCellWallType();
+}
+
+function GetSkin()
+{
+    var info = new Settings;
+    info.file = "Q:\\System\\config.ini";
+    info.section = "Dashboard Settings";
+    var c = info.GetValue("Current Skin");
+    return c;
+}
+DEF theGlobal Transform
+{ 
+    visible false
+     children
+      [
+          Shape
+          {
+              appearance Appearance { material Material {  } }
+              geometry DEF theCellWallMesh Mesh
+          }
+      ]
+      scale 0 0 0
+      translation 500 0 0
+}
+function GetCellWallType()
+{
+    var info = new Settings;
+    info.file = "Q:\\System\\config.ini";
+    info.section = "Dashboard Settings";
+    var c = info.GetValue("Current Skin");
+
+    theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
+}
+
+
+DEF theSkin Level
+{
+
+    children
+    [
+        DEF theSkinPath Inline
+        {
+
+            function onLoad()
+            {
+                if (theDiscDrive.discType == "Video")
+                    {
+                        EnableInput(true);
+                        StartDVDPlayer();
+                }
+            }
+        }
+    ]
+    function OnArrival()
+    {
+	//Does the config want BSX or MS dash styles?
+     var info = new Settings;
+     info.file = "Q:\\system\\config.ini";
+     info.section = "Main Menu";
+     var b = info.GetValue("MainMenuStyle");
+     if(b == "BSX")
+     InitializeBSX();
+     else
+     InitializeMS();
+    }
+}

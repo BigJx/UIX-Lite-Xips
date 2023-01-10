@@ -1,0 +1,1786 @@
+var InMainLevel;
+var InLevelOneHDMenu;
+var InLevelTwoHDMenu;
+var MenuItem;
+// HDD LVL 1 //
+var HDMenuItem;
+var LVOneMenuItem;
+var LV1placeholder;
+var LV1Advance;
+// HDD LVL 2 //
+var LV2placeholder;
+var LV2Advance;
+//     NEW     //
+var TotalMenuItems;
+var NumberOfMenuItems;
+var chillingout;
+var Style;
+var animated;
+//   END NEW   //
+var initialmove;
+
+var secondhour;
+var secondmins;
+var secondsecs;
+var firsthour;
+var firstmins;
+var firstsecs;
+/////////////////////////////////////////////////////////////////////////////////////
+////////vars added for flip downs...BobMcGee..move to sep. xap later/////////////////
+var InHDLevel1;
+var InHDLevel2;
+
+var m_itemcount;
+var m_submenucount;
+
+var b_one;	//get button names from LV1 titlemenus
+var b_two;
+var b_three;
+var b_four;
+var b_five;
+var b_onScreen;
+
+var bMusicPlayWithSubsVisible0; //true/false referring to whether you are in LV1
+var nCurMusicPlayWithSubsItem0; //holds value 0-4 referring to tab position in LV1
+var subTitle0; //holds title for LV2 menu
+var nPlayCursor0; //holds position of LV2 title starting with 0 for title launching
+
+var nPreviousPlayCursor0;
+var nPlayScroll0;
+var nPlayVisible0;
+   
+var tempIconPath;
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
+DEF theGlobal Transform
+{
+   visible false
+    children
+     [
+         Shape
+         {
+             appearance Appearance { material Material {  } }
+             geometry DEF theCellWallMesh Mesh
+         }
+     ]
+     scale 0 0 0
+     translation 500 0 0
+}
+function GetCellWallType()
+{
+	var info = new Settings;
+	info.file = "Q:\\System\\config.ini";
+	info.section = "Dashboard Settings";
+	var c = info.GetValue("Current Skin");
+
+	theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
+}
+
+function initialize() { GetCellWallType(); }
+
+var launching;
+DEF theTitleLauncherLevel Level
+{
+    function OnArrival()
+    {
+        launching = true;
+		theBGMeshInline.children[0].theDNA1.SetAlpha(0); 
+		theBGMeshInline.children[0].theDNA3.SetAlpha(0); 
+		theBGMeshInline.children[0].theDNA5.SetAlpha(0); 
+		theScreen.brightness = 0;
+    }
+    behavior
+    {
+        sleep 1.1;
+        if (launching)
+		{
+			if(InLevelTwoHDMenu == true)
+			{
+				if(LV1placeholder == 1) { theApplicationsMenu.LaunchTitle(HDMenuItem - 1); }
+				else if(LV1placeholder == 2) { theDashboardsMenu.LaunchTitle(HDMenuItem - 1); }
+				else if(LV1placeholder == 3) { theEmulatorsMenu.LaunchTitle(HDMenuItem - 1); }
+				else if(LV1placeholder == 4) { theGamesMenu.LaunchTitle(HDMenuItem - 1); }
+				else if(LV1placeholder == 5) { theHomebrewMenu.LaunchTitle(HDMenuItem - 1); }
+			}
+			else if(InHDLevel2 == true)
+			{
+				if (nCurMusicPlayWithSubsItem0 == 0) { theApplicationsMenu.LaunchTitle( nPlayCursor0 ); }
+				else if (nCurMusicPlayWithSubsItem0 == 1) { theDashboardsMenu.LaunchTitle( nPlayCursor0 ); }
+				else if (nCurMusicPlayWithSubsItem0 == 2) { theEmulatorsMenu.LaunchTitle( nPlayCursor0 ); }
+				else if (nCurMusicPlayWithSubsItem0 == 3) { theGamesMenu.LaunchTitle( nPlayCursor0 ); }
+				else if (nCurMusicPlayWithSubsItem0 == 4) { theHomebrewMenu.LaunchTitle( nPlayCursor0 ); }
+				//else if (nCurMusicPlayWithSubsItem0 == 4) { return; }
+			}
+		}
+    }
+
+    function OnActivate()
+    {
+        EnableInput(false);
+		theScreen.brightness = 0;
+    }
+}
+
+DEF theBSXClockLevel Level
+{
+    function OnArrival() { }
+    behavior
+    {
+		sleep 15;
+		if(chillingout) { UpdateListClockHands(); }
+    }
+    function OnActivate() { }
+}
+
+DEF theDiscDrive DiscDrive
+{
+	function OnDiscRemoved()
+    {
+		answeredNo = false;
+		RestoreDVDPanel();
+		UpdateDVDIconStatus();
+
+        	if (theDVDPlayerInline.visible)
+        	{
+            		bShowDVDStopBackground = false;
+            		theDVDPlayerInline.children[0].theDVDPlayer.stop();
+            		theDVDPlayerInline.children[0].ClearOnScreenInfo();
+
+            		if (g_bPanelDisplayed) { CloseMessage(); }
+            		theLauncherLevel.GoTo();
+            		return;
+        	}
+        	else if (theMusicInline.visible)
+        	{
+            		var c = theMusicInline.children[0];
+            		ClosePopup();
+            		if (c.musicSelect != 0) { return; }
+            		if (c.theMusicPlayMenu.visible)
+            		{
+                		c.DoMusicStop();
+                		c.InitPlaylist();
+                		c.UpdateTrackList();
+            		}
+            		else if (c.theMusicCopyMenu.visible)
+            		{
+                		c.theMusicCollection.error = 3;
+                		c.OnMusicCopyComplete();
+            		}
+            		else if (c.theMusicMenu.visible) { c.UpdateMusicMetaData(); }
+        	}
+        	else { CloseMessage(); }
+	}
+	function OnDiscInserted() { AutoLaunchCheck(); }
+}
+
+function UpdateOrbText()
+{
+	//var IniFile = new Settings; 
+	//IniFile.SetIniSection( "Main Menu Orbs" );
+	var c = theBSXMenu.children[0].children[0];
+	c.theGamesTitle_text.text 	= GetSavedValue("Main Menu Orbs","Orb 1 Text" );
+	c.theMusicTitle_text.text	= GetSavedValue("Main Menu Orbs","Orb 2 Text" );
+	c.theMoviesTitle_text.text 	= GetSavedValue("Main Menu Orbs","Orb 3 Text" );
+	c.theMemoryTitle_text.text	= GetSavedValue("Main Menu Orbs","Orb 4 Text" );
+	c.theSettingsTitle_text.text 	= GetSavedValue("Main Menu Orbs","Orb 5 Text" );
+	//IniFile.CloseIniFile();
+}
+
+function UpdateBSXHDDMenu()
+{
+
+	var c = theBSXMenu.children[0].children[0];
+	for (var i = 0; i < NumberOfMenuItems; i = i + 1)
+	{
+		if(TotalMenuItems > i)
+		{
+			if(LV1placeholder == 1)      { c.HD_LV2_Text.children[i].children[0].geometry.text = theApplicationsMenu.GetName(LV2Advance + i); }
+			else if(LV1placeholder == 2) { c.HD_LV2_Text.children[i].children[0].geometry.text = theDashboardsMenu.GetName(LV2Advance + i); }
+			else if(LV1placeholder == 3) { c.HD_LV2_Text.children[i].children[0].geometry.text = theEmulatorsMenu.GetName(LV2Advance + i); }
+			else if(LV1placeholder == 4) { c.HD_LV2_Text.children[i].children[0].geometry.text = theGamesMenu.GetName(LV2Advance + i); }
+			else if(LV1placeholder == 5) { c.HD_LV2_Text.children[i].children[0].geometry.text = theHomebrewMenu.GetName(LV2Advance + i); }
+		}
+	}
+}
+
+function UpdateTheBSXMenu()
+{
+	var c = theBSXMenu.children[0].children[0];
+	if (MenuItem == 1)  
+	{
+		c.theGames_inner.visible = true;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 2)
+	{
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = true;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 3)
+	{
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = true;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 4)
+	{
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = true;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 5)
+	{
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = true;
+	}
+}
+
+function EnterHardDriveMenu()
+{
+////////// NEW //// NEW ///// NEW ///////////////////
+	LVOneMenuItem = 1;
+	LV1Advance = 0;
+
+	var c = theBSXMenu.children[0].children[0];
+
+	c.Information_panel.SetTranslation(-250,-110,5);
+	c.HardDrive_01_text2.text = b_one;
+	c.HardDrive_02_text2.text = b_two;
+	c.HardDrive_03_text2.text = b_three;
+	c.HardDrive_04_text2.text = b_four;
+	c.HardDrive_05_text2.text = b_five;
+////////// NEW //// NEW ///// NEW ///////////////////
+      	c.HD_LV2.visible = false;
+      	c.theHardDriveMenu.visible = true;
+      	c.theGamesTitle.visible = false;
+      	theGamesMenuIn.Play();
+      	c.ScreenSaver.fade = .75;
+      	c.theGames_inner.visible = false;
+
+	if(animated == "False") { c.ScreenSaver.SetTranslation(80, -20, 85); }
+	else if(animated == "True") { c.ScreenSaver.SetTranslation(0, -20, 75); }
+
+      	c.theMoviesTitle.visible = false;
+      	c.theMusicTitle.visible = false;
+      	c.theMemoryTitle.visible = false;
+	// NEW //
+	c.theSettingsTitle.visible = false;
+	// NEW //
+}
+
+function GetBSXHDDIcons()
+{
+	tempIconPath = "";
+	if(LV1placeholder == 1)      { tempIconPath = theApplicationsMenu.GetIcon(HDMenuItem - 1); }
+	else if(LV1placeholder == 2) { tempIconPath = theDashboardsMenu.GetIcon(HDMenuItem - 1); }
+	else if(LV1placeholder == 3) { tempIconPath = theEmulatorsMenu.GetIcon(HDMenuItem - 1); }
+	else if(LV1placeholder == 4) { tempIconPath = theGamesMenu.GetIcon(HDMenuItem - 1); }
+	else if(LV1placeholder == 5) { tempIconPath = theHomebrewMenu.GetIcon(HDMenuItem - 1); }
+
+	var strIconPath = "E:\\UDATA\\" + tempIconPath + "\\TitleImage.xbx";
+/*
+	var exists = theHardDrive.FileExists(strIconPath);
+
+	var c = theBSXMenu.children[0].children[0];
+	if(exists)
+	{
+		if(( tempIconPath != "NULL" ) | ( tempIconPath != "00000000" ) | ( tempIconPath != "" )) { c.theIconDisc.children[0].appearance.texture.url = strIconPath; }
+
+	}
+	else { c.theIconDisc.children[0].appearance.texture.url = ""; }
+*/
+	var c = theBSXMenu.children[0].children[0];
+	if( tempIconPath == "00000000" ) { c.theIconDisc.children[0].appearance.texture.url = "xbox4.xbx"; }
+	else if( tempIconPath == "NULL" ) { c.theIconDisc.children[0].appearance.texture.url = "xbox4.xbx"; }
+	else if( tempIconPath == "" ) { c.theIconDisc.children[0].appearance.texture.url = "xbox4.xbx"; }
+	else { c.theIconDisc.children[0].appearance.texture.url = strIconPath; }
+}
+
+function EnterLevelTwoMenu()
+{
+        NumberOfMenuItems = 6;
+	var c = theBSXMenu.children[0].children[0];
+	if(TotalMenuItems < NumberOfMenuItems)
+	{
+		if(TotalMenuItems == 2)
+		{
+			c.HD_LV2_03_text.text = "";
+			c.HD_LV2_04_text.text = "";
+			c.HD_LV2_05_text.text = "";
+			c.HD_LV2_06_text.text = "";
+		}
+		else if(TotalMenuItems == 3)
+		{
+			c.HD_LV2_04_text.text = "";
+			c.HD_LV2_05_text.text = "";
+			c.HD_LV2_06_text.text = "";
+		}
+		else if(TotalMenuItems == 4)
+		{
+			c.HD_LV2_05_text.text = "";
+			c.HD_LV2_06_text.text = "";
+		}
+		else if(TotalMenuItems == 5) { c.HD_LV2_06_text.text = ""; }
+	}
+
+       	LV2placeholder = 1;
+       	HDMenuItem = 1;
+       	LV2Advance = 0;
+
+      	//var c = theBSXMenu.children[0].children[0];
+      	c.HD_LV2.visible = true;
+      	c.theHardDriveMenu.visible = false;
+
+      	theGamesMenuIn.Play();
+
+      	c.ScreenSaver.fade = .5;
+      	c.theGames_inner.visible = false;
+	if(animated == "False") { c.ScreenSaver.SetTranslation(50, -45, 105); }
+      	//else if(animated == "True") { c.ScreenSaver.SetTranslation(-50, -45, 95); }
+      	else if(animated == "True") { c.ScreenSaver.SetTranslation(80, -20, 85); }
+      	c.theMoviesTitle.visible = false;
+      	c.theMusicTitle.visible = false;
+      	c.theMemoryTitle.visible = false;
+	// NEW //
+	c.theSettingsTitle.visible = false;
+	// NEW //
+      	c.HD_LV2_01_material.name = "RedType";
+      	c.HD_LV2_02_material.name = "ItemType";
+      	c.HD_LV2_03_material.name = "ItemType";
+      	c.HD_LV2_04_material.name = "ItemType";
+      	c.HD_LV2_05_material.name = "ItemType";
+      	c.HD_LV2_06_material.name = "ItemType";
+	c.OrbMenu3LED1bMat.name = "EggGlowPulse";
+	c.OrbMenu3LED2bMat.name = "MenuCell";
+	c.OrbMenu3LED3bMat.name = "MenuCell";
+	c.OrbMenu3LED4bMat.name = "MenuCell";
+	c.OrbMenu3LED5bMat.name = "MenuCell";
+	c.OrbMenu3LED6bMat.name = "MenuCell";
+
+	UpdateBSXHDDMenu();
+	//GetBSXHDDIcons();
+}
+
+function ExitHardDriveMenu()
+{
+	var c = theBSXMenu.children[0].children[0];
+      	c.Information_panel.SetTranslation(-90,-100,-45);
+      	c.theHardDriveMenu.visible = false;
+      	c.theGamesTitle.visible = true;
+      	theGamesMenuIn.Play();
+      	c.ScreenSaver.fade = .75;
+      	//c.theGames_inner.visible = true;
+      	c.ScreenSaver.SetTranslation(-15, -10, -29);
+      	c.theMoviesTitle.visible = true;
+      	c.theMusicTitle.visible = true;
+      	c.theMemoryTitle.visible = true;
+	// NEW //
+	c.theSettingsTitle.visible = true;
+	// NEW //
+
+	if(animated == "True") { UpdateTheREZN8Orbs(); }
+	else if(animated == "False") { UpdateTheBSXMenu(); }
+	//UpdateTheBSXMenu();
+}
+
+function LevelOneOnDown()
+{
+      	var c = theBSXMenu.children[0].children[0];
+	//var NoOfMenuItems = 4;
+	var NoOfMenuItems = 5;
+	if (NoOfMenuItems > 9) { NoOfMenuItems = 10; }
+	if ((LV1placeholder < 6) & (LVOneMenuItem < NoOfMenuItems))
+	{
+		LVOneMenuItem = LVOneMenuItem + 1;
+		LV1placeholder = LV1placeholder + 1;
+
+        	if (LV1placeholder == 2)
+        	{
+        		if (c.HardDrive_02_text2.text == "") { LevelOneOnUp(); }
+        		else
+        		{
+        			c.HardDrive_01_mat.name = "ItemType";
+        			c.HardDrive_02_mat.name = "RedType";
+        			c.OrbMenu3LED1aMat.name = "MenuCell";
+        			c.OrbMenu3LED2aMat.name = "EggGlowPulse";
+        		}
+        	}
+        	else if (LV1placeholder == 3)
+        	{
+        		if (c.HardDrive_03_text2.text == "") { LevelOneOnUp(); }
+        		else
+        		{
+        			c.HardDrive_02_mat.name = "ItemType";
+        			c.HardDrive_03_mat.name = "RedType";
+        			c.OrbMenu3LED2aMat.name = "MenuCell";
+        			c.OrbMenu3LED3aMat.name = "EggGlowPulse";
+        		}
+        	}
+        	else if (LV1placeholder == 4)
+        	{
+        		if (c.HardDrive_04_text2.text == "") { LevelOneOnUp(); }
+        		else
+        		{
+        			c.HardDrive_03_mat.name = "ItemType";
+        			c.HardDrive_04_mat.name = "RedType";
+        			c.OrbMenu3LED3aMat.name = "MenuCell";
+        			c.OrbMenu3LED4aMat.name = "EggGlowPulse";
+        		}
+        	}
+        	else if (LV1placeholder == 5)
+        	{
+        		if (c.HardDrive_05_text2.text == "") { LevelOneOnUp(); }
+        		else
+        		{
+        			c.HardDrive_04_mat.name = "ItemType";
+        			c.HardDrive_05_mat.name = "RedType";
+        			c.OrbMenu3LED4aMat.name = "MenuCell";
+        			c.OrbMenu3LED5aMat.name = "EggGlowPulse";
+        		}
+        	}
+        	else if (LV1placeholder == 6)
+        	{
+        		if (c.HardDrive_06_text2.text == "") { LevelOneOnUp(); }
+        		else
+        		{
+        			c.HardDrive_05_mat.name = "ItemType";
+        			c.HardDrive_06_mat.name = "RedType";
+        			c.OrbMenu3LED5aMat.name = "MenuCell";
+        			c.OrbMenu3LED6aMat.name = "EggGlowPulse";
+        		}
+        	}        
+	}
+	else if ((LV1placeholder == 6) & (LVOneMenuItem < NoOfMenuItems))
+        {
+        	LVOneMenuItem = LVOneMenuItem + 1;
+        	LV1Advance = LV1Advance + 1;
+        	//UpdateLV1Array();
+		if (c.HardDrive_06_text2.text == "") { LevelOneOnUp(); }
+        }
+}
+
+function LevelOneOnUp()
+{
+  	var c = theBSXMenu.children[0].children[0];
+	if (LV1placeholder > 1)
+	{
+        	LVOneMenuItem = LVOneMenuItem - 1;
+        	LV1placeholder = LV1placeholder - 1;
+
+        	if (LV1placeholder == 1)
+        	{
+        		c.HardDrive_02_mat.name = "ItemType";
+        		c.HardDrive_01_mat.name = "RedType";
+        		c.OrbMenu3LED2aMat.name = "MenuCell";
+        		c.OrbMenu3LED1aMat.name = "EggGlowPulse";
+        	}
+        	else if (LV1placeholder == 2)
+        	{
+        		c.HardDrive_03_mat.name = "ItemType";
+        		c.HardDrive_02_mat.name = "RedType";
+        		c.OrbMenu3LED3aMat.name = "MenuCell";
+        		c.OrbMenu3LED2aMat.name = "EggGlowPulse";
+        	}
+        	else if (LV1placeholder == 3)
+        	{
+        		c.HardDrive_04_mat.name = "ItemType";
+         		c.HardDrive_03_mat.name = "RedType";
+         		c.OrbMenu3LED4aMat.name = "MenuCell";
+         		c.OrbMenu3LED3aMat.name = "EggGlowPulse";
+        	}
+        	else if (LV1placeholder == 4)
+        	{
+         		c.HardDrive_05_mat.name = "ItemType";
+         		c.HardDrive_04_mat.name = "RedType";
+         		c.OrbMenu3LED5aMat.name = "MenuCell";
+         		c.OrbMenu3LED4aMat.name = "EggGlowPulse";
+        	}
+        	else if (LV1placeholder == 5)
+        	{
+         		c.HardDrive_06_mat.name = "ItemType";
+         		c.HardDrive_05_mat.name = "RedType";
+         		c.OrbMenu3LED6aMat.name = "MenuCell";
+         		c.OrbMenu3LED5aMat.name = "EggGlowPulse";
+        	}
+	}
+    else if ((LV1placeholder == 1) & (LVOneMenuItem > 1))
+    {
+       	LVOneMenuItem = LVOneMenuItem - 1;
+       	LV1Advance = LV1Advance - 1;
+       	//UpdateLV1Array();
+    }
+}
+
+function LV2OnUp()
+{
+	var c = theBSXMenu.children[0].children[0];
+	if (LV2placeholder > 1)
+	{
+   		HDMenuItem = HDMenuItem - 1;
+   		LV2placeholder = LV2placeholder - 1;
+		//GetBSXHDDIcons();
+        	if (LV2placeholder == 1)
+        	{
+        		c.HD_LV2_02_material.name = "ItemType";
+        		c.HD_LV2_01_material.name = "RedType";
+        		c.OrbMenu3LED2bMat.name = "MenuCell";
+        		c.OrbMenu3LED1bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 2)
+        	{
+        		c.HD_LV2_03_material.name = "ItemType";
+        		c.HD_LV2_02_material.name = "RedType";
+        		c.OrbMenu3LED3bMat.name = "MenuCell";
+        		c.OrbMenu3LED2bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 3)
+        	{
+        		c.HD_LV2_04_material.name = "ItemType";
+        		c.HD_LV2_03_material.name = "RedType";
+        		c.OrbMenu3LED4bMat.name = "MenuCell";
+        		c.OrbMenu3LED3bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 4)
+        	{
+        		c.HD_LV2_05_material.name = "ItemType";
+        		c.HD_LV2_04_material.name = "RedType";
+        		c.OrbMenu3LED5bMat.name = "MenuCell";
+        		c.OrbMenu3LED4bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 5)
+        	{
+        		c.HD_LV2_06_material.name = "ItemType";
+        		c.HD_LV2_05_material.name = "RedType";
+        		c.OrbMenu3LED6bMat.name = "MenuCell";
+        		c.OrbMenu3LED5bMat.name = "EggGlowPulse";
+        	}
+	}
+	else if ((LV2placeholder == 1) & (HDMenuItem > 1))
+	{
+		HDMenuItem = HDMenuItem - 1;
+		LV2Advance = LV2Advance - 1;
+		UpdateBSXHDDMenu();
+		//GetBSXHDDIcons();
+	}
+}
+
+function LV2OnDown()
+{
+	var c = theBSXMenu.children[0].children[0];
+	if ((LV2placeholder < 6) & (LV2placeholder < TotalMenuItems))
+	{
+        	HDMenuItem = HDMenuItem + 1;
+        	LV2placeholder = LV2placeholder + 1;
+		//GetBSXHDDIcons();
+        	if (LV2placeholder == 2)
+        	{
+        		c.HD_LV2_01_material.name = "ItemType";
+        		c.HD_LV2_02_material.name = "RedType";
+        		c.OrbMenu3LED1bMat.name = "MenuCell";
+        		c.OrbMenu3LED2bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 3)
+        	{
+        		c.HD_LV2_02_material.name = "ItemType";
+        		c.HD_LV2_03_material.name = "RedType";
+        		c.OrbMenu3LED2bMat.name = "MenuCell";
+        		c.OrbMenu3LED3bMat.name = "EggGlowPulse";
+        	}
+        	else if (LV2placeholder == 4)
+        	{
+        		c.HD_LV2_03_material.name = "ItemType";
+        		c.HD_LV2_04_material.name = "RedType";
+        		c.OrbMenu3LED3bMat.name = "MenuCell";
+        		c.OrbMenu3LED4bMat.name = "EggGlowPulse";
+        	}
+
+        	else if (LV2placeholder == 5)
+        	{
+        		c.HD_LV2_04_material.name = "ItemType";
+        		c.HD_LV2_05_material.name = "RedType";
+        		c.OrbMenu3LED4bMat.name = "MenuCell";
+        		c.OrbMenu3LED5bMat.name = "EggGlowPulse";
+        	}
+
+        	else if (LV2placeholder == 6)
+        	{
+        		c.HD_LV2_05_material.name = "ItemType";
+        		c.HD_LV2_06_material.name = "RedType";
+        		c.OrbMenu3LED5bMat.name = "MenuCell";
+        		c.OrbMenu3LED6bMat.name = "EggGlowPulse";
+        	}
+	}
+	else if ((LV2placeholder == 6) & (HDMenuItem < TotalMenuItems))
+	{
+		HDMenuItem = HDMenuItem + 1;
+		LV2Advance = LV2Advance + 1;
+		UpdateBSXHDDMenu();
+		//GetBSXHDDIcons();
+	}
+}
+
+function GetSelectionInfo()
+{
+    if (LV1placeholder == 1)
+	{
+		subTitle0 = b_one;
+		TotalMenuItems = theApplicationsMenu.titleCount;
+	}
+	
+    else if (LV1placeholder == 2)
+	{
+		subTitle0 = b_two;
+		TotalMenuItems = theDashboardsMenu.titleCount;
+	}
+	
+    else if (LV1placeholder == 3)
+	{
+		subTitle0 = b_three;
+		TotalMenuItems = theEmulatorsMenu.titleCount;
+	}
+	
+    else if (LV1placeholder == 4)
+	{
+		subTitle0 = b_four;
+		TotalMenuItems = theGamesMenu.titleCount;
+	}
+	
+	else if (LV1placeholder == 5)
+	{
+		subTitle0 = b_five;
+		TotalMenuItems = theHomebrewMenu.TitleCount;
+	}
+}
+
+function UpdateListClockHands()
+{
+	var c = theBSXMenu.children[0].children[0];
+	var d = new Date;
+	var nClockHour = d.getHours();
+	var nClockMinute = d.getMinutes();
+	c.ClockHourHand.SetRotation(0, 0, -1, (nClockHour + nClockMinute / 60) * 6.283 / 12);
+	c.ClockMinuteHand.SetRotation(0, 0, -1, (nClockMinute - 15) * 6.283 / 60);
+}
+
+function EnterTestScreensaver()
+{
+      	var c = theBSXMenu.children[0].children[0];
+	if( CurrentViewpoint == theBSXViewpoint )
+	{
+		bInScreenSaverView = true;
+		UpdateListClockHands();
+		chillingout = true;
+
+      		c.ScreenSaver.fade = .75;
+		c.Information_panel.SetTranslation(-250,-110,5);
+		//ToggleInfoPanel();
+		//c.theMainClock.SetAlpha(1);
+		c.theMainClock.visible = true;
+      		//c.theGames_inner.visible = false;
+		////////////////////////////////////////////////////////////////////////////
+		if(animated == "True")
+		{
+			if(MenuItem == 1) { c.ScreenSaver.SetTranslation(50, -45, 105); }
+			else if(MenuItem == 2) {  }
+			else if(MenuItem == 3) {  }
+			else if(MenuItem == 4) { c.ScreenSaver.SetTranslation(0, -20, 75); }
+			else if(MenuItem == 5) { c.ScreenSaver.SetTranslation(80, -20, 85); }
+		}
+		else if(animated == "False") { c.ScreenSaver.SetTranslation(50, -45, 105); }
+		////////////////////////////////////////////////////////////////////////////
+      		c.theMoviesTitle.visible = false;
+      		c.theMusicTitle.visible = false;
+      		c.theMemoryTitle.visible = false;
+      		c.theGamesTitle.visible = false;
+	}
+
+        if(InLevelOneHDMenu) { c.theHardDriveMenu.visible = false; }
+	else if(InLevelTwoHDMenu) { c.HD_LV2.visible = false; }
+}
+
+function ExitTestScreensaver()
+{
+	bInScreenSaverView = false;
+	chillingout = false;
+      	var c = theBSXMenu.children[0].children[0];
+	c.theMainClock.visible = false;
+        if(InMainLevel)
+	{
+      		//var c = theBSXMenu.children[0].children[0];
+      		c.ScreenSaver.fade = .5;
+		c.Information_panel.SetTranslation(-90,-100,-45);
+		ToggleInfoPanel();
+		//c.theMainClock.visible = false;
+       		c.ScreenSaver.SetTranslation(-15, -10, -29);
+      		c.theMoviesTitle.visible = true;
+      		c.theMusicTitle.visible = true;
+      		c.theMemoryTitle.visible = true;
+      		c.theGamesTitle.visible = true;
+		UpdateDVDIconStatus();
+	}
+        else if(InLevelOneHDMenu) { EnterHardDriveMenu(); }
+	else if(InLevelTwoHDMenu) { EnterLevelTwoMenu(); }
+}
+
+function UpdateCache()
+{
+	if(InLevelTwoHDMenu == true)
+	{
+        if( LV1placeholder == 1 ) { theApplicationsMenu.RefreshCache(); }
+        if( LV1placeholder == 2 ) { theDashboardsMenu.RefreshCache(); }
+        if( LV1placeholder == 3 ) { theEmulatorsMenu.RefreshCache(); }
+        if( LV1placeholder == 4 ) { theGamesMenu.RefreshCache(); }
+		if( LV1placeholder == 5 ) { theHomebrewMenu.RefreshCache(); }
+		UpdateBSXHDDMenu();
+	}
+	else if(InHDLevel2 == true)
+	{
+		if( nCurMusicPlayWithSubsItem0 == 0 ) { theApplicationsMenu.RefreshCache(); }
+		if( nCurMusicPlayWithSubsItem0 == 1 ) { theDashboardsMenu.RefreshCache(); }
+		if( nCurMusicPlayWithSubsItem0 == 2 ) { theEmulatorsMenu.RefreshCache(); }
+		if( nCurMusicPlayWithSubsItem0 == 3 ) { theGamesMenu.RefreshCache(); }
+		if( nCurMusicPlayWithSubsItem0 == 4 ) { theHomebrewMenu.RefreshCache(); }
+		//if( nCurMusicPlayWithSubsItem0 == 4 ) { ""; }
+		REZN8MoveUp();
+		REZN8MoveDown();
+	}
+}
+
+function CheckForTexture()
+{
+	var exists = theHardDrive.FileExists( "Q:\\skins\\" + skinName + "\\tubes.xbx" );
+	var c = theBSXMenu.children[0].children[0];
+	if( exists != true )
+	{
+		c.Games_tube.children[0].appearance.material.name = "MenuCell";
+		c.Music_tube.children[0].appearance.material.name = "MenuCell";
+		c.Movies_tube.children[0].appearance.material.name = "MenuCell";
+		c.Memory_tube.children[0].appearance.material.name = "MenuCell";
+		c.Settings_tube.children[0].appearance.material.name = "MenuCell";
+	}
+}
+
+DEF theBSXMenu Level
+{
+   archive "BlackstormX.xip"
+   children
+   [
+       Inline
+       {
+           url "BlackstormX/default.XAP"
+
+           function onLoad()
+           {
+                PanelCheck();
+		//MusicOnBootCheck();
+		UpdateOrbText();
+		//CheckForTexture();
+		MenuItem = 1;
+		LV1placeholder = 1;
+		//UpdateTheBSXMenu();
+		///////////////REZN8/////////////////////
+		initialmove = true;
+		animated = GetSavedValue("Main Menu Orbs","Animated");
+		var HolderAlpha;
+		var OrbGlowAlpha;
+		if(animated == "True")
+		{
+        		theBSXMenu.children[0].children[0].theMovieUnit.fade = 1;
+        		theBSXMenu.children[0].children[0].theGamesUnit.fade = 1;
+        		theBSXMenu.children[0].children[0].theMusicUnit.fade = 1;
+        		theBSXMenu.children[0].children[0].theMemoryUnit.fade = 1;
+        		theBSXMenu.children[0].children[0].theSettingsUnit.fade = 1;
+
+        		theBSXMenu.children[0].children[0].TotalGamesTube.SetTranslation(-30, -15, -80);
+        		theBSXMenu.children[0].children[0].TotalMusicTube.SetTranslation(-36, 14, -100);
+        		theBSXMenu.children[0].children[0].TotalSettingsTube.SetTranslation(90, -10, -80);
+
+			theBSXMenu.children[0].children[0].theGamesTitle.SetTranslation(-100, -10, -20);
+			theBSXMenu.children[0].children[0].theSettingsTitle.SetTranslation(100, -5, -20);
+
+			theBSXMenu.children[0].children[0].HD_LV2_Text.SetTranslation(-52, 17, -25);
+
+			HolderAlpha  = 1;
+			OrbGlowAlpha = 1;
+
+			UpdateTheREZN8Orbs();
+		}
+		else if(animated == "False")
+		{
+			HolderAlpha  = 0.2;
+			OrbGlowAlpha = 0.7;
+			UpdateTheBSXMenu();
+		}
+		///////////////REZN8/////////////////////
+
+		InMainLevel = true;
+                InLevelOneHDMenu = false;
+                InLevelTwoHDMenu = false;
+
+		//flip down initialization//will need to move all this into sep. xap
+		InHDLevel1 = false;
+		InHDLevel2 = false;
+		b_one = GetSavedValue("Applications Menu","Name");
+		b_two = GetSavedValue("Dashboards Menu","Name");
+		b_three = GetSavedValue("Emulators Menu","Name");
+		b_four = GetSavedValue("Games Menu","Name");	//get button names from titlemenus
+
+		b_five = "none";
+		bMusicPlayWithSubsVisible0 = false; //redundant with InHDLevel1
+		nCurMusicPlayWithSubsItem0 = 0; 
+		nPlayCursor0 = 0; 
+		m_itemcount = 0;
+		nPreviousPlayCursor0 = 0;
+		nPlayScroll0 = 0;
+		nPlayVisible0 = 9;
+		//m_submenucount = 4;
+		m_submenucount = 5;
+		//end flip down area//
+
+		var tempmins = new Date;
+		firsthour = tempmins.getHours() * 3600;
+		firstmins = tempmins.getMinutes() * 60;
+		firstsecs = tempmins.getSeconds();
+
+		var c = theBSXMenu.children[0].children[0];
+		//var HolderAlpha = 0.2;
+		//var OrbGlowAlpha= 0.7;
+
+      		//REMOVED//c.theTestPreview.visible = false;
+		//REMOVED//c.theTVSET.visible = false;
+		c.theMainClock.visible = false;
+		//REMOVED//c.InfoScreen.visible = false;
+
+		///////////////REZN8/////////////////////
+		c.play_buttons.visible = false;
+		c.theSettingsEqualizer.visible = false;
+		c.MU_L3_button_gameinfo.visible = false;
+		c.MU_L3_text_gameinfo.visible = false;
+		c.MU_L3_button_launch.visible = false;
+		c.MU_L3_text_launch.visible = false;
+		c.MU_L3_button_addfav.visible = false;
+		c.MU_L3_text_addfav.visible = false;
+		///////////////REZN8/////////////////////
+
+		c.theHardDriveMenu.visible = false;
+		c.HD_LV2.visible = false;
+		c.HD_LV3.visible = false;
+		
+		c.audio_panel.visible = false;
+
+		c.Games_Holder.SetAlpha(HolderAlpha);
+		c.Music_Holder.SetAlpha(HolderAlpha);
+		c.Movie_Holder.SetAlpha(HolderAlpha);
+		c.Memory_Holder.SetAlpha(HolderAlpha);
+		c.Settings_Holder.SetAlpha(HolderAlpha);
+		c.theGamesGlow.SetAlpha(OrbGlowAlpha);
+		c.theMusicGlow.SetAlpha(OrbGlowAlpha);
+		c.theMoviesGlow.SetAlpha(OrbGlowAlpha);
+		c.theMemoryGlow.SetAlpha(OrbGlowAlpha);
+		c.theSettingsGlow.SetAlpha(OrbGlowAlpha);
+
+		UpdateDVDIconStatus();
+           }
+       }
+   ]
+
+   path Viewpoint
+   {
+        fieldOfView 1.2
+        orientation -0.177400 -1.983500 -0.036250 -0.045440
+        position 000000 -30.299999 120.300003
+        jump false
+   }
+
+   shell Transform
+   {
+       scale 150 150 150
+       translation 0 -20 80
+       children
+       [
+           Spinner
+           {
+               rpm 0
+               axis 0 1 0
+               children
+               [
+                   Waver
+                   {
+                       rpm 0.75
+                       children
+                       [
+                           Shape
+                           {
+                               appearance Appearance
+                               {
+                                   material MaxMaterial { name "InnerWall_01" }
+                                   texture ImageTexture { alpha true url "cellwall.xbx" }
+                               }
+                               geometry USE theCellWallMesh
+                           }
+                           Shape
+                           {
+                               appearance MaxMaterial { name "InnerWall_02" }
+                               geometry Sphere { radius 1 }
+                           }
+                       ]
+                   }
+               ]
+           }
+       ]
+   }
+
+   control DEF theBSXJoy Joystick
+   {
+	function OnADown()
+        {
+		if(InMainLevel){ if (RightTrigger == true & LeftTrigger == false) { QuickLaunch("A"); } }
+
+		theBSXMenu.children[0].children[0].select_pod_HL.children[0].appearance.material.param = 1;
+		PlaySoundA();
+
+            if(MenuItem == 2) { theMusicMenuIn.Play(); }
+           	else { theSettingsMenuIn.Play(); }
+
+		var orbFunction;
+		if(animated == "True")
+		{
+			var fixedMenuItem;
+			if(MenuItem == 1) { fixedMenuItem = 3; }
+			else if(MenuItem == 2) { fixedMenuItem = 1; }
+			else if(MenuItem == 3) { fixedMenuItem = 2; }
+			else if(MenuItem == 4) { fixedMenuItem = 4; }
+			else if(MenuItem == 5) { fixedMenuItem = 5; }
+			///////////////////////////////////////////////////////////////////////////
+      			//var IniFile = new Settings; 
+      			//IniFile.SetIniSection( "Main Menu Orbs" );
+      			orbFunction = GetSavedValue("Main Menu Orbs","Orb " + (fixedMenuItem) + " Function" );
+      			//IniFile.CloseIniFile();
+			///////////////////////////////////////////////////////////////////////////
+		}
+ 		else if(animated == "False")
+		{
+			///////////////////////////////////////////////////////////////////////////
+      			//var IniFile = new Settings; 
+      			//IniFile.SetIniSection( "Main Menu Orbs" );
+      			orbFunction = GetSavedValue("Main Menu Orbs","Orb " + (MenuItem) + " Function" );
+      			//IniFile.CloseIniFile();
+			///////////////////////////////////////////////////////////////////////////
+		}
+
+		//if (MenuItem == 1 & orbFunction == "GoToBSXHDD()")
+		if (orbFunction == "GoToBSXHDD()")
+		{
+			Style = GetSavedValue("Hard Drive","BSX Style");
+			if(Style == "BSX")
+			{
+           			if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == false))
+               		{
+                       	InMainLevel = false;
+                       	InLevelOneHDMenu = true;
+                       	EnterHardDriveMenu();
+               		}
+               		else if((InLevelOneHDMenu == true) & (InLevelTwoHDMenu == false))
+               		{
+               			GetSelectionInfo();
+                     	InLevelOneHDMenu = false;
+                     	InLevelTwoHDMenu = true;
+						EnterLevelTwoMenu();
+                    }
+                    else if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == true)) { theTitleLauncherLevel.GoTo(); }
+			}
+			else if(Style == "REZN8")
+			{
+				if (InMainLevel)
+				{
+  					ToggleInfoPanel(); 
+  					enterHDlv1();
+				}
+				else { REZN8ADown(); }
+			}
+		}
+              	else { eval( orbFunction ); }
+	}
+
+	function OnRightThumbMoveRight()
+	{
+
+	       	menuStyle = "MS";
+			theMainMenu.GoTo();
+	}
+
+	function OnBDown()
+	{
+	    	if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == false) & (InHDLevel1 == false) & (InHDLevel2 == false))
+	    	{
+            		if (RightTrigger == true & LeftTrigger == true) { QuickLaunch("B"); }
+			else if (InMainLevel) { GoToPowerOpts(); }
+	    	}
+		else if(Style == "BSX")
+		{
+			if (InLevelOneHDMenu == true)
+			{
+         			InMainLevel = true;
+         			InLevelOneHDMenu = false;
+         			ExitHardDriveMenu();
+         		}
+      			else if (InLevelTwoHDMenu == true)
+         		{
+         			InLevelOneHDMenu = true;
+         			InLevelTwoHDMenu = false;
+         			EnterHardDriveMenu();
+         		}
+		}
+		else if(Style == "REZN8") { REZN8BDown(); }
+        }
+
+        function OnXDown()
+        {
+			if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == false) & (InHDLevel1 == false) & (InHDLevel2 == false))
+			{
+            	if (RightTrigger == true & LeftTrigger == true) { QuickLaunch("X"); }
+            	else if (RightTrigger == true) { MusicPlayerStop(); }
+				else
+				{
+					//MusicPlayerRandom();
+					
+					//TellUser(theMainMenu.children[0].children[0].theSoundtrackSongInfoText.text, "");
+					//UpdateDVDIconStatus();
+
+					previousControlType = thebsxcontrols;
+					StartControlPanel();
+
+				}
+			}
+        }
+
+        function OnYDown()
+        {
+            if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == false) & (InHDLevel1 == false) & (InHDLevel2 == false))
+            {
+				if (RightTrigger == true & LeftTrigger == true) { QuickLaunch("Y"); }
+				else if (RightTrigger == false & LeftTrigger == true)
+				{
+					if(b_InWireFrame)
+					{
+						theScreen.WireFrameStop();
+						b_InWireFrame = false;
+					}
+					else
+					{
+						theScreen.WireFrameStart();
+						b_InWireFrame = true;
+					}
+				}
+				else
+				{
+               		theGameBoardLayer.visible = true;
+               		theGameBoardInline.children[0].theGameBoardDisplay.fade = 1;
+               		theGameBoardInline.children[0].theGameBoardDisplay.SetAlpha(1);
+               		theGameBoardInline.children[0].theGameBoardDisplay.SetTranslation(-47.5,47.5,-20);
+               		theGameBoardInline.children[0].theGameBoardDisplay.SetRotation(-0.0001,0,0,0.54);
+               		theGameBoardControlsInline.children[0].InitializeGame();
+               		thePlayerPanelIn.Play();
+               		StartGameBoardView();
+				}
+            }
+			else if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == true)) { AskQuestion( "\n\nRefresh " + subTitle0 + " Menu Cache ?", "theBSXInline.children[0].UpdateCache()", "", 1 ); }
+			else if(InHDLevel2 == true) { AskQuestion( "\n\nRefresh " + subTitle0 + " Menu Cache ?", "theBSXInline.children[0].UpdateCache()", "", 1 ); }
+        }
+
+       function OnRightDown(){ RightTrigger = true; }
+       function OnRightUp()  { RightTrigger = false; }
+       function OnLeftDown() { LeftTrigger = true; }
+       function OnLeftUp()   { LeftTrigger = false; }
+
+       function OnLeftThumbDown()
+       {
+	    if((InLevelOneHDMenu == false) & (InLevelTwoHDMenu == false) & (InHDLevel1 == false) & (InHDLevel2 == false))
+	    {
+                //theMusicPlayer.playbackMode = 0; 
+                //currentAlbum = 0;
+                //currentTrack = 0;
+                //MusicPlayerPlay();
+	    }
+       }
+
+       function OnLeftThumbMoveUp()
+       {
+		if(InMainLevel){ if (RightTrigger == true & LeftTrigger == false) { MusicPlayerFastForward(); } }
+       		if (InLevelOneHDMenu == true) { LevelOneOnUp(); }
+		else if (InLevelTwoHDMenu == true) { LV2OnUp(); }
+		else if(( InHDLevel1 ) | ( InHDLevel2 )) { REZN8MoveUp(); }
+       }
+
+       function OnLeftThumbMoveDown()
+       {
+		if(InMainLevel){ if (RightTrigger == true & LeftTrigger == false) { MusicPlayerRewind(); } }
+       		if (InLevelOneHDMenu == true) { LevelOneOnDown(); }
+		else if (InLevelTwoHDMenu == true) { LV2OnDown(); }
+		else if(( InHDLevel1 ) | ( InHDLevel2 )) { REZN8MoveDown(); }
+       }
+
+       function OnLeftThumbMoveLeft()
+       {
+		if(InMainLevel)
+		{
+			if(RightTrigger == true & LeftTrigger == false) { ChangeAlbumLeft(); }
+			if(animated == "False")
+			{
+                		if (MenuItem == 1) { return; }
+				else { MenuItem = MenuItem - 1; }
+                		PlaySoundMenuChange();
+                		UpdateTheBSXMenu();
+			}
+			else if(animated == "True")
+			{
+				var d = new Date;
+				secondhour = d.getHours() * 3600;
+				secondmins = d.getMinutes() * 60;
+				secondsecs = d.getSeconds();
+				if (((secondhour + secondmins + secondsecs) - (firsthour + firstmins + firstsecs)) > .8)
+				{
+					firstmins = d.getMinutes() * 60;
+					firstsecs = d.getSeconds();
+					MenuItem = MenuItem + 1;
+					if (initialmove == true)
+					{
+						initialmove = false;
+						MenuItem = 2;
+					}
+					theMainMenuBackward.Play();
+					UpdateTheREZN8Orbs();
+				}
+			}
+		}
+       }
+
+       function OnLeftThumbMoveRight()
+       {
+		if(InMainLevel)
+		{
+			if(RightTrigger == true & LeftTrigger == false) { ChangeAlbumRight(); }
+			if(animated == "False")
+			{
+                		if (MenuItem == 5) { return; }
+				else { MenuItem = MenuItem + 1; }
+                		PlaySoundMenuChange();
+                		UpdateTheBSXMenu();
+			}
+			else if(animated == "True")
+			{
+				var d = new Date;
+				secondhour = d.getHours() * 3600;
+				secondmins = d.getMinutes() * 60;
+				secondsecs = d.getSeconds();
+				if (((secondhour + secondmins + secondsecs) - (firsthour + firstmins + firstsecs)) > .8)
+				{
+					firstmins = d.getMinutes() * 60;
+					firstsecs = d.getSeconds();
+					MenuItem = MenuItem - 1;
+					initialmove = false;
+					if((MenuItem == -1) | (MenuItem == 0)) { MenuItem = 5; }
+					theMainMenuForward.Play();
+					UpdateTheREZN8Orbs();
+				}
+			}
+		}
+       }
+   }
+
+   function OnActivate()
+   {
+	EnableAudio();
+	CurrentViewpoint = theBSXViewpoint;
+	thebsxcontrols = theBSXJoy;
+	UpdateDVDIconStatus();
+   }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////REZN8 FLIP DOWN MENU FUNCTIONS BOBMCGEE/////////////////////////
+
+var itemPlaceHolder;
+
+function enterHDlv1() //need to change animations
+{      
+	///////////////////////////////////////////////////////////////////
+	itemPlaceHolder = 0;
+	nPlayCursor0 = 0;
+
+        InHDLevel1 = true;
+        bMusicPlayWithSubsVisible0 = true;
+        InMainLevel = false;
+	///////////////////////////////////////////////////////////////////
+	var c = theBSXMenu.children[0].children[0];
+
+        c.GM_L2_Arm01_03.visible = true;
+
+        c.HDMenuTab01.text = b_one;
+        c.HDMenuTab02.text = b_two;
+        c.HDMenuTab03.text = b_three;
+        c.HDMenuTab04.text = b_four;
+        c.HDMenuTab05.text = b_five;
+
+        c.theSettingsEqualizer.visible = true;
+        //c.theSettingsEqualizer.children[0].appearance.texture = audioVisualizerOne;
+	c.theSettingsEqualizer.children[0].appearance.texture =	audioVisualizer;
+
+/*
+        c.theWaverOne.rpm = 0;
+        c.theWaverTwo.rpm = 0;
+        c.theWaverThree.rpm = 0;
+*/
+
+//animation starting point
+        c.GM_L2_Arm01_03.fade = 0;
+        c.GM_L2_Arm01_03.SetRotation(1, 0, 0, -0.02618);
+        c.GM_L2_Arm01_03.SetTranslation(-265, -15, 0);
+
+//animation end point
+        c.GM_L2_Arm01_03.fade = 1;
+        c.GM_L2_Arm01_03.SetRotation(-0.538800, 0.000 , 0.394700, -3.142000);
+        c.GM_L2_Arm01_03.SetTranslation(-40, -15, 0);
+
+        //c._button_surround_0.visible = false;
+        c.theGames_inner.visible = false;
+        c.theMusic_inner.visible = false;
+        c.theMovies_inner.visible = false;
+        c.theMemory_inner.visible = false;
+        c.theSettings_inner.visible = false;
+        //c.theSettingsUnit.fade = 0;
+        //c.theSettingsUnit.SetTranslation(-70, -10, -300);
+        c.theMovieUnit.fade = 1;
+        c.theGamesUnit.fade = 1;
+        c.theMusicUnit.fade = 1;
+        c.theMemoryUnit.fade = 1;
+        c.theMovieUnit.SetTranslation(70, 80, 90);
+        c.theGamesUnit.SetTranslation(-100, 60, 100);
+        c.theMusicUnit.SetTranslation(50, 150,70);
+        c.theMemoryUnit.SetTranslation(50, 200, 30);   //testing
+        c.theSettingsUnit.fade = 1;
+        c.theSettingsUnit.SetTranslation(-85, 5, 65);
+        //c.theSettingsUnit.SetRotation(0, 1, 0, 0.34906585);
+        c.theMoviesTitle.visible = false;
+        c.theGamesTitle.visible = false;
+        c.theMoviesTitle.visible = false;
+        c.theMusicTitle.visible = false;
+        c.theMemoryTitle.visible = false;
+        c.theSettingsTitle.visible = false;
+
+        c.theIconCube.fade = 0.75; 
+	c.theIconCube.SetScale( 0, 0, 0 );
+	c.theIconCube.SetAlpha( 0 );
+
+        UpdateMusicPlayWithSubs();
+}
+
+function exitHDlv1() //exits need redone
+{
+        var c = theBSXMenu.children[0].children[0];
+        InHDLevel1 = false;
+        InMainLevel = true;
+        bMusicPlayWithSubsVisible0 = false;
+        c.GM_L2_Arm01_03.fade = 1;
+        c.GM_L2_Arm01_03.SetRotation(1, 0, 0, -0.02618);
+        c.GM_L2_Arm01_03.SetTranslation(-265, -15, 0);
+}
+
+function enterHDlv2()
+{
+        InHDLevel2 = true;
+        InHDLevel1 = false;
+        InMainLevel = false;
+        bMusicPlayWithSubsVisible0 = false;
+
+        var c = theBSXMenu.children[0].children[0];
+        c.TitleText.text= subTitle0;
+        //c.TrackCountText.text = HDMenuList.length + " Items";
+        thePlayerPanelIn.Play();
+        c.buttons_copy.visible = false;
+        c.buttons_edit.visible = false;
+        c.play_buttons.visible = true;
+        c.MU_L3_timeslider.visible = false;
+        c.MU_L3_timeslider_slot.visible = false;
+        c.MusicTimeText.text = "";
+        c.MU_L3_panel_timedisplay_01.visible = false;
+        c.theSettingsUnit.fade = 1;
+        c.theSettingsUnit.SetTranslation(-140, 0, 75);
+        c.audio_panel.visible = true;
+        c.audio_panel.SetRotation(1, 0, 0, -0.02618);
+        c.audio_panel.SetTranslation(-10, -15, 0);
+        UpdateTrackList();
+        b_onScreen = false;
+        c.theIconCube.visible = true;
+	    c.theIconCube.fade = 0.75; 
+	    c.theIconCube.SetScale( 27.35, 28, 24 );
+
+        tempIconPath = "";
+        IconsOnCube();
+}
+
+function exitHDlv2()
+{
+        var c = theBSXMenu.children[0].children[0];
+        //c.audio_panel.visible = false;
+        InHDLevel2 = false;
+        c.audio_panel.SetRotation(-1, 0, 0, -3.246000);
+        c.audio_panel.SetTranslation(-10, 140, 0);
+        c.theIconCube.visible = false;
+	    c.theIconCube.fade = 0.75; 
+	    c.theIconCube.SetScale( 0, 0, 0 );
+	    c.theIconCube.SetAlpha( 0 );
+        
+}
+
+function GoBackToMainMenu()
+{
+        var c = theBSXMenu.children[0].children[0];
+        InMainLevel = true;
+
+        c.theMoviesTitle.visible = true;
+        c.theGamesTitle.visible = true;
+        c.theMoviesTitle.visible = true;
+        c.theMusicTitle.visible = true;
+        c.theMemoryTitle.visible = true;
+        c.theSettingsTitle.visible = true;
+        c.theSettingsEqualizer.visible = false;
+        //ToggleInfoPanel();
+	c.Information_panel.SetTranslation(-90,-100,-45);
+	if(animated == "True") { UpdateTheREZN8Orbs(); }
+	else if(animated == "False")
+	{
+		c.theMovieUnit.SetTranslation(0,0,0);
+		c.theMemoryUnit.SetTranslation(0,0,0);
+		c.theSettingsUnit.SetTranslation(0,0,0);
+		c.theGamesUnit.SetTranslation(0,0,0);
+		c.theMusicUnit.SetTranslation(0,0,0);
+		UpdateTheBSXMenu();
+	}
+}
+
+////tayior all new funtions for filling menus etc below here////
+function UpdateTrackList()
+{
+    	var c = theBSXMenu.children[0].children[0];
+    	var str = "";
+
+	if (nPlayCursor0 < 0) { nPlayScroll0 = 0; }
+    	else if ( (nPlayCursor0 >= (nPlayVisible0 - 1)) & (nPreviousPlayCursor0 < nPlayCursor0) & (nPlayCursor0 > (nPlayScroll0 + (nPlayVisible0 - 1)) ))
+	{
+		nPlayScroll0 = nPlayCursor0 - (nPlayVisible0 - 1);
+	}
+    	else if (nPlayCursor0 < nPlayScroll0) { nPlayScroll0 = nPlayCursor0; }
+
+	nPreviousPlayCursor0 = nPlayCursor0;
+
+    	if( nCurMusicPlayWithSubsItem0 == 0 ) { m_itemcount = theApplicationsMenu.titleCount; }
+    	if( nCurMusicPlayWithSubsItem0 == 1 ) { m_itemcount = theDashboardsMenu.titleCount; }
+    	if( nCurMusicPlayWithSubsItem0 == 2 ) { m_itemcount = theEmulatorsMenu.titleCount; }
+    	if( nCurMusicPlayWithSubsItem0 == 3 ) { m_itemcount = theGamesMenu.titleCount; }
+    	if( nCurMusicPlayWithSubsItem0 == 4 ) { m_itemcount = theHomebrewMenu.titleCount; }
+    	//if( nCurMusicPlayWithSubsItem0 == 4 ) { m_itemcount = 0; }
+
+    	if(m_itemcount == 1) { c.TrackCountText.text = m_itemcount + " " + theTranslator.Translate("Title"); }
+    	else { c.TrackCountText.text = m_itemcount + " " + theTranslator.Translate("Titles"); }
+
+	if (nPlayScroll0 > 0) { c.MU_morearrow_up.visible = true; }
+	else { c.MU_morearrow_up.visible = false; }
+
+	if ((nPlayScroll0 + nPlayVisible0) < m_itemcount) { c.MU_morearrow_down.visible = true; }
+	else { c.MU_morearrow_down.visible = false; }
+
+    	var nHiliteItem0 = nPlayCursor0;
+    	if (nHiliteItem0 == -1) { nHiliteItem0 = 0; }
+
+    	for (var i = 0; i < nPlayVisible0; i = i + 1)
+    	{
+        		var n = nPlayScroll0 + i;
+       			if (n >= m_itemcount) { c.TrackNames.children[i].children[0].geometry.text = ""; }
+			else
+			{
+				var strHL0 = "";
+				var strName0, strTime0;
+				strTime0 = "";
+				if (m_itemcount < 0) { strName0 = strTrack0; }
+				else
+				{
+					if( nCurMusicPlayWithSubsItem0 == 0 ) { strName0 = theApplicationsMenu.GetName( n ); }
+					if( nCurMusicPlayWithSubsItem0 == 1 ) { strName0 = theDashboardsMenu.GetName( n ); }
+					if( nCurMusicPlayWithSubsItem0 == 2 ) { strName0 = theEmulatorsMenu.GetName( n ); }
+					if( nCurMusicPlayWithSubsItem0 == 3 ) { strName0 = theGamesMenu.GetName( n ); }
+					if( nCurMusicPlayWithSubsItem0 == 4 ) { strName0 = theHomebrewMenu.GetName( n ); }
+					//if( nCurMusicPlayWithSubsItem0 == 4 ) { strName0 = ""; }
+					if( strName0 == "" ) { strName0 = strTrack0; }
+				}
+
+				c.TrackNames.children[i].children[0].geometry.text = strName0;
+
+				if (n == nHiliteItem0)
+				{
+					c.TrackNames.children[i].SetScale(0.15, 0.15, 0.15);
+					c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
+				}
+				else
+				{				
+					c.TrackNames.children[i].SetScale(0.13, 0.13, 0.13);
+					c.TrackNames.children[i].children[0].appearance.name = "NavType";
+				}
+
+				str = str + strHL0 + strName0 + strHL0;
+				str = str + "\t";
+				str = str + strHL0 + strTime0 + strHL0;
+				str = str + "\r";
+			}
+	}
+
+	tempIconPath = "";
+
+    	if( nCurMusicPlayWithSubsItem0 == 0 ) { tempIconPath = theApplicationsMenu.GetIcon( nPlayCursor0 ); }
+    	else if( nCurMusicPlayWithSubsItem0 == 1 ) { tempIconPath = theDashboardsMenu.GetIcon( nPlayCursor0 ); }
+    	else if( nCurMusicPlayWithSubsItem0 == 2 ) { tempIconPath = theEmulatorsMenu.GetIcon( nPlayCursor0 ); }
+    	else if( nCurMusicPlayWithSubsItem0 == 3 ) { tempIconPath = theGamesMenu.GetIcon( nPlayCursor0 ); }
+    	else if( nCurMusicPlayWithSubsItem0 == 4 ) { tempIconPath = theHomebrewMenu.GetIcon( nPlayCursor0 ); }
+    	//else if( nCurMusicPlayWithSubsItem0 == 4 ) { }
+
+	var strIconPath = "E:\\UDATA\\" + tempIconPath + "\\TitleImage.xbx";
+
+	if( tempIconPath == "00000000" )
+	{
+    		if( true == b_onScreen ) { c.theScreenOutput.children[0].appearance.texture.url = "xbox4.xbx"; }
+    		else if( false == b_onScreen ) { c.theIconCube.children[0].appearance.texture.url = "xbox4.xbx"; }
+	}
+	else if( tempIconPath == "NULL" )
+	{
+		if( true == b_onScreen ) { c.theScreenOutput.children[0].appearance.texture.url = "xbox4.xbx"; }
+    		else if( false == b_onScreen ) { c.theIconCube.children[0].appearance.texture.url = "xbox4.xbx"; }	
+	}
+	else if( tempIconPath != "NULL" )
+	{
+		if( true == b_onScreen ) { c.theScreenOutput.children[0].appearance.texture.url = strIconPath; }	
+		else if( false == b_onScreen ) { c.theIconCube.children[0].appearance.texture.url = strIconPath; }
+	}
+}
+
+function UpdateMusicPlayWithSubs()
+{
+    var c = theBSXMenu.children[0].children[0];
+
+    for (var i = 0; i < 5; i = i + 1)
+    {
+        if (i == nCurMusicPlayWithSubsItem0)
+        {
+            c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
+	    c.theMenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.xbx";
+            c.theMenuButtons.children[i].children[1].children[0].appearance.name = "HilightedType";
+        }
+        else
+        {
+            c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
+	    c.theMenuButtons.children[i].children[0].appearance.texture.url = "outline.xbx";
+            c.theMenuButtons.children[i].children[1].children[0].appearance.name = "NavType";
+        }
+    }
+
+	if( b_one == "none")
+	{
+		b_one = "";
+		c.theMenuButtons.children[0].visible = false;
+	}
+	else { c.theMenuButtons.children[0].visible = true; }
+
+	if(b_two == "none")
+	{
+		b_two = "";
+		c.theMenuButtons.children[1].visible = false;
+	}
+	else { c.theMenuButtons.children[1].visible = true; }
+
+	if( b_three == "none")
+	{
+		b_three = "";
+		c.theMenuButtons.children[2].visible = false;
+	}
+	else { c.theMenuButtons.children[2].visible = true; }
+
+	if( b_four == "none")
+	{
+		b_four = "";
+		c.theMenuButtons.children[3].visible = false;
+	}
+	else { c.theMenuButtons.children[3].visible = true; }
+
+	if( b_five == "none")
+	{
+		b_five = "";
+		c.theMenuButtons.children[4].visible = false;
+	}
+
+	else if( b_five == "") { c.theMenuButtons.children[4].visible = false; }
+
+	else { c.theMenuButtons.children[4].visible = true; }
+
+        c.theMenuButtons.children[0].children[1].children[0].geometry.text = b_one;
+        c.theMenuButtons.children[1].children[1].children[0].geometry.text = b_two;
+        c.theMenuButtons.children[2].children[1].children[0].geometry.text = b_three;
+        c.theMenuButtons.children[3].children[1].children[0].geometry.text = b_four;
+        c.theMenuButtons.children[4].children[1].children[0].geometry.text = b_five;
+
+	c._button_surround.visible = true;
+	c.New_Line11.visible = true;
+	c._button_surround_0.visible = false;
+
+        if (nCurMusicPlayWithSubsItem0 == 0) { c.MenuMetaText.text = b_one; }
+        else if (nCurMusicPlayWithSubsItem0 == 1) { c.MenuMetaText.text = b_two; }
+        else if (nCurMusicPlayWithSubsItem0 == 2) { c.MenuMetaText.text = b_three; }
+        else if (nCurMusicPlayWithSubsItem0 == 3) { c.MenuMetaText.text = b_four; }
+        else if (nCurMusicPlayWithSubsItem0 == 4) { c.MenuMetaText.text = b_five; }
+}
+
+function IconsOnCube()
+{
+	b_onScreen = false;
+    	var c = theBSXMenu.children[0].children[0];
+
+	c.theIconCube.fade = 0.75; 
+    c.theIconCube.SetScale( 27.35, 28, 24 );
+	c.theIconCube.SetAlpha( 1.0 );
+
+	c.theScreenOutput.fade = 0.35;
+	c.theScreenOutput.SetAlpha( 0 );
+
+	c.theScreenOutput2.fade = 0.75; 
+	c.theScreenOutput2.SetAlpha( 1.0 );
+
+	UpdateTrackList();
+}
+
+function REZN8ADown()
+{
+	if (bMusicPlayWithSubsVisible0)
+	{
+		if (nCurMusicPlayWithSubsItem0 == 0)
+		{
+			if(b_one == "") { return; }
+			else
+			{
+				subTitle0 = b_one;
+				thePlayerPanelIn.Play();
+	  			exitHDlv1();
+                		enterHDlv2();
+			}
+		}
+        	else if (nCurMusicPlayWithSubsItem0 == 1)
+		{
+			if(b_two == "") { return; }
+			else
+			{
+				subTitle0 = b_two;
+				thePlayerPanelIn.Play();
+				exitHDlv1();
+        			enterHDlv2();
+			}
+		}
+        	else if (nCurMusicPlayWithSubsItem0 == 2)
+		{
+			if(b_three == "") { return; }
+			else
+			{
+				subTitle0 = b_three;
+				thePlayerPanelIn.Play();
+	  			exitHDlv1();
+                		enterHDlv2();
+			}
+		}
+        	else if (nCurMusicPlayWithSubsItem0 == 3)
+		{
+			if(b_four == "") { return; }
+			else
+			{
+				subTitle0 = b_four;
+				thePlayerPanelIn.Play();
+				exitHDlv1();
+        			enterHDlv2();
+			}
+		}
+             	else if (nCurMusicPlayWithSubsItem0 == 4)
+		{
+			if(b_five == "") { return; }
+			else
+			{
+				subTitle0 = b_five;
+				thePlayerPanelIn.Play();
+	  			exitHDlv1();
+                		enterHDlv2();
+			}
+		}
+	}
+ 	else 
+	{
+/*
+		     if (nCurMusicPlayWithSubsItem0 == 0) { theApplicationsMenu.LaunchTitle( nPlayCursor0 ); }
+		else if (nCurMusicPlayWithSubsItem0 == 1) { theDashboardsMenu.LaunchTitle( nPlayCursor0 ); }
+		else if (nCurMusicPlayWithSubsItem0 == 2) { theEmulatorsMenu.LaunchTitle( nPlayCursor0 ); }
+		else if (nCurMusicPlayWithSubsItem0 == 3) { theGamesMenu.LaunchTitle( nPlayCursor0 ); }
+		else if (nCurMusicPlayWithSubsItem0 == 4) { return; }
+*/
+		theTitleLauncherLevel.GoTo();
+	}
+}
+
+function REZN8BDown()
+{
+	if ((InHDLevel1 == true) & (InHDLevel2 == false))
+   	{
+   		exitHDlv1();
+   		GoBackToMainMenu();
+   	}
+	else if ((InHDLevel1 == false) & (InHDLevel2 == true))
+   	{
+   		exitHDlv2();
+   		enterHDlv1();  
+   	}   
+}
+
+function REZN8MoveUp()
+{
+	if (bMusicPlayWithSubsVisible0)
+        {
+        	if (nCurMusicPlayWithSubsItem0 > 0)
+                {
+                	PlaySoundMenuChange();
+                 	nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 - 1;
+                 	UpdateMusicPlayWithSubs();
+                }
+        }
+        else
+        {
+    		if (nPlayCursor0 <= 0) { nPlayCursor0 = 0; }
+		else
+		{
+			if(nPlayCursor0 != 0)
+			{
+            			PlaySoundMenuChange();
+    	    			nPlayCursor0 = nPlayCursor0 - 1;
+	    			if(itemPlaceHolder > 0)
+				itemPlaceHolder = itemPlaceHolder - 1;
+			}
+    			UpdateTrackList();
+		}
+        }
+}
+
+function REZN8MoveDown()
+{
+	if (bMusicPlayWithSubsVisible0)
+	{
+		var nMenuItemCount = m_submenucount;			//number of submenus
+
+		if (nCurMusicPlayWithSubsItem0 < nMenuItemCount - 1)
+		{
+			PlaySoundMenuChange();
+                    	nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 + 1;
+                    	UpdateMusicPlayWithSubs();
+                }
+        }
+        else
+	{
+		var a = (m_itemcount - 1);
+		if (nPlayCursor0 < 0) { nPlayCursor0 = 0; }
+
+		if (nPlayCursor0 == a) { return; }
+		else
+		{
+			PlaySoundMenuChange();
+			nPlayCursor0 = nPlayCursor0 + 1;
+			if(itemPlaceHolder < 8) { itemPlaceHolder = itemPlaceHolder + 1; }
+		}
+		UpdateTrackList();
+	}
+}
+///END FLIP DOWN FUNCTIONS//MOVE ENTIRE CHUNK INTO ITS OWN XAP
+
+function UpdateTheREZN8Orbs()
+{
+	var c = theBSXMenu.children[0].children[0];
+	if (MenuItem == 6) { MenuItem = 1; }
+	if (MenuItem == 1)
+	{
+		c.theMovieUnit.SetTranslation(0,0,0);
+		c.theMemoryUnit.SetTranslation(0,0,0);
+		c.theSettingsUnit.SetTranslation(0,0,0);
+		c.theGamesUnit.SetTranslation(0,0,0);
+		c.theMusicUnit.SetTranslation(0,0,0);
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = true;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 2)
+	{
+		c.theMovieUnit.SetTranslation(100,15,-10);
+		c.theMemoryUnit.SetTranslation(-100,5,-10);
+		c.theSettingsUnit.SetTranslation(-50,20,-10);
+		c.theGamesUnit.SetTranslation(100,-10,10);
+		c.theMusicUnit.SetTranslation(-50,-30,20);
+		c.theGames_inner.visible = true;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 3)
+	{
+		c.theMovieUnit.SetTranslation(50,35,-20);
+		c.theMemoryUnit.SetTranslation(-150,-25,10);
+		c.theSettingsUnit.SetTranslation(-150,25,-20);
+		c.theGamesUnit.SetTranslation(200,5,0);
+		c.theMusicUnit.SetTranslation(50,-40,30);
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = true;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 4)
+	{
+		c.theMovieUnit.SetTranslation(-50,40,-30);
+		c.theMemoryUnit.SetTranslation(-50,-35,20);
+		c.theSettingsUnit.SetTranslation(-200,-5,0);
+		c.theGamesUnit.SetTranslation(150,25,-10);
+		c.theMusicUnit.SetTranslation(150,-25,20);
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = true;
+		c.theSettings_inner.visible = false;
+	}
+	else if (MenuItem == 5)
+	{
+		c.theMovieUnit.SetTranslation(-100,10,-10);
+		c.theMemoryUnit.SetTranslation(50,-20,10);
+		c.theSettingsUnit.SetTranslation(-100,-15,10);
+		c.theGamesUnit.SetTranslation(50,30,-20);
+		c.theMusicUnit.SetTranslation(100,-5,10);
+		c.theGames_inner.visible = false;
+		c.theMusic_inner.visible = false;
+		c.theMovies_inner.visible = false;
+		c.theMemory_inner.visible = false;
+		c.theSettings_inner.visible = true;
+	}
+}
