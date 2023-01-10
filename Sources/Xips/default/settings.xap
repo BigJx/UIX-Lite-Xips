@@ -1216,8 +1216,6 @@ function ShowFourListItems()
 function SetupListSettings()
 {
     var c = theChooseClockMenu.children[0].children[0];
-
-
 	ShowIcon(c.ClockIcon);
     ShowIcon(c.GlobeIcon);
     ShowIcon(c.StereoIcon);
@@ -1226,12 +1224,10 @@ function SetupListSettings()
     ShowIcon(c.LetterboxIcon);
     ShowIcon(c.WidescreenIcon);
     ShowIcon(c.LockIcon);
-
 	// reset focus on entry
 	if(strPrevMenu == "SETTINGS") { nCurListItems = 0; }
 
 	SetupListMenu();
-
 }
 
 function SetupListMenu()
@@ -1783,16 +1779,20 @@ function StartPanelMenu()
 		bInRecoveryKeySequence = false;
 
 		c.PanelHeading.text = theTranslator.Translate("SYSTEM INFO");
-		if(theConfig.GetGameRegion() == "JAPAN")
-		{
-			c.QuestionText.text = theTranslator.Translate("JapanSystemInfo");
-		}
-		else
-		{
-			c.QuestionText.text = theTranslator.Translate("SystemInfo");
-		}
+		//if(theConfig.GetGameRegion() == "JAPAN")
+		//{
+		//	c.QuestionText.text = theTranslator.Translate("JapanSystemInfo");
+		//}
+		//else
+		//{
+		//	c.QuestionText.text = theTranslator.Translate("SystemInfo");
+		//}
         c.QuestionText.text = c.QuestionText.text + "\nK:" + theConfig.GetROMVersion();
         c.QuestionText.text = c.QuestionText.text + "\rD:" + theConfig.GetXdashVersion();
+        c.QuestionText.text = c.QuestionText.text + "\rIP:" + theConfig.GetXboxIP();
+        c.QuestionText.text = c.QuestionText.text + "\rEncoder:" + theConfig.GetEncoder();
+		c.QuestionText.text = c.QuestionText.text + "\rXbox Version:" + theConfig.GetXBOXVersion();
+		c.QuestionText.text = c.QuestionText.text + "\rModchip:" + theConfig.GetMODCHIPVersion();
 		c.ButtonGroup.visible = false;
 		c.ConsoleIcon.visible = true;
 

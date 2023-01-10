@@ -52,10 +52,10 @@ function StartHardDriveMenu()
 {
 	curMenuItem = 1;
  	var c = theHardDriveMenu.children[0].children[0];
-	c.Menu1Text.text = GetSavedValue("SubMenu2","Name");
-	c.Menu2Text.text = GetSavedValue("SubMenu1","Name");
-	c.Menu3Text.text = GetSavedValue("SubMenu3","Name");
-	c.Menu4Text.text = GetSavedValue("SubMenu4","Name");
+	c.Menu1Text.text = GetSavedValue("Applications Menu","Name");
+	c.Menu2Text.text = GetSavedValue("Games Menu","Name");
+	c.Menu3Text.text = GetSavedValue("Emulators Menu","Name");
+	c.Menu4Text.text = GetSavedValue("Dashboards Menu","Name");
 	UpdateHardDriveMenu();
 }
 
@@ -66,35 +66,35 @@ function UpdateHardDriveMenu()
 		c.controllerText2Mat.name = "NavType";
 		c.controllerText3Mat.name = "NavType";
 		c.controllerText4Mat.name = "NavType";
-		c.MEM_L1_controller1_panel.children[0].appearance.texture.url = "outline.xbx";
-		c.MEM_L1_controller2_panel.children[0].appearance.texture.url = "outline.xbx";
-		c.MEM_L1_controller3_panel.children[0].appearance.texture.url = "outline.xbx";
-		c.MEM_L1_controller4_panel.children[0].appearance.texture.url = "outline.xbx";
+		c.MEM_L1_controller1_panel.children[0].appearance.texture.url = "outline.tga";
+		c.MEM_L1_controller2_panel.children[0].appearance.texture.url = "outline.tga";
+		c.MEM_L1_controller3_panel.children[0].appearance.texture.url = "outline.tga";
+		c.MEM_L1_controller4_panel.children[0].appearance.texture.url = "outline.tga";
 		c.PanelText2.text = " ";
 		c.PanelText3.text = theTranslator.Translate("XBOX HARD DRIVE");
 			
 		if(curMenuItem == 0)
 		{
 			c.controllerText1Mat.name = "HilightedType";
-			c.MEM_L1_controller1_panel.children[0].appearance.texture.url = "GameHilite_01.xbx";
+			c.MEM_L1_controller1_panel.children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.PanelText1.text = c.Menu1Text.text + " Menu";
 		}
 		else if(curMenuItem == 1)
 		{
 			c.controllerText2Mat.name = "HilightedType";
-			c.MEM_L1_controller2_panel.children[0].appearance.texture.url = "GameHilite_01.xbx";
+			c.MEM_L1_controller2_panel.children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.PanelText1.text = c.Menu2Text.text + " Menu";
 		}
 		else if(curMenuItem == 2)
 		{
 			c.controllerText3Mat.name = "HilightedType";
-			c.MEM_L1_controller3_panel.children[0].appearance.texture.url = "GameHilite_01.xbx";
+			c.MEM_L1_controller3_panel.children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.PanelText1.text = c.Menu3Text.text + " Menu";
 		}
 		else if(curMenuItem == 3)
 		{
 			c.controllerText4Mat.name = "HilightedType";
-			c.MEM_L1_controller4_panel.children[0].appearance.texture.url = "GameHilite_01.xbx";
+			c.MEM_L1_controller4_panel.children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.PanelText1.text = c.Menu4Text.text + " Menu";
 		}
 }
@@ -424,10 +424,10 @@ function EnterMemoryFiles()
     bInCopy = false;
     bDoingCopy = false;
     var tempName;
-	if(curMenuItem == 0) { tempName = "SubMenu2"; }
-	if(curMenuItem == 1) { tempName = "SubMenu1"; }
-	if(curMenuItem == 2) { tempName = "SubMenu3"; }
-	if(curMenuItem == 3) { tempName = "SubMenu4"; }
+	if(curMenuItem == 0) { tempName = "Applications Menu"; }
+	if(curMenuItem == 1) { tempName = "Games Menu"; }
+	if(curMenuItem == 2) { tempName = "Emulators Menu"; }
+	if(curMenuItem == 3) { tempName = "Dashboards Menu"; }
 			
 	
     var IniFile = new Settings;
@@ -435,7 +435,7 @@ function EnterMemoryFiles()
     //IniFile.section(tempName);
     var a = GetSavedValue(tempName,"Path");
     menuName = GetSavedValue(tempname,"Name");
-    theTitlesMenu.children[0].children[0].theTitlesGrid.SetPath("F://Apps");
+    theTitlesMenu.children[0].children[0].theTitlesGrid.SetPath("F:\\Games");
     theTitlesMenu.children[0].children[0].MenuName.text = menuName;
     theTitlesMenu.children[0].children[0].theCopyDestination.isActive = false;
     ShowFileListView();

@@ -1,3 +1,4 @@
+
 var bMusicPlayWithSubsVisible0;
 var nPlayCursor0;
 var nPreviousPlayCursor0;
@@ -5,21 +6,21 @@ var nPlayScroll0;
 var nPlayVisible0;
 var nCurMusicPlayWithSubsItem0;
 var subTitle0;
+
+var m_itemcount;
+var m_submenucount;
 var b_one;
 var b_two;
 var b_three;
 var b_four;
 var b_five;
 var b_onScreen;
-var CurrentSection;
-var TempTitleList;
-var CurFillDir;
-var b_onScreen;
 var tempIconPath;
 
 var invis;
 
 var currentselection;
+
 DEF theGlobal Transform
 { 
     visible false
@@ -45,149 +46,132 @@ function GetCellWallType()
 	theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
 }
 
-function initialize()
-{
-    GetCellWallType();
+function initialize() { GetCellWallType(); }
 
-}
-/*
-function LaunchItem(x,y)
+var launching;
+DEF theTitleLauncherLevel Level
 {
-	var RelativePath = x;
-	var FolderName = y;
-   	var checkc = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-   	var checke = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-   	var checkf = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-   	var checkg = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-   	var checkevoxc = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	var checkevoxe = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	var checkevoxf = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	var checkevoxg = theHardDrive.FileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	
-   	if(checkc == true)
-   	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName );
-   	}
-   	else if(checke == true)
-   	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkf == true)
-   	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkg == true)
-   	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkevoxc == true)
-   	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkevoxe == true)
-   	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkevoxf == true)
-   	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName );
-   	}
-	else if(checkevoxg == true)
-   	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
-   	}
+    function OnArrival()
+    {
+        launching = true;
+	theBGMeshInline.children[0].theDNA1.SetAlpha(0); 
+	theBGMeshInline.children[0].theDNA3.SetAlpha(0); 
+	theBGMeshInline.children[0].theDNA5.SetAlpha(0); 
+	//theScreen.brightness = 0;
+        if(theConfig.GetVideoMode() == 2) { theXboxLogo16x9Background.isBound = true; }
+        else { theXboxLogo4x3Background.isBound = true; }
+    }
+
+    behavior
+    {
+        sleep 1.1;
+        if (launching)
+        {
+	                if(nCurMusicPlayWithSubsItem0 == 0) { theApplicationsMenu.LaunchTitle( nPlayCursor0 ); }
+	                else if(nCurMusicPlayWithSubsItem0 == 1) { theDashboardsMenu.LaunchTitle( nPlayCursor0 ); }
+	                else if(nCurMusicPlayWithSubsItem0 == 2) { theEmulatorsMenu.LaunchTitle( nPlayCursor0 ); }
+	                else if(nCurMusicPlayWithSubsItem0 == 3) { theGamesMenu.LaunchTitle( nPlayCursor0 ); }
+			else if(nCurMusicPlayWithSubsItem0 == 4) { theHomebrewMenu.LaunchTitle( nPlayCursor0 ); }
+        }
+    }
+
+    function OnActivate()
+    {
+        EnableInput(false);
+	//theScreen.brightness = 0;
+        if(theConfig.GetVideoMode() == 2) { theXboxLogo16x9Background.isBound = true; }
+        else { theXboxLogo4x3Background.isBound = true; }
+    }
 }
-*/
+
+//spooling function for items submenu
 function UpdateTrackList()
 {
-    TempTitleList = FillMenuList(CurFillDir);
     var c = theMusicPlayWithSubs.children[0].children[0];
     var str = "";
     c.LowerPanelText.text = subTitle0;
-
-    if (nPlayCursor0 < 0)
-        nPlayScroll0 = 0;
-    else if ( (nPlayCursor0 >= (nPlayVisible0 - 1)) & (nPreviousPlayCursor0 < nPlayCursor0) & (nPlayCursor0 > (nPlayScroll0 + (nPlayVisible0 - 1)) ))
-        nPlayScroll0 = nPlayCursor0 - (nPlayVisible0 - 1);
-    else if (nPlayCursor0 < nPlayScroll0)
-	    nPlayScroll0 = nPlayCursor0;
-
+    if(nPlayCursor0 < 0) { nPlayScroll0 = 0; }
+    else if( (nPlayCursor0 >= (nPlayVisible0 - 1)) & (nPreviousPlayCursor0 < nPlayCursor0) & (nPlayCursor0 > (nPlayScroll0 + (nPlayVisible0 - 1)) )) { nPlayScroll0 = nPlayCursor0 - (nPlayVisible0 - 1); }
+    else if(nPlayCursor0 < nPlayScroll0) { nPlayScroll0 = nPlayCursor0; }
 	nPreviousPlayCursor0 = nPlayCursor0;
 
-    var nTracks0;
-    var nSoundtrack0 = 5;
-    nTracks0 = TempTitleList.length;
+    if( nCurMusicPlayWithSubsItem0 == 0 ) { m_itemcount = theApplicationsMenu.titleCount; }
+    if( nCurMusicPlayWithSubsItem0 == 1 ) { m_itemcount = theDashboardsMenu.titleCount; }
+    if( nCurMusicPlayWithSubsItem0 == 2 ) { m_itemcount = theEmulatorsMenu.titleCount; }
+    if( nCurMusicPlayWithSubsItem0 == 3 ) { m_itemcount = theGamesMenu.titleCount; }
+    if( nCurMusicPlayWithSubsItem0 == 4 ) { m_itemcount = 0; }
 
-	if (nPlayScroll0 > 0)
-		c.MU_morearrow_up.visible = true;
-	else
-		c.MU_morearrow_up.visible = false;
-
-	if ((nPlayScroll0 + nPlayVisible0) < nTracks0)
-		c.MU_morearrow_down.visible = true;
-	else
-		c.MU_morearrow_down.visible = false;
-
+    if (m_itemcount == 1) { c.SubMenuHeaderText.text = m_itemcount + " " + theTranslator.Translate("Title"); }
+    else { c.SubMenuHeaderText.text = m_itemcount + " " + theTranslator.Translate("Titles"); }
+	if (nPlayScroll0 > 0) { c.MU_morearrow_up.visible = true; }
+	else { c.MU_morearrow_up.visible = false; }
+	if ((nPlayScroll0 + nPlayVisible0) < m_itemcount) { c.MU_morearrow_down.visible = true; }
+	else { c.MU_morearrow_down.visible = false; }
     var nHiliteItem0 = nPlayCursor0;
-    if (nHiliteItem0 == -1)
-        nHiliteItem0 = 0;
-
-    for (var i = 0; i < nPlayVisible0; i = i + 1)
-    {
-        var n = nPlayScroll0 + i;
-        if (n >= nTracks0)
+    if (nHiliteItem0 == -1) { nHiliteItem0 = 0; }
+	for (var i = 0; i < nPlayVisible0; i = i + 1)
+	{
+		var n = nPlayScroll0 + i;
+		if (n >= m_itemcount)
 		{
 			c.TrackNames.children[i].children[0].geometry.text = "";
 			c.TrackNumbers.children[i].children[0].geometry.text = "";
 		}
 		else
 		{
-
 			var strHL0 = "";
-
 			var strName0, strTime0;
-			if (nSoundtrack0 < 0)
+			if (m_itemcount < 0)
 			{
 				strName0 = strTrack0;
 				strTime0 = "test2?";
 			}
 			else
 			{
-				strName0 = TempTitleList[n];
-				if (strName0 == "")
-					strName0 = strTrack0;
+				if( nCurMusicPlayWithSubsItem0 == 0 ) { strName0 = theApplicationsMenu.GetName( n ); }
+				if( nCurMusicPlayWithSubsItem0 == 1 ) { strName0 = theDashboardsMenu.GetName( n ); }
+				if( nCurMusicPlayWithSubsItem0 == 2 ) { strName0 = theEmulatorsMenu.GetName( n ); }
+				if( nCurMusicPlayWithSubsItem0 == 3 ) { strName0 = theGamesMenu.GetName( n ); }
+				if( nCurMusicPlayWithSubsItem0 == 4 ) { strName0 = ""; }
+				if (strName0 == "") { strName0 = strTrack0; }
 				strTime0 = "";
 			}
-
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
 			c.TrackNumbers.children[i].children[0].geometry.text = strTime0;
-
 			if (n == nHiliteItem0)
 			{
-                            	c.TrackNames.children[i].SetScale(0.15, 0.15, 0.15);
+				c.TrackNames.children[i].SetScale(0.15, 0.15, 0.15);
 				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.TrackNumbers.children[i].children[0].appearance.name = "CellEgg/Partsz";
 			}
 			else
 			{				
-                            	c.TrackNames.children[i].SetScale(0.13, 0.13, 0.13);
+				c.TrackNames.children[i].SetScale(0.13, 0.13, 0.13);
 				c.TrackNames.children[i].children[0].appearance.name = "NavType";
 				c.TrackNumbers.children[i].children[0].appearance.name = "NavType";
 			}
-
 			str = str + strHL0 + strName0 + strHL0;
 			str = str + "\t";
 			str = str + strHL0 + strTime0 + strHL0;
 			str = str + "\r";
-
 		}
 	}
+	tempIconPath = "";
 
-    if (nTracks0 == 1)
-    	c.SubMenuHeaderText.text = nTracks0 + " " + theTranslator.Translate("Title");
-    else
-    	c.SubMenuHeaderText.text = nTracks0 + " " + theTranslator.Translate("Titles");
+		 if( nCurMusicPlayWithSubsItem0 == 0 ) { tempIconPath = theApplicationsMenu.GetTitleID( nPlayCursor0 ); }
+	else if( nCurMusicPlayWithSubsItem0 == 1 ) { tempIconPath = theDashboardsMenu.GetTitleID( nPlayCursor0 ); }
+	else if( nCurMusicPlayWithSubsItem0 == 2 ) { tempIconPath = theEmulatorsMenu.GetTitleID( nPlayCursor0 ); }
+	else if( nCurMusicPlayWithSubsItem0 == 3 ) { tempIconPath = theGamesMenu.GetTitleID( nPlayCursor0 ); }
+	else if( nCurMusicPlayWithSubsItem0 == 4 ) { }
+	var strIconPath = "E:\\UDATA\\" + tempIconPath + "\\TitleImage.xbx";	
+
+	
+	if( tempIconPath == "00000000" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xbox4.bmp"; }
+	else if( tempIconPath == "NULL" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xbox4.bmp"; }
+	else if( tempIconPath == "" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xboxlogo.bmp"; }
+	else { c.theIcons.children[0].children[0].appearance.texture.url = strIconPath; }
 }
+
 
 
 DEF MusicPlayWithSubsViewpoint Viewpoint
@@ -196,7 +180,6 @@ DEF MusicPlayWithSubsViewpoint Viewpoint
     orientation 0.200900 0.979000 0.034330 -0.345700
     position -47.889999 54.662001 -202.299994
     jump false
-
 }
 
 DEF musicPlayerMenu0Viewpoint Viewpoint
@@ -213,9 +196,9 @@ DEF visualizerViewpoint Viewpoint
     orientation 0 1 0 0
     position -46.832825 55.132828 -204.205643
     jump false
-
 }
 
+//shows the root menu and sets up translation and visibility
 function ShowMusicPlayWithSubs()
 {
     var c = theMusicPlayWithSubs.children[0].children[0];
@@ -235,6 +218,7 @@ function ShowMusicPlayWithSubs()
     bMusicPlayWithSubsVisible0 = true;
 }
 
+//function called before listing titles
 function StartMusicEditor()
 {
 	var c = theMusicPlayWithSubs.children[0].children[0];
@@ -266,13 +250,15 @@ function EnterMusicPlay()
     b_onScreen = true;
 
 
+
     b_one = GetSavedValue("Applications Menu","Name");	//get button names for titlemenus from config
     b_two = GetSavedValue("Dashboards Menu","Name");
     b_three = GetSavedValue("Emulators Menu","Name");
     b_four = GetSavedValue("Games Menu","Name");
     b_five = "none";
+    tempIconPath = "";
     invis = false;
-
+    m_itemcount = 0;
     bMusicPlayWithSubsVisible0 = true;
     nCurMusicPlayWithSubsItem0 = 0;
     nPlayCursor0 = 0;
@@ -280,12 +266,8 @@ function EnterMusicPlay()
     nPlayScroll0 = 0;
     nPlayVisible0 = 9;
     nPlayScroll0 = 0;	
-
-
-    var a = GetSavedValue("Main Menu Button 3 Settings","Number of SubMenus");
-    var nSoundtrack0 = ReturnInteger(a);
-
-
+    m_submenucount = 4; 				//menu count
+    currentselection = "";
     var c = theMusicPlayWithSubs.children[0].children[0];
     c.TitleText1.text = "Xbox Hard Drive";		//menu title
     //c.MenuMetaText.text = "\r.: Free Space :." + "\rC: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total") + "\rE: " + FormatDriveSpace("E:\\", "free") + " of " + FormatDriveSpace("E:\\", "total") + "\rF: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total");
@@ -313,6 +295,8 @@ function UpdateMusicPlayWithSubs()
             c.theMenuButtons.children[i].children[1].children[0].appearance.name = "NavType";
         }
     }
+
+
 	if( b_one == "none")
 	{
 		b_one = "";
@@ -401,7 +385,6 @@ DEF theMusicPlayWithSubs Level
     shell Transform
     {
         scale 6.3176 6.3176 6.3176
-
         translation -47.220001 55 -204.300003
         children
         [
@@ -460,73 +443,75 @@ DEF theMusicPlayWithSubs Level
         function OnADown()
         {
             theMusicPlayWithSubs.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
-
             PlaySoundA();
-
             if (bMusicPlayWithSubsVisible0)
             {
                 if (nCurMusicPlayWithSubsItem0 == 0)
-		{
-			if(b_one == "") { return; }
+				{
+					if(b_one == "") { return; }
 					else
 					{
-				CurFillDir = GetSavedValue("Applications Menu","Path");
-				subTitle0 = GetSavedValue("Applications Menu","Name");
-				thePlayerPanelIn.Play();
-	  			StartMusicEditor();
-			}
-		}
-                else if (nCurMusicPlayWithSubsItem0 == 1)
-		{
-			if(b_two == "") { return; }
+						subTitle0 = b_one;
+						thePlayerPanelIn.Play();
+						StartMusicEditor();
+					}
+				}
+				else if (nCurMusicPlayWithSubsItem0 == 1)
+				{
+					if(b_two == "") { return; }
 					else
 					{
-				CurFillDir = GetSavedValue("Dashboards Menu","Path");
-				subTitle0 = GetSavedValue("Dashboards Menu","Name");
-				thePlayerPanelIn.Play();
-	  			StartMusicEditor();
-			}
-		}
-                else if (nCurMusicPlayWithSubsItem0 == 2)
-		{
-			if(b_three == "") { return; }
+						subTitle0 = b_two;
+						thePlayerPanelIn.Play();
+						StartMusicEditor();
+					}
+				}
+				else if (nCurMusicPlayWithSubsItem0 == 2)
+				{
+					if(b_three == "") { return; }
 					else
 					{
-				CurFillDir = GetSavedValue("Emulators Menu","Path");
-				subTitle0 = GetSavedValue("Emulators Menu","Name");
-				thePlayerPanelIn.Play();
-	  			StartMusicEditor();
-			}
-		}
-                else if (nCurMusicPlayWithSubsItem0 == 3)
-		{
-			if(b_four == "") { return; }
+						subTitle0 = b_three;
+						thePlayerPanelIn.Play();
+						StartMusicEditor();
+					}
+				}
+				else if (nCurMusicPlayWithSubsItem0 == 3)
+				{
+					if(b_four == "") { return; }
 					else
 					{
-				CurFillDir = GetSavedValue("Games Menu","Path");
-				subTitle0 = GetSavedValue("Games Menu","Name");
-				thePlayerPanelIn.Play();
-	  			StartMusicEditor();
-			}
-		}
-                else if (nCurMusicPlayWithSubsItem0 == 4)
-		{
-			if(b_five == "") { return; }
+						subTitle0 = b_four;
+						thePlayerPanelIn.Play();
+						StartMusicEditor();
+					}
+				}
+				else if (nCurMusicPlayWithSubsItem0 == 4)
+				{
+					if(b_five == "") { return; }
 					else
 					{
-				CurFillDir = GetSavedValue("Games Menu","Path");
-				subTitle0 = GetSavedValue("Games Menu","Name");
-				thePlayerPanelIn.Play();
-	  			StartMusicEditor();
-
-			}
-		}
+						subTitle0 = b_five;
+						thePlayerPanelIn.Play();
+						StartMusicEditor();
+					}
+				}
             }
- 	    else
-	    {
-		LaunchItem(CurFillDir,TempTitleList[nPlayCursor0]);
-	    }
-
+			else
+			{
+				//if(nCurMusicPlayWithSubsItem0 == 4) { return; }
+				//else
+				//{
+					//if(theConfig.GetVideoMode() == 2) { theXboxLogo16x9Background.isBound = true; }
+					//else { theXboxLogo4x3Background.isBound = true; }
+					theTitleLauncherLevel.GoTo();
+					//if(nCurMusicPlayWithSubsItem0 == 0) { theApplicationsMenu.LaunchTitle( nPlayCursor0 ); }
+					//else if(nCurMusicPlayWithSubsItem0 == 1) { theDashboardsMenu.LaunchTitle( nPlayCursor0 ); }
+					//else if(nCurMusicPlayWithSubsItem0 == 2) { theEmulatorsMenu.LaunchTitle( nPlayCursor0 ); }
+					//else if(nCurMusicPlayWithSubsItem0 == 3) { theGamesMenu.LaunchTitle( nPlayCursor0 ); }
+					//else if(nCurMusicPlayWithSubsItem0 == 4) { theTitleLauncherLevel.GoTo(); }
+				//}
+			}
         }
 
         function OnBDown()
@@ -535,18 +520,130 @@ DEF theMusicPlayWithSubs Level
 
             if (bMusicPlayWithSubsVisible0)
             {
-		theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
-		theGamesMenuOut.Play();
-            if(menuStyle == "MS") { theMainMenu.GoBackTo(); }
-			else { GoToBSX(); }
+				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+				theGamesMenuOut.Play();
+                                theMainMenu.GoBackTo();
             }
             else
             {
-		theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
-                ShowMusicPlayWithSubs();
-		thePlayerPanelOut.Play();
+				theMusicPlayWithSubs.children[0].children[0].theIcons.visible = false;
+				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+                                ShowMusicPlayWithSubs();
+				thePlayerPanelOut.Play();
             }
         }
+
+	function OnYDown()
+        {
+				if (bMusicPlayWithSubsVisible0 != true)
+				{
+    					var c = theMusicPlayWithSubs.children[0].children[0];
+					AskQuestion( "\n\nRefresh " + c.LowerPanelText.text + " Menu Cache ?", "theMusicPlayWithSubsInline.children[0].UpdateCache()", "", 1 );
+				}
+        }
+
+	function OnXDown()
+        {
+
+				if (bMusicPlayWithSubsVisible0)
+				{
+					if(invis == false)
+					{
+                                                visualizerViewpoint.isBound = true;
+						invis = true;
+					}
+					else if(invis == true)
+					{
+                                                MusicPlayWithSubsViewpoint.isBound = true;
+						invis = false;
+					}
+				}
+				else
+				{
+
+				}
+        }
+
+	function OnInfo()
+        {
+			AskQuestion( "Refresh " + subTitle0 + " Cache ?", "RefreshCachess()", "", 1 );
+        }
+
+        function OnMoveLeft()
+        {
+			if( bMusicPlayWithSubsVisible0 == false )
+				//IconsOnCube();
+		}
+
+        function OnMoveRight()
+        {
+			if( bMusicPlayWithSubsVisible0 == false )
+				//IconsOnScreen();
+		}
+
+        function OnMoveUp()
+        {
+            if (bMusicPlayWithSubsVisible0)
+            {
+                if (nCurMusicPlayWithSubsItem0 > 0)
+                {
+                    PlaySoundMenuChange();
+                    nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 - 1;
+                    UpdateMusicPlayWithSubs();
+                }
+            }
+            else
+            {
+				if (nPlayCursor0 <= 0) { nPlayCursor0 = 0; }
+				else
+				{
+					if(nPlayCursor0 != 0)
+					{
+						PlaySoundMenuChange();
+						nPlayCursor0 = nPlayCursor0 - 1;
+					}
+				}
+				UpdateTrackList();
+			}
+        }
+
+        function OnMoveDown()
+        {
+            if (bMusicPlayWithSubsVisible0)
+            {
+                var nMenuItemCount = m_submenucount;			//number of submenus
+                if (nCurMusicPlayWithSubsItem0 < nMenuItemCount - 1)
+                {
+                    PlaySoundMenuChange();
+                    nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 + 1;
+                    UpdateMusicPlayWithSubs();
+                }
+            }
+            else
+            {
+				var a = (m_itemcount - 1);
+				if (nPlayCursor0 < 0) { nPlayCursor0 = 0; }
+				if (nPlayCursor0 == a) { return; }
+				else
+				{
+                	PlaySoundMenuChange();
+					nPlayCursor0 = nPlayCursor0 + 1;
+				}
+				UpdateTrackList();
+            }
+        }
+
+        function OnLeftThumbMoveLeft()
+        {
+			if( bMusicPlayWithSubsVisible0 == false )
+				//IconsOnCube();
+		}
+
+        function OnLeftThumbMoveRight()
+        {
+			if( bMusicPlayWithSubsVisible0 == false )
+				//IconsOnScreen();
+		}
 
         function OnLeftThumbMoveUp()
         {
@@ -561,28 +658,24 @@ DEF theMusicPlayWithSubs Level
             }
             else
             {
-    		if (nPlayCursor0 <= 0)
-		{
-    		    nPlayCursor0 = 0;
-		}
-		else
-		{
-			if(nPlayCursor0 != 0)
-			{
-                	    PlaySoundMenuChange();
-    			    nPlayCursor0 = nPlayCursor0 - 1;
+				if (nPlayCursor0 <= 0) { nPlayCursor0 = 0; }
+				else
+				{
+					if(nPlayCursor0 != 0)
+					{
+						PlaySoundMenuChange();
+						nPlayCursor0 = nPlayCursor0 - 1;
+					}
+				}
+				UpdateTrackList();
 			}
-		}
-    		UpdateTrackList();
-            }
         }
 
         function OnLeftThumbMoveDown()
         {
             if (bMusicPlayWithSubsVisible0)
             {
-                var nMenuItemCount = ReturnInteger(GetSavedValue("Main Menu Button 3 Settings","Number of SubMenus"));
-
+                var nMenuItemCount = m_submenucount;			//number of submenus
                 if (nCurMusicPlayWithSubsItem0 < nMenuItemCount - 1)
                 {
                     PlaySoundMenuChange();
@@ -592,27 +685,22 @@ DEF theMusicPlayWithSubs Level
             }
             else
             {
-		var a = (TempTitleList.length - 1);
-    		if (nPlayCursor0 < 0)
-    		    nPlayCursor0 = 0;
-
-    		if (nPlayCursor0 == a)
-		{
-    		    return;
-		}
-		else
-		{
+				var a = (m_itemcount - 1);
+				if (nPlayCursor0 < 0) { nPlayCursor0 = 0; }
+				if (nPlayCursor0 == a) { return; }
+				else
+				{
                 	PlaySoundMenuChange();
-			nPlayCursor0 = nPlayCursor0 + 1;
-		}
-    		UpdateTrackList();
+					nPlayCursor0 = nPlayCursor0 + 1;
+				}
+				UpdateTrackList();
             }
         }
     }
 
     function OnActivate()
     {
-
+		EnableAudio();
         if (children[0].children.length() > 0)
         {
             EnterMusicPlay();

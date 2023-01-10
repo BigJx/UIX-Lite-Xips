@@ -1,3 +1,33 @@
+-------------------------------------------------------------------------------
+                                     Changelog
+-------------------------------------------------------------------------------
+UIX Lite v1.0.0b
+-------------------------------------------------------------------------------
+Fixes:
+- Cleaned up the scripted TitleMenu, should work on Cerbios systems.
+
+Additions:
+- FTP Server; Should auto detect partitions. Let us know if theres any issues.
+
+UIX Lite v0.9.9.2b
+-------------------------------------------------------------------------------
+Fixes:
+- TitleMenu Re-Enabled (Report bugs on discord)
+- Minor cleanup.
+
+UIX Lite v0.9.9.1b
+-------------------------------------------------------------------------------
+Fixes:
+- AutoLaunch() patched in from tHc Lite XIP's
+- Minor cleanup.
+
+UIX Lite v0.9.9b
+-------------------------------------------------------------------------------
+Additions:
+- General Code Cleanup
+- Added Partial Cerbios Extended Partition Support H and I partitions supported.
+- (!WARNING!) Added Experimental Networking (!WARNING!)
+
 UIX Lite v0.9.2RC3
 ------------------------------------------------------------------------
 Changes:

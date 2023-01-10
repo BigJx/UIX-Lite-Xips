@@ -2560,6 +2560,47 @@ DEF gasorb Transform
   scaleOrientation 0.036530 0.975200 0.218400 -0.396500
    translation -54.880000 -15.100000 29.980000
 }
+		DEF Gasclown Transform
+		{
+			children
+        		[
+          			Spinner
+          			{
+            			rpm 3
+            			axis 3 3 3
+            			children
+            			[
+            
+                    			Shape
+                    			{
+                        			appearance Appearance
+                        			{
+                            				material MaxMaterial
+                            				{
+                              					//name "MenuCell"
+								name "ReflectSurface" 
+                            				}
+								texture ImageTexture { url "pilltex.xbx" }
+                           					
+                        			} 
+								
+                        			//geometry Mesh { url "gasorb.xm" }
+						//geometry Mesh { url "OrbCell-FACES.xm" }
+						geometry Mesh { url "pill.xm" }
+            
+                    				}
+            				]
+            			}
+       			]   
+            
+    			
+			rotation -0.993700 -0.088440 0.068970 -1.576000
+			//scale 47.000000 47.000000 47.000000 
+			scale 0 0 0
+			//scale 43.000000 43.000000 43.000000 
+			scaleOrientation 0.036530 0.975200 0.218400 -0.396500
+			translation -54.880000 -15.100000 29.980000
+		}//DEF Gasclown Transform
 
 		DEF THC_Orb Transform
 		{

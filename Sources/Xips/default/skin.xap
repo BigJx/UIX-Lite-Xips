@@ -17,7 +17,7 @@ function GetSkin()
     var c = info.GetValue("Current Skin");
     return c;
 }
-DEF theGlobal Transform
+/*DEF theGlobal Transform
 { 
     visible false
      children
@@ -39,7 +39,7 @@ function GetCellWallType()
     var c = info.GetValue("Current Skin");
 
     theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
-}
+}*/
 
 
 DEF theSkin Level

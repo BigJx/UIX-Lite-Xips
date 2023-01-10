@@ -547,7 +547,8 @@ DEF audioVisualizer DynamicTexture
 
         ImageFader { changePeriod 10 }
         StarField
-
+		//DotField
+		
         AudioVisualizer
         {
             source USE theMusicPlayer
@@ -558,7 +559,7 @@ DEF audioVisualizer DynamicTexture
         AudioVisualizer
         {
             source USE theMusicPlayer
-            type "analyzer"
+            type "circle"
         }
     ]
 }
@@ -2551,17 +2552,14 @@ DEF theMusicMenu Level
             musicSelect = 0;
             musicButton = 0;
 
-            if (bBackToLauncher)
-                theLauncherLevel.GoTo();
-            else
-	    {
-		if(fromSettings != true)
-                 GoBackToMain();
-		else
-		 GoToSettings();
-	    }
-
-			theMusicMenuOut.Play();
+	    bInMusicMenu = false;
+	    	if(bBackToLauncher) { theLauncherLevel.GoTo(); }
+            	else
+		{
+			if(menuStyle == "MS") { theMainMenu.GoBackTo(); }
+			else { GoToBSX(); }
+		}
+	   theMusicMenuOut.Play();
         }
 
         function OnLeftThumbMoveUp()

@@ -156,7 +156,7 @@ DEF theRestartLevel Level
     behavior
     {
         sleep 1.1;
-        if(restarting) { theConfig.Reset(); }
+        if(restarting) { theConfig.BackToLauncher(); }
     }
 
     function OnActivate()
@@ -237,15 +237,17 @@ DEF theSkinsMenu Level
     {
         function OnADown()
         {
+						theSkinsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 						DoAction();
         }
 
         function OnBDown()
         {
-        //theConfig.ChangeSkin( skinName );
-            PlaySoundB();
-						GoToSettings();
-						theMusicSubMenuOut.Play();
+            	PlaySoundB();
+		theSkinsMenu.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+		if(menuStyle == "MS") { GoToSettings(); }
+		else { GoToBSX(); }
+		theMusicSubMenuOut.Play();
         }
 
         function OnLeftThumbMoveLeft()

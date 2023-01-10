@@ -206,7 +206,7 @@ DEF theWholePanel Group
 																					name "CellEgg/Partsz"
 																				}
 																			}
-																			geometry DEF MessageText Text { font "Body" width 13 }
+																			geometry DEF MessageText Text { font "Body" height 5 width 13 }
 																		}
 																	]
 																}

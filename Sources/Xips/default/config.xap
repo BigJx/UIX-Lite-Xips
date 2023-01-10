@@ -110,11 +110,6 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	i = i + 1;
 	//configList[i] = "Network";
 	//i = i + 1;
-	if(theHardDrive.FileExists("C:\\ind-bios.cfg"))
-	{
-		configList[i] = "iND BiOS";
-		i = i + 1;
-	}
 	clearText();
 	updateText();
 }
@@ -125,10 +120,10 @@ function buildBGMList() //just copy this function for more subsections
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
-	configList[i] = "AutoLaunch Media:";
-	configValues[i] = "Dashboard Settings-AutoLaunch Media";
-	configSelect[i] = "toggleTF()";
-	i = i + 1;
+	//configList[i] = "AutoLaunch Media:";
+	//configValues[i] = "Dashboard Settings-AutoLaunch Media";
+	//configSelect[i] = "toggleTF()";
+	//i = i + 1;
 	configList[i] = "Startup Music:";
 	configValues[i] = "Dashboard Settings-Music On Boot"; //section-value
 	configSelect[i] = "toggleTF()";
@@ -147,10 +142,10 @@ function BuildAPList()
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
-	//configList[i] = "Dash Style:";
-	//configValues[i] = "Main Menu-MainMenuStyle";
-	//configSelect[i] = "toggleDS()";
-	//i = i + 1;	This entire function is disabled because booting into BSX is broken. It loads from the MS Dash perfectly fine. WTF.
+	configList[i] = "Dash Style:";
+	configValues[i] = "Main Menu-MainMenuStyle";
+	configSelect[i] = "toggleDS()";
+	i = i + 1;
 	configList[i] = "MS Dash Style:";
 	configValues[i] = "Dashboard Settings-Dash Style";
 	configSelect[i] = "toggleMM()";
@@ -605,12 +600,14 @@ function toggleMM()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-	if(b.toLowerCase() == "modded")
+	if(b.toLowerCase() == "gasclown")
 		refreshMenu("Stock");
 	else if(b.toLowerCase() == "stock")
 		refreshMenu("THC");
 	else if(b.toLowerCase() == "thc")
 		refreshMenu("Modded");
+	else if(b.toLowerCase() == "modded")
+		refreshMenu("Gasclown");
 }
 
 function toggleIPType()

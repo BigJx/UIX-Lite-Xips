@@ -1550,19 +1550,13 @@ DEF theMemoryMenu Level
 			}
 			else
 			{
-	    		if(GetSavedValue("TempSettings","LastMenu") == "GoToSettings()")
-	    		{
-					GoToSettings();
+				if(menuStyle == "MS")
+				{
+					//GoToSettings();
+					//theSettingsMenu.GoBackTo();
+	    		        	theMainMenu.GoBackTo();
 				}
-	    		else if(GetSavedValue("TempSettings","LastMenu") == "GoToSettingsWithSubs()")
-	    		{
-					GoToSettingsWithSubs();
-				}
-				else
-				{		
-        			theMainMenu.GoBackTo();
-				}
-				CurrentSavedDataSection = "";
+				else { GoToBSX(); }
 			}
         }
     }
