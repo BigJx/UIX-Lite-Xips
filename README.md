@@ -1,2 +1,3 @@
-# UIX-Lite-Xips
-This repository contains the XIP files for UIX Lite, a modification to the original Xbox Dashboard.
+Stock Dashboard
+------------------------------------------------------------------------
+These XIP files are the scripts that build a pre-live dashboard when paired with an original xboxdashboard.xbe.
