@@ -275,10 +275,18 @@ DEF theBGMesh Layer
 
 ////////////////////////////////////////////////////////INLINES////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////INLINES////////////////////////////////////////////////////////
+DEF theHardDriveInline Inline
+{
+    visible false
+    url "hard_drive.xap"
+    function onLoad() { theHardDriveInline.children[0].theHardDriveMenu.GoTo(); }
+}
 
-
-
-
+function GoToMemHardDrive()
+{
+    if(theHardDriveInline.visible) { theHardDriveInline.children[0].theHardDriveMenu.GoTo(); }
+    else { theHardDriveInline.visible = true; }
+}
 
 DEF theFileManagerInline Inline
 {
@@ -2474,16 +2482,11 @@ function initialize()
 	//theCellWallMesh.url = "Q:/skins/" + skinName + "/cellwall.xm"; 
 	if(cellwallvis == "False") { theCellWallMesh.url = ""; }
 	else { theCellWallMesh.url = "Q:/skins/" + skinName + "/cellwall.xm"; }
-	//TitleMenu hate's everyone apparently. 
-	//Uncomment FillMenuList and comment InitializeMenus, and replace "music_play_with_subs.xap" 
-	//with the scripted version if your dash is failing to boot.
-	//FillMenuList("games");
-	InitializeMenus();
+	///UIX Lite Specific Variable Options///
+
 	answeredNo = false;
-
-
-
-		
+	InitializeMenus();
+	//FillMenuList("games"); 		
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 			theTranslator.SetLanguage(nLanguage);

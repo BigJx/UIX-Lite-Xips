@@ -46,7 +46,7 @@ function GetCellWallType()
 	theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
 }
 
-function initialize() { GetCellWallType(); }
+function initialize() { GetCellWallType();}
 
 var launching;
 DEF theTitleLauncherLevel Level
@@ -166,10 +166,10 @@ function UpdateTrackList()
 	var strIconPath = "E:\\UDATA\\" + tempIconPath + "\\TitleImage.xbx";	
 
 	
-	if( tempIconPath == "00000000" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xbox4.bmp"; }
-	else if( tempIconPath == "NULL" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xbox4.bmp"; }
-	else if( tempIconPath == "" ) { c.theIcons.children[0].children[0].appearance.texture.url = "xboxlogo.bmp"; }
-	else { c.theIcons.children[0].children[0].appearance.texture.url = strIconPath; }
+	if( tempIconPath == "NULL" ) { c.theIconCube.children[0].children[0].appearance.texture.url = "xboxlogo.xbx"; }
+	else if( tempIconPath == "00000000" ) { c.theIconCube.children[0].children[0].appearance.texture.url = "xboxlogo.xbx"; }
+	else if( tempIconPath == "" ) { c.theIconCube.children[0].children[0].appearance.texture.url = "xboxlogo.xbx"; }
+	else { c.theIconCube.children[0].children[0].appearance.texture.url = strIconPath; }
 }
 
 
@@ -217,7 +217,7 @@ function ShowMusicPlayWithSubs()
     MusicPlayWithSubsViewpoint.isBound = true;
     bMusicPlayWithSubsVisible0 = true;
 }
-
+//Game List?
 //function called before listing titles
 function StartMusicEditor()
 {
@@ -239,7 +239,7 @@ function StartMusicEditor()
 	c.buttons_copy.visible = false;
 	c.buttons_edit.visible = false;
 	nPlayCursor0 = 0;
-	c.theIcons.visible = true;
+	c.theIconCube.visible = true;
 	musicPlayerMenu0Viewpoint.isBound = true;
 	bMusicPlayWithSubsVisible0 = false;
 	UpdateTrackList();
@@ -369,7 +369,7 @@ DEF theMusicPlayWithSubs Level
 			c.MU_L3_text_random_0.visible = false;
 			c.MU_L3_icon_stop_02.visible = false;
 			c.MU_L3_icon_pause_0.visible = false;
-	                c.theIcons.visible = false;
+	                c.theIconCube.visible = false;
 	                c.CD_STACK.visible = false;
 
     			c.New_panel_meta.visible = false; //NEW//
@@ -526,7 +526,7 @@ DEF theMusicPlayWithSubs Level
             }
             else
             {
-				theMusicPlayWithSubs.children[0].children[0].theIcons.visible = false;
+				theMusicPlayWithSubs.children[0].children[0].theIconCube.visible = false;
 				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
                                 ShowMusicPlayWithSubs();
 				thePlayerPanelOut.Play();
@@ -712,6 +712,6 @@ function IconsOnScreen()
 {
 	b_onScreen = true;
 	var c = theMusicPlayWithSubs.children[0].children[0];
-	c.theIcons.visible = false; 
+	c.theIconCube.visible = true; 
 	//UpdateTrackList();
 }

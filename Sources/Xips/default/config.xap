@@ -9,6 +9,7 @@ var LV2Hold;
 var inLV2;
 var settChanged;
 var skinSettings;
+var cerbiosSettings;
 
 DEF theGlobal Transform
 { 
@@ -38,6 +39,7 @@ function GetCellWallType()
 function initialize()
 {
 	GetCellWallType();
+	cerbiosSettings = false;
 	inSubs = true;
 	LV1Item = 0;
 	LV1Hold = 0;
@@ -110,6 +112,11 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	i = i + 1;
 	//configList[i] = "Network";
 	//i = i + 1;
+	if(theHardDrive.FileExists("C:\\Cerbios.ini"))
+	{
+		configList[i] = "Cerbios";
+		i = i + 1;
+	}
 	clearText();
 	updateText();
 }
@@ -136,6 +143,7 @@ function buildBGMList() //just copy this function for more subsections
 	clearText();
 	updateText();
 }
+
 function BuildAPList()
 {
 	var i = 0;
@@ -561,6 +569,69 @@ function buildSkinList() //need to add ability to read from diff files!
 	clearText();
 	updateText();
 }
+//Cerbios
+
+function BuildCerbiosList() {
+
+    var i = 0;
+    configList = new Array;
+    configValues = new Array;
+    configSelect = new Array;
+
+    configList[i] = "Check for AV Pack";
+    configValues[i] = "Cerbios-AVCheck";
+    configSelect[i] = "toggleAVCheck()";
+    i = i + 1;
+
+    configList[i] = "LED Ring Color";
+    configValues[i] = "Cerbios-FrontLed";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "Fan Speed";
+    configValues[i] = "Cerbios-FanSpeed";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "Drive Setup";
+    configValues[i] = "Cerbios-DriveSetup";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "Load XDK Launcher/XBDM";
+    configValues[i] = "Cerbios-Debug";
+    configSelect[i] = "toggleDebug()";
+    i = i + 1;
+
+    configList[i] = "IGR Master Port";
+    configValues[i] = "Cerbios-IGRMasterPort";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "IGR Dash Combo";
+    configValues[i] = "Cerbios-IGRDash";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "IGR Game Combo";
+    configValues[i] = "Cerbios-IGRGame";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "IGR Full Combo";
+    configValues[i] = "Cerbios-IGRFull";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+    configList[i] = "IGR Shutdown Combo";
+    configValues[i] = "Cerbios-IGRShutdown";
+    configSelect[i] = "configKeyb()";
+    i = i + 1;
+
+	cerbiosSettings = true;
+	clearText();
+	updateText();
+}
 
 function toggleTF()
 {
@@ -712,8 +783,8 @@ function getConfigMenuValue(x)
 		return dud;
 		
 	var vFile;
-	if(skinSettings == true)
-		vFile = "Q:\\skins\\" + skinName + "\\" + skinName + ".temp";
+	if(cerbiosSettings == true)
+		vFile = "C:\\Cerbios.temp";
 	else
 		vFile = "Q:\\system\\config.temp";
 
@@ -728,8 +799,8 @@ function getConfigMenuValue(x)
 function setConfigMenuValue(x,y)
 {
 	var vFile;
-	if(skinSettings == true)
-		vFile = "Q:\\skins\\" + skinName + "\\" + skinName + ".temp";
+	if(cerbiosSettings == true)
+		vFile = "C:\\Cerbios.temp";
 	else
 		vFile = "Q:\\system\\config.temp";
 
@@ -877,9 +948,9 @@ DEF theConfigPanel Level
 					tabSlot(LV2Hold);
 					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
 				}
-				else if(configList[LV1Item] == "iND BiOS")
+				else if(configList[LV1Item] == "Cerbios") ///add new subs here
 				{
-					BuildINDList();
+					BuildCerbiosList();
 					tabSlot(LV2Hold);
 					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
 				}
@@ -907,6 +978,7 @@ DEF theConfigPanel Level
 			c.MU_back_pod_HL.children[0].appearance.material.param = 1;
 			if(inSubs == false)
 			{
+				cerbiosSettings = false;
 				skinSettings = false;
 				inLV2  = false;
 				inSubs = true;
@@ -948,9 +1020,9 @@ theConfig.DebugOutput( configList[LV1Item] );
 		theHardDrive.DeleteThisFile( "Q:\\system\\config.temp" );
 	theHardDrive.CopyThisFile( "Q:\\system\\config.ini", "Q:\\system\\config.temp" );
 	
-	if(theHardDrive.FileExists( "Q:\\skins\\" + skinName + "\\" + skinName + ".temp" ) == true)
-		theHardDrive.DeleteThisFile( "Q:\\skins\\" + skinName + "\\" + skinName + ".temp" );
-	theHardDrive.CopyThisFile( "Q:\\skins\\" + skinName + "\\" + skinName + ".xbx", "Q:\\skins\\" + skinName + "\\" + skinName + ".temp" );
+	if(theHardDrive.FileExists( "C:\\Cerbios.temp" ) == true)
+		theHardDrive.DeleteThisFile( "C:\\Cerbios.temp" );
+	theHardDrive.CopyThisFile( "C:\\Cerbios.ini", "C:\\Cerbios.temp" );
 	}
 
 }
@@ -963,6 +1035,12 @@ function saveSettings()
 		theHardDrive.CopyThisFile( "Q:\\system\\config.temp", "Q:\\system\\config.ini" );
 		theHardDrive.DeleteThisFile( "Q:\\system\\config.temp" );
 	}
+	if(theHardDrive.FileExists( "C:\\Cerbios.temp" ) == true)
+	{
+		theHardDrive.DeleteThisFile( "C:\\Cerbios.ini" );
+		theHardDrive.CopyThisFile( "C:\\Cerbios.temp", "C:\\Cerbios.ini" );
+		theHardDrive.DeleteThisFile( "C:\\Cerbios.temp" );
+	}
 
 
         AskQuestion("Settings saved! Would you like to reboot now?", "theConfig.Reset()", "theUIXConfigInline.children[0].leaveConfig()", 1);
@@ -973,7 +1051,7 @@ function saveSettings()
 function deleteTemps()
 {
 	theHardDrive.DeleteThisFile( "Q:\\system\\config.temp" );
-
+	theHardDrive.DeleteThisFile( "C:\\Cerbios.temp" );
 	TellUser("Settings NOT saved","theUIXConfigInline.children[0].leaveConfig()");
 }
 

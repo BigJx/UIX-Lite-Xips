@@ -136,6 +136,7 @@ function DoAction()
     if (nCurPlayerMenuItem == 1) { ShowSkinInfo(); }
     else if (nCurPlayerMenuItem == 0)
     {
+
         //theConfig.ChangeSkin( SkinMenuList[skinSelect] );
 		info.SetValue("Current Skin",SkinMenuList[skinSelect]);
         AskQuestion("Skin change will not take full effect until you restart the dash.  Would you like to restart now?", "theSkinsInline.children[0].DoReset()", "", 0);
