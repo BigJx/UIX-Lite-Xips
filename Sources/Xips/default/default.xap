@@ -1202,34 +1202,36 @@ function FillMenuList(x) // search c,e,f,g for a relative path's contents to use
 	 	}
 	    }
 
-//Cerbios
-	var h = new Folder;
-	h.path = "H:\\" + FolderName;
-	var hSize = h.subFolders.length();
-	var hTitles = new Array(hSize);
-	    if(hSize > 0)
-	    {
-	 	for(var hLoop = 0; hLoop < hSize; hLoop = hLoop + 1)
-	 	{
-	 		hTitles[hLoop] = h.subFolders[hLoop].name;
-	 	}
-	    }
-	var i = new Folder;
-	i.path = "I:\\" + FolderName;
-	var iSize = i.subFolders.length();
-	var iTitles = new Array(iSize);
-	    if(iSize > 0)
-	    {
-	 	for(var iLoop = 0; iLoop < iSize; iLoop = iLoop + 1)
-	 	{
-	 		iTitles[iLoop] = i.subFolders[iLoop].name;
-	 	}
-	    }
+    //Cerbios Added Partitions
+    var r = new Folder;
+    r.path = "R:\\" + FolderName;
+    var rSize = r.subFolders.length();
+    var rTitles = new Array(rSize);
+        if(rSize > 0)
+        {
+        for(var rLoop = 0; rLoop < rSize; rLoop = rLoop + 1)
+        {
+            rTitles[rLoop] = r.subFolders[rLoop].name;
+        }
+        }
+    var s = new Folder;
+    s.path = "S:\\" + FolderName;
+    var sSize = s.subFolders.length();
+    var sTitles = new Array(sSize);
+        if(sSize > 0)
+        {
+        for(var sLoop = 0; sLoop < sSize; sLoop = sLoop + 1)
+        {
+            sTitles[sLoop] = s.subFolders[sLoop].name;
+        }
+        }
 	var mA = eTitles.concat(fTitles);//keep merging the arrays till you have one big one
 	var oA = mA.concat(cTitles);
 	var nA = oA.concat(gTitles);
-	nA = nA.sort();//sort the one big array into alphabetical order
-	return nA;//return the array
+    var pA = nA.concat(rTitles);
+    var qA = pA.concat(sTitles);
+    qA = qA.sort();
+    return qA;//return the array
 }
 
 
@@ -1242,14 +1244,15 @@ function LaunchItem(x,y)
    	var checkf = theHardDrive.FileExists( "F:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
    	var checkg = theHardDrive.FileExists( "G:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
 	//Cerbios
-	var checkh = theHardDrive.FileExists( "H:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-   	var checki = theHardDrive.FileExists( "I:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
+    var checkr = theHardDrive.FileExists( "R:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
+    var checks = theHardDrive.FileExists( "S:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
+    // EvoX Dash Safety Checks
    	var checkevoxc = theHardDrive.FileExists( "C:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
    	var checkevoxe = theHardDrive.FileExists( "E:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
    	var checkevoxf = theHardDrive.FileExists( "F:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
    	var checkevoxg = theHardDrive.FileExists( "G:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	var checkevoxh = theHardDrive.FileExists( "H:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-   	var checkevoxi = theHardDrive.FileExists( "I:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
+   	var checkevoxr = theHardDrive.FileExists( "R:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
+   	var checkevoxs = theHardDrive.FileExists( "S:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
    	if(checkc == true)
    	{
 		launch( "default.xbe", "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName );
@@ -1266,11 +1269,11 @@ function LaunchItem(x,y)
    	{
 		launch( "default.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
    	}
-	else if(checkh == true)
+	else if(checkr == true)
    	{
 		launch( "default.xbe", "\\Device\\Harddisk0\\Partition8\\" + RelativePath + "\\" + FolderName );
    	}
-	else if(checki == true)
+	else if(checks == true)
    	{
 		launch( "default.xbe", "\\Device\\Harddisk0\\Partition9\\" + RelativePath + "\\" + FolderName );
    	}
@@ -1290,11 +1293,11 @@ function LaunchItem(x,y)
    	{
 		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
    	}
-	else if(checkevoxh == true)
+	else if(checkevoxr == true)
    	{
 		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition8\\" + RelativePath + "\\" + FolderName );
    	}
-	else if(checkevoxI == true)
+	else if(checkevoxs == true)
    	{
 		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition9\\" + RelativePath + "\\" + FolderName );
    	}
