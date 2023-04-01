@@ -1339,7 +1339,7 @@ function SetSavedValue(x,y,z) // setup as global function as a basis for setting
 	var d = DataFile.SetValue(b,c); //value set and data written to the xbx
 }
 
-function GetSavedValue(x,y) // same as above ;)
+function GetSavedValue(x,y) // same as above but for reading a value from data file
 {
 	var a = x;
 	var b = y;
@@ -1354,28 +1354,8 @@ function MainMenu_Launch()
 	eval(a);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ///////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////
-
-
-
-
 DEF theScreen Screen
 {
     width 640
@@ -2333,15 +2313,13 @@ DEF theMainMenu Level
 
 	function OnRightThumbMoveLeft()
 	{
-            if(RightTrigger == true & LeftTrigger == false) { ChangeAlbumLeft(); }
+        if(RightTrigger == true & LeftTrigger == false) { ChangeAlbumLeft(); }
 
 	    else
 	    {
-		menuStyle = "BSX";
-
-
-
-	    	GoToBSX();
+         // Temporarily disabled because feonix is a crybaby.
+		    //menuStyle = "BSX";
+	    	//GoToBSX();
 	    }
 
 	}
@@ -2436,28 +2414,15 @@ var bTrackListVisible;
 //var musicOnBoot;
 var currentAlbum;
 var currentTrack;
-
 var bInGameBoardView;
 //var CurrentGameBoardAltViewpoint;
-
 var songtext;
 var albumtext;
-
 var beInVis;
 var directchoice;
-
 var tempstyle;
 var thebsxcontrols;
-
 var CheckOnce;
-
-
-
-
-
-
-
-
 
 function initialize()
 {
@@ -2488,8 +2453,8 @@ function initialize()
 	///UIX Lite Specific Variable Options///
 
 	answeredNo = false;
-	InitializeMenus();
-	//FillMenuList("games"); 		
+	//InitializeMenus();
+	FillMenuList("games"); 		
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 			theTranslator.SetLanguage(nLanguage);
@@ -2614,12 +2579,6 @@ function MainInitPart3()
 	EnableAudio();
     }
 }
-
-
-
-
-
-
 
 DEF theJapaneseKeyboardLayer Layer
 {
