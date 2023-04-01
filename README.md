@@ -1,6 +1,28 @@
 -------------------------------------------------------------------------------
                                      Changelog
 -------------------------------------------------------------------------------
+UIX Lite v1.0.5b
+-------------------------------------------------------------------------------
+Fixes:
+- TitleMenu disabled by default. (Report bugs on discord)
+- Minor cleanup.
+
+Additions:
+UIX Lite v1.0.3b
+-------------------------------------------------------------------------------
+XBE Fixes:
+(Reminder: The XBE is not available on GitHub. See the usual places.)
+- Can now load xbx images from anywhere.
+- GetTitleID() functions properly within TitleMenu.
+
+XIP Fixes:
+- Cleaned up TitleMenu. Report any issues on Discord.
+
+Additions:
+- music_play_with_subs.xap is now utilizing TitleMenu by default.
+- config.xap modified for Cerbios detection. (See notes in Release)
+- default.xap uses InitializeMenus(); by default.
+
 UIX Lite v1.0.0b
 -------------------------------------------------------------------------------
 Fixes:
