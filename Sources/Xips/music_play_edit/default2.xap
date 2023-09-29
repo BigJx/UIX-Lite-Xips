@@ -1,30 +1,29 @@
 
 DEF theScreenWaver Transform
 {
- children
- [
-   Waver
-   {
-     rpm 2
-     axis 1 0 0
-     field 0.001
-     children
-     [
-   Waver
-   {
-     rpm 3
-     axis 0 3 0
-     field 0.001
-     children
-     [
-   Waver
-   {
-     rpm -1
-     axis 2 0 0
-     field 0.0002
-     children
-     [
-
+	children
+	[
+		Waver
+		{
+			rpm 2
+			axis 1 0 0
+			field 0.001
+			children
+			[
+				Waver
+				{
+					rpm 3
+					axis 0 3 0
+					field 0.001
+					children
+					[
+						Waver
+						{
+							rpm -1
+							axis 2 0 0
+							field 0.0002
+							children
+							[
 DEF theWholeThing Transform
 {
     fade 1.0
@@ -527,255 +526,251 @@ DEF theWholeThing Transform
             scaleOrientation 1.000000 0.000000 0.000000 0.000000
             translation -46.880001 55.119999 -204.699997
         }
-	DEF Spinning_Support Transform
-	{
-          children
-          [
-            Spinner
-            {
-                rpm -1.3
-		axis 0 0 2
-                children
-                [
-        DEF MU_L3_podsupport_01 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry DEF MU_L3_podsupport_04-FACES Mesh { url "MU_L3_podsupport_04-FACES.xm" }
-                }
-            ]
-            rotation -0.357400 0.862900 -0.357400 -1.718000
-            scale 0.124700 0.124700 0.124700
-            scaleOrientation -0.977600 0.000000 -0.210300 -0.222200
-            translation 0.550000 0.320000 0.100006 
-        }
-        DEF MU_L3_podsupport_02 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry USE MU_L3_podsupport_04-FACES
-                }
-            ]
-            rotation 0.678600 0.281100 0.678600 -2.594000
-            scale 0.124700 0.124700 0.124700
-            scaleOrientation 0.596000 -0.665700 0.449200 -0.988500
-            translation -0.549999 -0.330002 0.100006 
-        }
-        DEF MU_L3_podsupport_03 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry USE MU_L3_podsupport_04-FACES
-                }
-            ]
-            rotation 0.678600 -0.281100 0.678600 -3.690000
-            scale 0.124700 0.124700 0.124700
-            scaleOrientation 0.382000 0.885300 0.265200 -0.865600
-            translation -0.329998 0.539997 0.100006 
-        }
-        DEF MU_L3_podsupport_04 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry USE MU_L3_podsupport_04-FACES
-                }
-            ]
-            rotation 0.357400 0.862900 0.357400 -1.718000
-            scale 0.124700 0.124700 0.124700
-            scaleOrientation -0.392900 0.731300 -0.557500 -1.021000
-            translation 0.330002 -0.549999 0.100006 
-        }
-        DEF MU_L3_podsocket_inner Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry DEF MU_L3_podsocket_inner-FACES Mesh { url "MU_L3_podsocket_inner-FACES.xm" }
-                }
-            ]
-            rotation 1.000000 0.000000 0.000000 -1.571000
-            scale 0.124700 0.124700 0.124700
-            translation 0.000000 0.000000 -0.100006
-        }
-        DEF MU_L3_podsocket_outer Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "FlatSrfc/PodParts"
-                        }
-                    }
-                    geometry DEF MU_L3_podsocket_outer-FACES Mesh { url "MU_L3_podsocket_outer-FACES.xm" }
-                }
-            ]
-            rotation -1.000000 0.000000 0.000000 -1.571000
-            scale 0.124700 0.124700 0.124700
-            translation 0.000000 0.000000 0.000000 
-        }
-		]
-	    }
-	  ]
+		DEF Spinning_Support Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm -1.3
+					axis 0 0 2
+					children
+					[
+						DEF MU_L3_podsupport_01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry DEF MU_L3_podsupport_04-FACES Mesh { url "MU_L3_podsupport_04-FACES.xm" }
+								}
+							]
+							rotation -0.357400 0.862900 -0.357400 -1.718000
+							scale 0.124700 0.124700 0.124700
+							scaleOrientation -0.977600 0.000000 -0.210300 -0.222200
+							translation 0.550000 0.320000 0.100006 
+						}
+						DEF MU_L3_podsupport_02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry USE MU_L3_podsupport_04-FACES
+								}
+							]
+							rotation 0.678600 0.281100 0.678600 -2.594000
+							scale 0.124700 0.124700 0.124700
+							scaleOrientation 0.596000 -0.665700 0.449200 -0.988500
+							translation -0.549999 -0.330002 0.100006 
+						}
+						DEF MU_L3_podsupport_03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry USE MU_L3_podsupport_04-FACES
+								}
+							]
+							rotation 0.678600 -0.281100 0.678600 -3.690000
+							scale 0.124700 0.124700 0.124700
+							scaleOrientation 0.382000 0.885300 0.265200 -0.865600
+							translation -0.329998 0.539997 0.100006 
+						}
+						DEF MU_L3_podsupport_04 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry USE MU_L3_podsupport_04-FACES
+								}
+							]
+							rotation 0.357400 0.862900 0.357400 -1.718000
+							scale 0.124700 0.124700 0.124700
+							scaleOrientation -0.392900 0.731300 -0.557500 -1.021000
+							translation 0.330002 -0.549999 0.100006 
+						}
+						DEF MU_L3_podsocket_inner Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry DEF MU_L3_podsocket_inner-FACES Mesh { url "MU_L3_podsocket_inner-FACES.xm" }
+								}
+							]
+							rotation 1.000000 0.000000 0.000000 -1.571000
+							scale 0.124700 0.124700 0.124700
+							translation 0.000000 0.000000 -0.100006
+						}
+						DEF MU_L3_podsocket_outer Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "FlatSrfc/PodParts"
+										}
+									}
+									geometry DEF MU_L3_podsocket_outer-FACES Mesh { url "MU_L3_podsocket_outer-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							scale 0.124700 0.124700 0.124700
+							translation 0.000000 0.000000 0.000000 
+						}
+					]
+				}
+			]
             translation -46.880001 55.130001 -205.500000
-	}
-	DEF Spinning_Support2 Transform
-	{
-          children
-          [
-            Spinner
-            {
-                rpm -0.8
-		axis 0 0 2
-                children
-                [
-
-        DEF MU_L3_pod_shell_01 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "GameEgg"
-                        }
-                    }
-                    geometry DEF MU_L3_pod_shell_01-FACES Mesh { url "MU_L3_pod_shell_01-FACES.xm" }
-                }
-            ]
-            rotation -1.000000 0.000000 0.000000 -1.571000
-            scale 0.124700 0.124700 0.124700
-            translation 0.000000 0.000000 0.000000
-        }
-		]
-	    }
-	  ]
+		}
+		DEF Spinning_Support2 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm -0.8
+					axis 0 0 2
+					children
+					[
+						DEF MU_L3_pod_shell_01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameEgg"
+										}
+									}
+									geometry DEF MU_L3_pod_shell_01-FACES Mesh { url "MU_L3_pod_shell_01-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							scale 0.124700 0.124700 0.124700
+							translation 0.000000 0.000000 0.000000
+						}
+					]
+				}
+			]
             translation -46.880001 55.130001 -205.500000
-	}
-	DEF Spinning_Support3 Transform
-	{
-          children
-          [
-            Spinner
-            {
-                rpm 1.4
-		axis 0 0 2
-                children
-                [
-
-        DEF MU_L3_pod_shell_02 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "GameEgg"
-                        }
-                    }
-                    geometry DEF MU_L3_pod_shell_02-FACES Mesh { url "MU_L3_pod_shell_02-FACES.xm" }
-                }
-            ]
-            rotation -0.410700 0.644700 0.644700 -2.362000
-            scale 0.124700 0.124700 0.124700
-            scaleOrientation -0.916500 -0.134100 -0.376900 -0.311000
-            translation 0.000000 0.000000 0.000000 
-        }
-		]
-	    }
-	  ]
+		}
+		DEF Spinning_Support3 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm 1.4
+					axis 0 0 2
+					children
+					[
+						DEF MU_L3_pod_shell_02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameEgg"
+										}
+									}
+									geometry DEF MU_L3_pod_shell_02-FACES Mesh { url "MU_L3_pod_shell_02-FACES.xm" }
+								}
+							]
+							rotation -0.410700 0.644700 0.644700 -2.362000
+							scale 0.124700 0.124700 0.124700
+							scaleOrientation -0.916500 -0.134100 -0.376900 -0.311000
+							translation 0.000000 0.000000 0.000000 
+						}
+					]
+				}
+			]
             translation -46.880001 55.130001 -205.500000
-	}
-	DEF Spinning_Support4 Transform
-	{
-          children
-          [
-            Spinner
-            {
-                rpm -1.6
-		axis 0 0 2
-                children
-                [
-
-        DEF MU_L3_pod_shell_03 Transform
-        {
-            children
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "GameEgg"
-                        }
-                    }
-                    geometry DEF MU_L3_pod_shell_03-FACES Mesh { url "MU_L3_pod_shell_03-FACES.xm" }
-                }
-            ]
-            rotation -1.000000 0.000000 0.000000 -1.571000
-            scale 0.124700 0.124700 0.124700
-            translation 0.000000 0.000000 0.000000 
-        }
-		]
-	    }
-	  ]
+		}
+		DEF Spinning_Support4 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm -1.6
+					axis 0 0 2
+					children
+					[
+						DEF MU_L3_pod_shell_03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameEgg"
+										}
+									}
+									geometry DEF MU_L3_pod_shell_03-FACES Mesh { url "MU_L3_pod_shell_03-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							scale 0.124700 0.124700 0.124700
+							translation 0.000000 0.000000 0.000000 
+						}
+					]
+				}
+			]
             translation -46.880001 55.130001 -205.500000
-	}
-
+		}
         DEF MU_L3_podsupport_05 Transform
         {
             children
@@ -888,14 +883,11 @@ DEF theWholeThing Transform
                                     scaleOrientation -0.193000 0.354100 0.915100 -0.135400
                                     translation -0.015810 -0.030690 -0.039800
                                 }
-
-
                                 DEF Group04 Transform
                                 {
                                     fade 0.25
                                     children
                                     [
-
                                         /*DEF MU_cd_04_backing Transform
                                         {
                                             children
@@ -948,14 +940,11 @@ DEF theWholeThing Transform
                                     translation 12.430000 55.830002 -30.420000
         //                          translation 12.440000 56.130001 -30.120001
                                 }
-
-
                                 DEF Group03 Transform
                                 {
                                     fade 0.25
                                     children
                                     [
-
                                         /*DEF MU_cd_03_backing Transform
                                         {
                                             children
@@ -1013,7 +1002,6 @@ DEF theWholeThing Transform
                                     fade 0.25
                                     children
                                     [
-
                                         /*DEF MU_cd_02_backing Transform
                                         {
                                             children
@@ -1067,13 +1055,11 @@ DEF theWholeThing Transform
                                     translation 12.310000 55.189999 -30.780001
         //                          translation 12.350000 56.110001 -29.830000
                                 }
-
                                 DEF Group01 Transform
                                 {
                                     fade 0.25
                                     children
                                     [
-
                                         /*DEF MU_cd_01_backing Transform
                                         {
                                             children
@@ -1119,7 +1105,6 @@ DEF theWholeThing Transform
                                             ]
                                             translation 43.090000 -50.180000 182.500000
                                         }
-
                                     ]
                                     rotation -0.872600 0.435400 0.221500 -0.891500
                                     scale 0.331300 0.331300 0.331300
@@ -1133,115 +1118,114 @@ DEF theWholeThing Transform
                 }
             ]
         }
-
-DEF MU_L3_musicpod Transform
-{
-        children
-        [
-            Spinner
-            {
-                rpm 7.75
-		axis 0 2 2
-                children
-                [
-                    Shape
-                    {
-                        appearance Appearance
-                        {
-                            material MaxMaterial
-                            {
-                                name "InnerWall_01"
-                            }
-                            texture ImageTexture
-                            {
-                                alpha true
-                                url "Morbcellwall.bmp"
-                            }
-                        }
-                        geometry Mesh { url "MOrbCell-FACES.xm" }
-                    }
-                ]
-            }
-            Spinner
-            {
-                rpm 7.75
-		axis 2 2 0
-                children
-                [
-                    Shape
-                    {
-                        appearance Appearance
-                        {
-                            material MaxMaterial
-                            {
-                                name "InnerWall_01"
-                            }
-                            texture ImageTexture
-                            {
-                                alpha true
-                                url "Morbcellwall.bmp"
-                            }
-                        }
-                        geometry Mesh { url "MOrbCell-FACES.xm" }
-                    }
-                ]
-            }
-            Spinner
-            {
-                rpm 7.75
-		axis 2 0 2
-                children
-                [
-                    Shape
-                    {
-                        appearance Appearance
-                        {
-                            material MaxMaterial
-                            {
-                                name "InnerWall_01"
-                            }
-                            texture ImageTexture
-                            {
-                                alpha true
-                                url "Morbcellwall.bmp"
-                            }
-                        }
-                        geometry Mesh { url "MOrbCell-FACES.xm" }
-                    }
-                ]
-            }
+		DEF MU_L3_musicpod Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm 7.75
+					axis 0 2 2
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "InnerWall_01"
+								}
+								texture ImageTexture
+								{
+									alpha true
+									url "Morbcellwall.bmp"
+								}
+							}
+							geometry Mesh { url "MOrbCell-FACES.xm" }
+						}
+					]
+				}
+				Spinner
+				{
+					rpm 7.75
+					axis 2 2 0
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "InnerWall_01"
+								}
+								texture ImageTexture
+								{
+									alpha true
+									url "Morbcellwall.bmp"
+								}
+							}
+							geometry Mesh { url "MOrbCell-FACES.xm" }
+						}
+					]
+				}
+				Spinner
+				{
+					rpm 7.75
+					axis 2 0 2
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "InnerWall_01"
+								}
+								texture ImageTexture
+								{
+									alpha true
+									url "Morbcellwall.bmp"
+								}
+							}
+							geometry Mesh { url "MOrbCell-FACES.xm" }
+						}
+					]
+				}
 /*
-            Waver
-            {
-                rpm 7.75
-		//axis 0 2 0
-                children
-                [
-                    Shape
-                    {
-                        appearance Appearance
-                        {
-                            material MaxMaterial
-                            {
-                                name "InnerWall_01"
-                            }
-                            texture ImageTexture
-                            {
-                                alpha true
-                                url "Morbcellwall.bmp"
-                            }
-                        }
-                        geometry Mesh { url "MOrbCell-FACES.xm" }
-                    }
-                ]
-            }
+				Waver
+				{
+					rpm 7.75
+					//axis 0 2 0
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "InnerWall_01"
+								}
+								texture ImageTexture
+								{
+									alpha true
+									url "Morbcellwall.bmp"
+								}
+							}
+							geometry Mesh { url "MOrbCell-FACES.xm" }
+						}
+					]
+				}
 */
-        ]
-    rotation -0.993700 -0.088440 0.068970 -1.576000
-    scale 0.780000 0.780000 0.780000 
-    scaleOrientation 0.000000 0.000000 0.000000 0.000000 
-    translation -46.880001 55.130001 -205.000000
-}
+			]
+			rotation -0.993700 -0.088440 0.068970 -1.576000
+			scale 0.780000 0.780000 0.780000 
+			scaleOrientation 0.000000 0.000000 0.000000 0.000000 
+			translation -46.880001 55.130001 -205.000000
+		}
 /*
         DEF MU_L3_musicpod Transform
         {
@@ -1675,7 +1659,6 @@ DEF MU_L3_musicpod Transform
                                                     scaleOrientation -0.384300 -0.825000 -0.414200 -0.077220
                                                     translation 61.070000 -52.160000 205.699997
                                                 }
-
                                                 DEF theMenuButtons Group
                                                 {
                                                     children
@@ -1696,7 +1679,6 @@ DEF MU_L3_musicpod Transform
                                                                     }
                                                                     geometry DEF MenuButtonMesh Mesh { url "GM_L2_menubutton_01-FACES.xm" }
                                                                 }
-
                                                                 Transform
                                                                 {
                                                                     translation -2.5 -0.1 -0.25
@@ -1768,7 +1750,6 @@ DEF MU_L3_musicpod Transform
                                                                     }
                                                                     geometry USE MenuButtonMesh
                                                                 }
-
                                                                 Transform
                                                                 {
                                                                     translation -2.5 -0.1 -0.25
@@ -1900,11 +1881,10 @@ DEF MU_L3_musicpod Transform
                             {
                                 material MaxMaterial
                                 {
-				    name "JwlSrfc01/InfoPnls"
-				    //name "MemoryHeader"JwlSrfc01/InfoPnls
+									name "JwlSrfc01/InfoPnls"
+									//name "MemoryHeader"JwlSrfc01/InfoPnls
                                     //name "PanelBacking_04"
                                 }
-
                                 texture ImageTexture
                                 {
                                     url "plate2b.tga"
@@ -2032,8 +2012,6 @@ DEF MU_L3_musicpod Transform
                     scaleOrientation 1.000000 0.000000 0.000000 0.000000
                     translation -1.757000 -0.506100 0.047940
                 }
-
-
                 DEF MU_L3_panel_support_03c Transform
                 {
                     children
@@ -2097,7 +2075,6 @@ DEF MU_L3_musicpod Transform
                     scaleOrientation -0.999800 0.022050 -0.003153 -0.664200
                     translation -0.302200 0.057550 0.035580
                 }
-
                 DEF MU_L3_panel_timedisplay_01 Transform
                 {
                     children
@@ -2119,7 +2096,6 @@ DEF MU_L3_musicpod Transform
                     scaleOrientation 1.000000 0.000000 0.000000 0.000000
                     translation -1.061000 -0.778600 0.085310
                 }
-
                 DEF MU_L3_text_time Transform
                 {
                     children
@@ -2149,7 +2125,6 @@ DEF MU_L3_musicpod Transform
                     scaleOrientation 1.000000 0.000000 0.000000 0.000000
                     translation -1.150000 -0.585600 0.181900
                 }
-
                 DEF MU_L3_timeslider Transform
                 {
                     children
@@ -2299,8 +2274,6 @@ DEF MU_L3_musicpod Transform
                     translation 0.379600 -0.738900 0.180200
                 }
 */
-
-
                 DEF MU_L3_panel_tracklist Transform
                 {
                     children
@@ -2465,8 +2438,6 @@ DEF MU_L3_musicpod Transform
                     ]
                     translation -48.290001 58.809999 -203.800003
                 }
-
-
                 // Track list of names
                 DEF TrackNames Transform
                 {
@@ -2609,7 +2580,6 @@ DEF MU_L3_musicpod Transform
                         }
                     ]
                 }
-
                 // Track list of numbers
                 DEF TrackNumbers Transform
                 {
@@ -2743,8 +2713,6 @@ DEF MU_L3_musicpod Transform
                         }
                     ]
                 }
-
-
                 DEF MU_morearrow_up Transform
                 {
                     visible false
@@ -3134,7 +3102,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3156,7 +3124,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.2 -0.2 0
                                     children
@@ -3197,7 +3165,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3238,7 +3206,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.9 0.1 -0.2
                                     scale 0.8 0.8 0
@@ -3261,7 +3229,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.3 -0.2 0.3
                                     //scale 0.8 0.8 0
@@ -3303,7 +3271,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.8 0 -0.2
                                     scale 0.8 0.8 0
@@ -3326,7 +3294,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 0.3 -0.2
                                     rotation 0 1 0 3.142
@@ -3369,7 +3337,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation -0.2 0.1 -0.2
                                     scale 0.8 0.8 0
@@ -3413,7 +3381,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation -0.2 0.1 -0.2
                                     scale 0.8 0.8 0
@@ -3463,7 +3431,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3504,7 +3472,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3545,7 +3513,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation 0.1 0 -0.2
@@ -3588,7 +3556,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation 0 0 -0.2
@@ -3630,7 +3598,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation -0.1 0 -0.2
@@ -3653,7 +3621,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.2 -0.2 0
                                     children
@@ -3707,7 +3675,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 2.35 -0.2 0
                                     children
@@ -3761,7 +3729,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3789,7 +3757,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0.2 -0.2 0
                                     children
@@ -3836,7 +3804,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 0 -0.2 0
                                     children
@@ -3883,7 +3851,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     translation 2.35 -0.2 0
                                     children
@@ -3930,7 +3898,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation -0.1 -0.1 -0.2
@@ -3978,7 +3946,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation -0.2 -0.1 -0.2
@@ -4011,7 +3979,7 @@ DEF MU_L3_musicpod Transform
                         {
                             children
                             [
-                            Transform
+								Transform
                                 {
                                     scale 0.8 0.8 0
                                     translation -0.2 -0.1 -0.2
@@ -4043,11 +4011,11 @@ DEF MU_L3_musicpod Transform
         }
     ]
 }
-	]
-      }
-	]
-      }
-	]
-      }
+							]
+						}
+					]
+				}
+			]
+		}
     ]
 }
