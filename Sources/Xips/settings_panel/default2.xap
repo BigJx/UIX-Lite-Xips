@@ -1,8 +1,8 @@
 
 DEF theFileManagerPanel1 Transform
 { 
-    children 
-    [
+	children 
+	[
 		DEF Group01 Transform
 		{
 			children 
@@ -126,60 +126,60 @@ DEF theFileManagerPanel1 Transform
 				{
 					children 
 					[
-                        DEF S_Home_panel_support_04 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -3.173000 0.000019
-                        }
-                        DEF S_Home_panel_support_05 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -1.765000 0.000019
-                        }
+						DEF S_Home_panel_support_04 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -3.173000 0.000019
+						}
+						DEF S_Home_panel_support_05 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -1.765000 0.000019
+						}
 					]
 					translation 0.000000 1.625000 0.387100
 				}
 			]
 			translation -6.150000 0.377300 61.650002
 		}
-    ]
-    rotation 0 0.05 0 -0.085
-    scale 0.182100 0.222100 0.202100
-    translation 98.294769 5.352 -264.130127
+	]
+	rotation 0 0.05 0 -0.085
+	scale 0.182100 0.222100 0.202100
+	translation 98.294769 5.352 -264.130127
 }
 
 DEF theFileManagerPanel2 Transform
 {
-    children 
-    [
+	children 
+	[
 		DEF Group01 Transform
 		{
 			children 
@@ -303,54 +303,54 @@ DEF theFileManagerPanel2 Transform
 				{
 					children 
 					[
-                        DEF S_Home_panel_support_04 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -3.173000 0.000019
-                        }
-                        DEF S_Home_panel_support_05 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -1.765000 0.000019
-                        }
+						DEF S_Home_panel_support_04 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -3.173000 0.000019
+						}
+						DEF S_Home_panel_support_05 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -1.765000 0.000019
+						}
 					]
 					translation 0.000000 1.625000 0.387100
 				}
 			]
 			translation -6.150000 0.377300 61.650002
 		}
-    ]
-    rotation 0 0.01 0 -3.305028
-    scale 0.182100 0.222100 0.202100
-    translation 95.364395 5.352 -239.394409
+	]
+	rotation 0 0.01 0 -3.305028
+	scale 0.182100 0.222100 0.202100
+	translation 95.364395 5.352 -239.394409
 }
 
 DEF theABbuttons Transform
@@ -527,10 +527,10 @@ DEF theABbuttons Transform
 					translation 11.010000 -11.290000 3.150000
 				}
 			]
-            rotation 0.000000 -1.000000 0.000000 -0.034910
-            scale 2.171000 2.171000 2.171000
-            scaleOrientation 0.000000 1.000000 0.000000 -0.033020
-            translation -16.490000 -18.490000 58.980000
+			rotation 0.000000 -1.000000 0.000000 -0.034910
+			scale 2.171000 2.171000 2.171000
+			scaleOrientation 0.000000 1.000000 0.000000 -0.033020
+			translation -16.490000 -18.490000 58.980000
 		}
 		DEF Group07 Transform
 		{
@@ -699,14 +699,14 @@ DEF theABbuttons Transform
 					translation 0.178000 -10.330000 3.150000
 				}
 			]
-            rotation 0.000000 1.000000 0.000000 -0.183300
-            scale 2.171000 2.171000 2.171000
-            scaleOrientation 0.000000 -1.000000 0.000000 -0.148100
-            translation 8.965000 -19.209999 60.529999
+			rotation 0.000000 1.000000 0.000000 -0.183300
+			scale 2.171000 2.171000 2.171000
+			scaleOrientation 0.000000 -1.000000 0.000000 -0.148100
+			translation 8.965000 -19.209999 60.529999
 		}
-    ]
-    scale 0.202100 0.202100 0.202100
-    translation 98.070000 5.357000 -264.000000
+	]
+	scale 0.202100 0.202100 0.202100
+	translation 98.070000 5.357000 -264.000000
 }
 
 DEF thePanel1Text Transform
@@ -925,7 +925,7 @@ DEF thePanel1Text Transform
 											name "NavType"
 										}
 									}
-									geometry DEF theSourcePathListing Text { font "heading" translate false text "Source" width -10.2 }
+									geometry DEF theSourcePathListing Text { font "heading" translate false width -10.2 text "Source" }
 								}
 							]
 							translation -5.3 -0.40000 0.000000
@@ -958,7 +958,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -1.30000 0.000000
+							translation -4.9 -1.30000 0.000000
 						}
 						Transform
 						{
@@ -981,7 +981,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -2.30000 0.000000
+							translation -4.9 -2.30000 0.000000
 						}
 						Transform
 						{
@@ -1004,7 +1004,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -3.30000 0.000000
+							translation -4.9 -3.30000 0.000000
 						}
 						Transform
 						{
@@ -1027,7 +1027,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -4.30000 0.000000
+							translation -4.9 -4.30000 0.000000
 						}
 						Transform
 						{
@@ -1050,7 +1050,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -5.30000 0.000000
+							translation -4.9 -5.30000 0.000000
 						}
 						Transform
 						{
@@ -1073,7 +1073,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -6.30000 0.000000
+							translation -4.9 -6.30000 0.000000
 						}
 						Transform
 						{
@@ -1096,7 +1096,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -7.30000 0.000000
+							translation -4.9 -7.30000 0.000000
 						}
 						Transform
 						{
@@ -1119,7 +1119,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -8.30000 0.000000
+							translation -4.9 -8.30000 0.000000
 						}
 						Transform
 						{
@@ -1142,7 +1142,7 @@ DEF thePanel1Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.9 -9.30000 0.000000
+							translation -4.9 -9.30000 0.000000
 						}
 					]
 				}
@@ -1370,7 +1370,7 @@ DEF thePanel2Text Transform
 											name "NavType"
 										}
 									}
-									geometry DEF theDestinationPathListing Text { font "heading" justify end translate false text "Source" width -9.2 }
+									geometry DEF theDestinationPathListing Text { font "heading" justify end translate false text "Destination" width -9.2 }
 								}
 							]
 							translation -4.6 -0.40000 0.000000
@@ -1403,7 +1403,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -1.20000 0.000000
+							translation -4.7 -1.20000 0.000000
 						}
 						Transform
 						{
@@ -1426,7 +1426,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -2.20000 0.000000
+							translation -4.7 -2.20000 0.000000
 						}
 						Transform
 						{
@@ -1449,7 +1449,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -3.20000 0.000000
+							translation -4.7 -3.20000 0.000000
 						}
 						Transform
 						{
@@ -1472,7 +1472,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -4.20000 0.000000
+							translation -4.7 -4.20000 0.000000
 						}
 						Transform
 						{
@@ -1495,7 +1495,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -5.20000 0.000000
+							translation -4.7 -5.20000 0.000000
 						}
 						Transform
 						{
@@ -1518,7 +1518,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -6.20000 0.000000
+							translation -4.7 -6.20000 0.000000
 						}
 						Transform
 						{
@@ -1541,7 +1541,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -7.20000 0.000000
+							translation -4.7 -7.20000 0.000000
 						}
 						Transform
 						{
@@ -1564,7 +1564,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -8.20000 0.000000
+							translation -4.7 -8.20000 0.000000
 						}
 						Transform
 						{
@@ -1587,7 +1587,7 @@ DEF thePanel2Text Transform
 								}
 							]
 							scale 0.9 0.9 0
-                            translation -4.7 -9.20000 0.000000
+							translation -4.7 -9.20000 0.000000
 						}
 					]
 				}
