@@ -3468,10 +3468,12 @@ function  ExecuteFile(sPath)
 	var launchXbe = a.substr(d + 1);
 	var launchPath;
 	
-	if(b == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
-	else if(b == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
-	else if(b == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
+	if(b == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
 	else if(b == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
+	else if(b == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
+	else if(b == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
+	else if(b == "R") { launchPath = "\\Device\\Harddisk0\\Partition8" + e; }
+	else if(b == "S") { launchPath = "\\Device\\Harddisk0\\Partition9" + e; }
 	else { return; }
 	
 	launch(launchXbe, launchPath);
