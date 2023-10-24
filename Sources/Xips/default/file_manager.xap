@@ -84,25 +84,13 @@ function GetMainDirListing()
 	RootDirectory[1] = "D";
 	RootDirectory[2] = "E";
 	var i = 3;
-	if(DriveExists("F:\\"))
+	for(var n = 2; n < NumDrives; n = n + 1)
 	{
-		RootDirectory[i] = "F";
-		i = i + 1;
-	}
-	if(DriveExists("G:\\"))
-	{
-		RootDirectory[i] = "G";
-		i = i + 1;
-	}
-	if(DriveExists("R:\\"))
-	{
-		RootDirectory[i] = "R";
-		i = i + 1;
-	}
-	if(DriveExists("S:\\"))
-	{
-		RootDirectory[i] = "S";
-		i = i + 1;
+		if(DriveExists[n])
+		{
+			RootDirectory[i] = DriveList[n].substr(0,1);
+			i = i + 1;
+		}
 	}
 	RootDirectory[i] = "X";
 	i = i + 1;
@@ -110,23 +98,6 @@ function GetMainDirListing()
 	i = i + 1;
 	RootDirectory[i] = "Z";
 	rootlength = RootDirectory.length;
-}
-
-function DriveExists(x)
-{
-	var vFile = x + "Test.tmp";
-	var info = new Settings;
-	info.file = vFile;
-	info.SetValue("Dummy","true");
-	if (theHardDrive.FileExists(vFile))
-	{
-		theHardDrive.DeleteThisFile(vFile);
-		return true;
-	}
-	else 
-	{   
-		return false;
-	}
 }
 
 function UpdateDestinationFileManager()
