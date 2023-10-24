@@ -1048,9 +1048,9 @@ function ApplyDashStyle()
 		c.theOnlineItem.fade = a;
 		c.theSettingsItem.fade = a;
 		c.theSkinsTab.fade = a;
-}
-else if( dashStyle == "Gasclown" )
-{
+	}
+	else if( dashStyle == "Gasclown" )
+	{
 		c.Large_X_Spinner.rpm   = 1;
 		c.Pod_1_Spinner.rpm     = 1.3;
 		c.Pod_2_Spinner.rpm     = 1.3;
@@ -1077,7 +1077,7 @@ else if( dashStyle == "Gasclown" )
 		c.theOnlineItem.fade = a;
 		c.theSettingsItem.fade = a;
 		c.theSkinsTab.fade = a;
-}
+	}
 
 }
 	
@@ -1170,152 +1170,43 @@ function MainMenuPositionThree()
 	c.theMainMenuLevel.SetRotation( -0.001, 0.0003, 0.0003, 0.314159 );
 }
 
-function FillMenuList(x) // search c,e,f,g for a relative path's contents to use to fill a menu
+function FillMenuList(x) // search c,e,f,g,r,s for a relative path's contents to use to fill a menu
 {
 	var FolderName = x;
-	var c = new Folder; //def a new folder
-	c.path = "C:\\" + FolderName; //def it's path
-	var cSize = c.subFolders.length(); //find the number of subfolders in it
-	var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
-		if(cSize > 0)
+	var TitleList = new Array;
+	for(var i = 0; i < NumDrives; i = i + 1)
+	{
+		if(DriveExists[i])
 		{
-			for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+			var c = new Folder; //def a new folder
+			c.path = DriveList[i] + FolderName; //def it's path
+			var cSize = c.subFolders.length(); //find the number of subfolders in it
+			var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
+			if(cSize > 0)
 			{
-				cTitles[cLoop] = c.subFolders[cLoop].name;
-			}
+				for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+				{
+					cTitles[cLoop] = c.subFolders[cLoop].name;
+				}
+				var tmp = TitleList.concat(cTitles);
+				TitleList = tmp.sort();
+			}  
 		}
-	var e = new Folder; //repeat above for all drives
-	e.path = "E:\\" + FolderName;
-	var eSize = e.subFolders.length();
-	var eTitles = new Array(eSize);
-		if(eSize > 0)
-		{
-			for(var eLoop = 0; eLoop < eSize; eLoop = eLoop + 1)
-			{
-				eTitles[eLoop] = e.subFolders[eLoop].name;
-			}
-		}
-	var f = new Folder;
-	f.path = "F:\\" + FolderName;
-	var fSize = f.subFolders.length();
-	var fTitles = new Array(fSize);
-		if(fSize > 0)
-		{
-			for(var fLoop = 0; fLoop < fSize; fLoop = fLoop + 1)
-			{
-				fTitles[fLoop] = f.subFolders[fLoop].name;
-			}
-		}
-	var g = new Folder;
-	g.path = "G:\\" + FolderName;
-	var gSize = g.subFolders.length();
-	var gTitles = new Array(gSize);
-		if(gSize > 0)
-		{
-			for(var gLoop = 0; gLoop < gSize; gLoop = gLoop + 1)
-			{
-				gTitles[gLoop] = g.subFolders[gLoop].name;
-			}
-		}
-
-	//Cerbios Added Partitions
-	var r = new Folder;
-	r.path = "R:\\" + FolderName;
-	var rSize = r.subFolders.length();
-	var rTitles = new Array(rSize);
-		if(rSize > 0)
-		{
-			for(var rLoop = 0; rLoop < rSize; rLoop = rLoop + 1)
-			{
-				rTitles[rLoop] = r.subFolders[rLoop].name;
-			}
-		}
-	var s = new Folder;
-	s.path = "S:\\" + FolderName;
-	var sSize = s.subFolders.length();
-	var sTitles = new Array(sSize);
-		if(sSize > 0)
-		{
-			for(var sLoop = 0; sLoop < sSize; sLoop = sLoop + 1)
-			{
-				sTitles[sLoop] = s.subFolders[sLoop].name;
-			}
-		}
-	var mA = eTitles.concat(fTitles);//keep merging the arrays till you have one big one
-	var oA = mA.concat(cTitles);
-	var nA = oA.concat(gTitles);
-	var pA = nA.concat(rTitles);
-	var qA = pA.concat(sTitles);
-	qA = qA.sort();
-	return qA;//return the array
+	}
+	return TitleList;//return the array
 }
-
 
 function LaunchItem(x,y)
 {
 	var RelativePath = x;
 	var FolderName = y;
-	var checkc = theHardDrive.FileExists( "C:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checke = theHardDrive.FileExists( "E:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checkf = theHardDrive.FileExists( "F:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checkg = theHardDrive.FileExists( "G:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	//Cerbios
-	var checkr = theHardDrive.FileExists( "R:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checks = theHardDrive.FileExists( "S:\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	// EvoX Dash Safety Checks
-	var checkevoxc = theHardDrive.FileExists( "C:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxe = theHardDrive.FileExists( "E:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxf = theHardDrive.FileExists( "F:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxg = theHardDrive.FileExists( "G:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxr = theHardDrive.FileExists( "R:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxs = theHardDrive.FileExists( "S:\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	if(checkc == true)
+	for(var i = 0; i < NumDrives; i = i + 1)
 	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checke == true)
-	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkf == true)
-	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkg == true)
-	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkr == true)
-	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition8\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checks == true)
-	{
-		launch( "default.xbe", "\\Device\\Harddisk0\\Partition9\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxc == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxe == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxf == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxg == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxr == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition8\\" + RelativePath + "\\" + FolderName );
-	}
-	else if(checkevoxs == true)
-	{
-		launch( "evoxdash.xbe", "\\Device\\Harddisk0\\Partition9\\" + RelativePath + "\\" + FolderName );
+		if(DriveExists[i])
+		{
+			var sPath = DriveList[i] + RelativePath + "\\" + FolderName + "\\default.xbe";
+			if (theHardDrive.FileExists(sPath)) ExecuteFile(sPath);
+		}
 	}
 }
 
@@ -2372,6 +2263,10 @@ var currentStyle;
 var customorb;
 var DataFile; //create a global var to represent your data.xbx
 var CurrentSavedDataSection; //create a gobal to represent cur main menu button data section
+var DriveList;
+var DriveExists;
+var DrivePartition;
+var NumDrives;
 ////UIX Lite Specific Variables///
 
 var bBackToDVDPlayer;
@@ -2468,8 +2363,9 @@ function initialize()
 	///UIX Lite Specific Variable Options///
 
 	answeredNo = false;
+	InitializeDriveList();
 	//InitializeMenus();
-	FillMenuList("games");      
+	//FillMenuList("games");      
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 		theTranslator.SetLanguage(nLanguage);
@@ -2514,14 +2410,25 @@ function initialize()
 	theAmbientSound2.Play();
 	theAmbientSound3.Play();
 
-
 	fromSettings = false;
 	WaverCheck();
 	GoToSkin();
 
 }
-///UIX Lite Initializations - Skin Subsystem reads which menu version is in play.///
 
+function InitializeDriveList()
+{
+  DriveList      = new Array("C:\\", "E:\\", "F:\\", "G:\\", "R:\\", "S:\\");   //A list of the drives to scan for titles.
+  DrivePartition = new Array("2", "1", "6", "7", "8", "9");                     //Their corresponding partitions for launching titles.
+  DriveExists    = new Array(true, true, false, false, false, false);           //C and E Drives always exist but the others will need to be tested.
+  NumDrives      = DriveList.length;
+  for(var i = 2; i < NumDrives; i = i + 1)
+  {
+	  DriveExists[i] = CheckDriveExists(DriveList[i]); 
+  }
+}
+
+///UIX Lite Initializations - Skin Subsystem reads which menu version is in play.///
 function InitializeMS()
 {
 	currentStyle = "MS";
@@ -3452,38 +3359,54 @@ function Format2DriveSpace(Drive, Drive1, spaceType)
 function QuickLaunch(x)
 {
 	var button = x;
-
+	LeftTrigger  = false;
+	RightTrigger = false;
+	
 	var a = GetSavedValue("Quick Launch","Quick Launch " + button);
 	ExecuteFile(a);
 }
 
-function  ExecuteFile(sPath)
+function ExecuteFile(sPath)
 {    
 	var a = sPath;
-	var b = a.substr(0,1);
+	var b = a.substr(0,3);
 	var c = a.indexOf("\\");
 	var d = a.lastIndexOf("\\");
 	var e = a.substr(c , d - c);
-	
+
 	var launchXbe = a.substr(d + 1);
-	var launchPath;
 	
-	if(b == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
-	else if(b == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
-	else if(b == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
-	else if(b == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
-	else if(b == "R") { launchPath = "\\Device\\Harddisk0\\Partition8" + e; }
-	else if(b == "S") { launchPath = "\\Device\\Harddisk0\\Partition9" + e; }
-	else { return; }
-	
-	launch(launchXbe, launchPath);
+	for(var i = 0; i < NumDrives; i = i + 1)
+	{
+		if((DriveExists[i]) & (DriveList[i] == b))
+		{
+			if (theHardDrive.FileExists(sPath)) { launch(launchXbe, "\\Device\\Harddisk0\\Partition" + DrivePartition[i] + e ); }
+		}
+	}
+}
+
+function CheckDriveExists(x)
+{
+	var vFile = x + "Test.tmp";
+	var info = new Settings;
+	info.file = vFile;
+	info.SetValue("Dummy","true");
+	if (theHardDrive.FileExists(vFile))
+	{
+		theHardDrive.DeleteThisFile(vFile);
+		return true;
+	}
+	else 
+	{   
+		return false;
+	}
 }
 
 function PanelCheck()
 {   
-
+	
 	var a = GetSavedValue("Dashboard Settings","Info Panel");
-
+	
 	//var c = theMainMenu.children[0].children[0];
 	var c = DefineVarC();
 	
