@@ -10,20 +10,23 @@ var inLV2;
 var settChanged;
 var skinSettings;
 var cerbiosSettings;
+var AddKeyboardTitle; 
+var inQuickLaunchMenu;
+var MaxCharacters;
 
 DEF theGlobal Transform
 { 
-    visible false
- 	children
-  	[
-  		Shape
-  		{
-  			appearance Appearance { material Material {  } }
-  			geometry DEF theCellWallMesh Mesh
-  		}
-  	]
-  	scale 0 0 0
-  	translation 500 0 0
+	visible false
+	children
+	[
+		Shape
+		{
+			appearance Appearance { material Material {  } }
+			geometry DEF theCellWallMesh Mesh
+		}
+	]
+	scale 0 0 0
+	translation 500 0 0
 }
 
 function GetCellWallType()
@@ -32,7 +35,7 @@ function GetCellWallType()
 	info.file = "Q:\\System\\config.ini";
 	info.section = "Dashboard Settings";
 	var c = info.GetValue("Current Skin");
-
+	
 	theCellWallMesh.url = "Q:/skins/" + c + "/cellwall.xm"; 
 }
 
@@ -43,11 +46,14 @@ function initialize()
 	inSubs = true;
 	LV1Item = 0;
 	LV1Hold = 0;
-
+	
 	LV2Item = 0;
 	LV2Hold = 0;
 	inLV2 = false;
 	settChanged = false;
+	MaxCharacters = 28;
+	inQuickLaunchMenu=false;
+	AddKeyboardTitle = false;
 }
 
 //can place the next few functions in default.xap
@@ -64,12 +70,12 @@ function parseTrans(a,b) //search for the example somewhere in the config xap
 	var zTrans = StringtoInteger(parsy3);
 	
 	if(b == "X")
-		return xTrans;
+	return xTrans;
 	else if(b == "Y")
-		return yTrans;
+	return yTrans;
 	else if(b == "Z")
-		return zTrans;
-
+	return zTrans;
+	
 	//TellUser(parsy1 + "x" + parsy2 + "x" + parsy3 + "x", "sdfsd()");
 }
 
@@ -79,6 +85,7 @@ function returnString(x)
 	var b = theIntToString.children[0].geometry.text;
 	return b;
 }
+
 DEF theIntToString Transform
 {
 	visible false
@@ -139,7 +146,7 @@ function buildBGMList() //just copy this function for more subsections
 	configValues[i] = "Sys Config-FanSpeed";
 	configSelect[i] = "toggleFan()";
 	i = i + 1;
-
+	
 	clearText();
 	updateText();
 }
@@ -174,12 +181,12 @@ function BuildAPList()
 	configValues[i] = "Dashboard Settings-Dash Waver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-
-
+	
+	
 	configList[i] = "Use Custom Orb";
 	configValues[i] = "Dashboard Settings-Use Custom Orb";
 	configSelect[i] = "toggleTF()";
-	i = i + 1;	
+	i = i + 1;  
 	configList[i] = "BG Mesh:";
 	configValues[i] = "BGMesh-BGMesh";
 	configSelect[i] = "toggleBGMesh()";
@@ -224,7 +231,7 @@ function BuildQLList()
 	configList[i] = "Y:";
 	configValues[i] = "Quick Launch-Quick Launch Y";
 	configSelect[i] = "configKeyb()";
-	i = i + 1;	
+	i = i + 1;  
 	clearText();
 	updateText();
 }
@@ -236,12 +243,12 @@ function buildHDList()
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
-
-
+	
+	
 	configList[i] = "GoToBSXHDD Style:";
 	configValues[i] = "Hard Drive-BSX Style";
 	configSelect[i] = "toggleBSXHD()";
-	i = i + 1;	
+	i = i + 1;  
 	configList[i] = "Games Menu Title";
 	configValues[i] = "Games Menu-Name";
 	configSelect[i] = "configKeyb()";
@@ -251,7 +258,7 @@ function buildHDList()
 	configValues[i] = "Games Menu-Path";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
+	
 	configList[i] = "Applications Menu Title";
 	configValues[i] = "Applications Menu-Name";
 	configSelect[i] = "configKeyb()";
@@ -261,7 +268,7 @@ function buildHDList()
 	configValues[i] = "Applications Menu-Path";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
+	
 	configList[i] = "Dashboards Menu Title";
 	configValues[i] = "Dashboards Menu-Name";
 	configSelect[i] = "configKeyb()";
@@ -271,7 +278,7 @@ function buildHDList()
 	configValues[i] = "Dashboards Menu-Path";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
+	
 	configList[i] = "Emulators Menu Title";
 	configValues[i] = "Emulators Menu-Name";
 	configSelect[i] = "configKeyb()";
@@ -281,7 +288,7 @@ function buildHDList()
 	configValues[i] = "Emulators Menu-Path";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
+	
 	clearText();
 	updateText();
 }
@@ -296,13 +303,13 @@ function buildMMList()
 	configValues[i] = "Main Menu Buttons-Number of Buttons";
 	configSelect[i] = "toggle345()";
 	i = i + 1;
-
-
-
-//	configList[i] = "   Tab/Orb 1";
-//	configValues[i] = "-blank-";
-//	configSelect[i] = "";
-//	i = i + 1;
+	
+	
+	
+	//  configList[i] = "   Tab/Orb 1";
+	//  configValues[i] = "-blank-";
+	//  configSelect[i] = "";
+	//  i = i + 1;
 	
 	configList[i] = "Button 1 Text";
 	configValues[i] = "Main Menu Buttons Text-Button 1";
@@ -313,16 +320,16 @@ function buildMMList()
 	configValues[i] = "Main Menu Button 1 Settings-Launch";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
-
-/*	configList[i] = "Main Menu Button 1 Type";
+	
+	
+	/*  configList[i] = "Main Menu Button 1 Type";
 	configValues[i] = "Main Menu Button 1 Settings-Menu Type";
 	configSelect[i] = "configKeyb()";
-	i = i + 1;	*/
-//	configList[i] = "   Tab/Orb 2";
-//	configValues[i] = "-blank-";
-//	configSelect[i] = "";
-//	i = i + 1;
+	i = i + 1;  */
+	//  configList[i] = "   Tab/Orb 2";
+	//  configValues[i] = "-blank-";
+	//  configSelect[i] = "";
+	//  i = i + 1;
 	
 	configList[i] = "Button 2 Text";
 	configValues[i] = "Main Menu Buttons Text-Button 2";
@@ -334,16 +341,16 @@ function buildMMList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-
-
-/*	configList[i] = "Main Menu Button 2 Type";
+	
+	
+	/*  configList[i] = "Main Menu Button 2 Type";
 	configValues[i] = "Main Menu Button 2 Settings-Menu Type";
 	configSelect[i] = "configKeyb()";
-	i = i + 1; */	
-//	configList[i] = "   Tab/Orb 3";
-//	configValues[i] = "-blank-";
-//	configSelect[i] = "";
-//	i = i + 1;
+	i = i + 1; */   
+	//  configList[i] = "   Tab/Orb 3";
+	//  configValues[i] = "-blank-";
+	//  configSelect[i] = "";
+	//  i = i + 1;
 	
 	configList[i] = "Button 3 Text";
 	configValues[i] = "Main Menu Buttons Text-Button 3";
@@ -355,16 +362,16 @@ function buildMMList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-
-
-/*	configList[i] = "Main Menu Button 3 Type";
+	
+	
+	/*  configList[i] = "Main Menu Button 3 Type";
 	configValues[i] = "Main Menu Button 1 Settings-Menu Type";
 	configSelect[i] = "configKeyb()";
-	i = i + 1;	*/
-//	configList[i] = "   Tab/Orb 4";
-//	configValues[i] = "-blank-";
-//	configSelect[i] = "";
-//	i = i + 1;
+	i = i + 1;  */
+	//  configList[i] = "   Tab/Orb 4";
+	//  configValues[i] = "-blank-";
+	//  configSelect[i] = "";
+	//  i = i + 1;
 	
 	configList[i] = "Button 4 Text";
 	configValues[i] = "Main Menu Buttons Text-Button 4";
@@ -375,22 +382,22 @@ function buildMMList()
 	configValues[i] = "Main Menu Button 4 Settings-Launch";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-/*	
-
-
-
-
-
-
+	/*  
+	
+	
+	
+	
+	
+	
 	configList[i] = "Main Menu Button 4 Type";
 	configValues[i] = "Main Menu Button 4 Settings-Menu Type";
 	configSelect[i] = "configKeyb()";
-	i = i + 1;*/	
+	i = i + 1;*/    
 	
-//	configList[i] = "   Tab/Orb 5";
-//	configValues[i] = "-blank-";
-//	configSelect[i] = "";
-//	i = i + 1;
+	//  configList[i] = "   Tab/Orb 5";
+	//  configValues[i] = "-blank-";
+	//  configSelect[i] = "";
+	//  i = i + 1;
 	
 	configList[i] = "Button 5 Text";
 	configValues[i] = "Main Menu Buttons Text-Button 5";
@@ -401,19 +408,19 @@ function buildMMList()
 	configValues[i] = "Main Menu Button 5 Settings-Launch";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
-
-
-/*	configList[i] = "Main Menu Button 5 Type";
+	
+	
+	/*  configList[i] = "Main Menu Button 5 Type";
 	configValues[i] = "Main Menu Button 5 Settings-Menu Type";
 	configSelect[i] = "configKeyb()";
-	i = i + 1;	*/
+	i = i + 1;  */
 	
-//	if(configList[LV2Item].substr(0, 2) == "  ")
-//	{
-//		LV2Item = LV2Item + 1;
-//		LV2Hold = LV2Hold + 1;
-//	}
-		
+	//  if(configList[LV2Item].substr(0, 2) == "  ")
+	//  {
+		//      LV2Item = LV2Item + 1;
+		//      LV2Hold = LV2Hold + 1;
+	//  }
+	
 	clearText();
 	updateText();
 }
@@ -523,12 +530,12 @@ function buildNETList()
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
 	
-//	if(configList[LV2Item].substr(0, 2) == "  ")
-//	{
-//		LV2Item = LV2Item + 1;
-//		LV2Hold = LV2Hold + 1;
-//	}
-		
+	//  if(configList[LV2Item].substr(0, 2) == "  ")
+	//  {
+		//      LV2Item = LV2Item + 1;
+		//      LV2Hold = LV2Hold + 1;
+	//  }
+	
 	clearText();
 	updateText();
 }
@@ -572,62 +579,62 @@ function buildSkinList() //need to add ability to read from diff files!
 //Cerbios
 
 function BuildCerbiosList() {
-
-    var i = 0;
-    configList = new Array;
-    configValues = new Array;
-    configSelect = new Array;
-
-    configList[i] = "Check for AV Pack";
-    configValues[i] = "Cerbios-AVCheck";
-    configSelect[i] = "toggleAVCheck()";
-    i = i + 1;
-
-    configList[i] = "LED Ring Color";
-    configValues[i] = "Cerbios-FrontLed";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "Fan Speed";
-    configValues[i] = "Cerbios-FanSpeed";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "Drive Setup";
-    configValues[i] = "Cerbios-DriveSetup";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "Load XDK Launcher/XBDM";
-    configValues[i] = "Cerbios-Debug";
-    configSelect[i] = "toggleDebug()";
-    i = i + 1;
-
-    configList[i] = "IGR Master Port";
-    configValues[i] = "Cerbios-IGRMasterPort";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "IGR Dash Combo";
-    configValues[i] = "Cerbios-IGRDash";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "IGR Game Combo";
-    configValues[i] = "Cerbios-IGRGame";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "IGR Full Combo";
-    configValues[i] = "Cerbios-IGRFull";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
-    configList[i] = "IGR Shutdown Combo";
-    configValues[i] = "Cerbios-IGRShutdown";
-    configSelect[i] = "configKeyb()";
-    i = i + 1;
-
+	
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	
+	configList[i] = "Check for AV Pack";
+	configValues[i] = "Cerbios-AVCheck";
+	configSelect[i] = "toggleAVCheck()";
+	i = i + 1;
+	
+	configList[i] = "LED Ring Color";
+	configValues[i] = "Cerbios-FrontLed";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Fan Speed";
+	configValues[i] = "Cerbios-FanSpeed";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Drive Setup";
+	configValues[i] = "Cerbios-DriveSetup";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Load XDK Launcher/XBDM";
+	configValues[i] = "Cerbios-Debug";
+	configSelect[i] = "toggleDebug()";
+	i = i + 1;
+	
+	configList[i] = "IGR Master Port";
+	configValues[i] = "Cerbios-IGRMasterPort";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "IGR Dash Combo";
+	configValues[i] = "Cerbios-IGRDash";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "IGR Game Combo";
+	configValues[i] = "Cerbios-IGRGame";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "IGR Full Combo";
+	configValues[i] = "Cerbios-IGRFull";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "IGR Shutdown Combo";
+	configValues[i] = "Cerbios-IGRShutdown";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
 	cerbiosSettings = true;
 	clearText();
 	updateText();
@@ -638,17 +645,17 @@ function toggleTF()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "true")
-		refreshMenu("False");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "false";
+	refreshMenu("False");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "false";
 	else if(b.toLowerCase() == "false")
-		refreshMenu("True");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "true";
+	refreshMenu("True");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "true";
 }
 function togglePodType()
 {
-var c = theConfigPanel.children[0].children[0];
-var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-if(b.toLowerCase() == "normal") { refreshMenu("odbpod"); }
-else if(b.toLowerCase() == "odbpod") { refreshMenu("none"); }
-else if(b.toLowerCase() == "none") { refreshMenu("normal"); }
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "normal") { refreshMenu("odbpod"); }
+	else if(b.toLowerCase() == "odbpod") { refreshMenu("none"); }
+	else if(b.toLowerCase() == "none") { refreshMenu("normal"); }
 }
 
 function toggle345()
@@ -672,13 +679,13 @@ function toggleMM()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "gasclown")
-		refreshMenu("Stock");
+	refreshMenu("Stock");
 	else if(b.toLowerCase() == "stock")
-		refreshMenu("THC");
+	refreshMenu("THC");
 	else if(b.toLowerCase() == "thc")
-		refreshMenu("Modded");
+	refreshMenu("Modded");
 	else if(b.toLowerCase() == "modded")
-		refreshMenu("Gasclown");
+	refreshMenu("Gasclown");
 }
 
 function toggleIPType()
@@ -686,24 +693,63 @@ function toggleIPType()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "dhcp")
-		refreshMenu("Static");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "Static";
+	refreshMenu("Static");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "Static";
 	else if(b.toLowerCase() == "static")
-		refreshMenu("DHCP");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "DHCP";
+	refreshMenu("DHCP");//c.theRightSlots.children[LV2Item].children[0].geometry.text = "DHCP";
+}
+
+function PathEllipsis(x)
+{
+	var size = x.length();
+	var diff = Math.ceil((size - MaxCharacters) / 2);
+	var half = Math.floor(size/2);
+	var a = x.substr(0,half - diff);
+	var b = x.substr(half + diff);
+	var c = a.substr(0,a.lastIndexOf("\\") + 1);
+	var d = b.substr(b.indexOf("\\"));
+	return c + "..." + d;
 }
 
 function configKeyb()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var a = c.theLeftSlots.children[LV2Item].children[0].geometry.text; //title
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text; //edit
+	var b = getConfigMenuValue(configValues[LV2Item]); //edit
+	if(inQuickLaunchMenu & (b.length() > 30))
+	{
+		var Cut;
+		if(b.length() > 43 ) Cut = 15; else Cut = 10;
+		var x = b.substr(Cut);
+		var y = x.indexOf("\\");
+		y = y + Cut + 1;
+		a = b.substr(0,y);
+		AddKeyboardTitle = true;
+		b = b.substr(y);
+	}     
 	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "");
 }
 
 function refreshMenu(x)
 {
 	var c = theConfigPanel.children[0].children[0];
-	var cValue = safetyCheck(configList[LV2Item],x); //just makes sure the input is valid
-	
+	var cValue = x; 
+	settChanged = true;
+	if(x == "x" | x == "X") 
+	{   //Delete the key and return if the user enters only an "x" on the keyboard.
+		setConfigMenuValue(configValues[LV2Item],"");
+		c.theRightSlots.children[LV2Item].children[0].geometry.text = "";
+		return; 
+	} 
+	if(inQuickLaunchMenu) 
+	{ 
+		if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
+		if(cValue.length() > MaxCharacters) 
+		{   //Add ellipsis to long paths and return
+			c.theRightSlots.children[LV2Item].children[0].geometry.text = PathEllipsis(cValue);
+			setConfigMenuValue(configValues[LV2Item],cValue);
+			return;
+		}    
+	}
 	c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -714,16 +760,16 @@ function safetyCheck(x,y) //x is item and y is value
 	if(x == "Main menu tabs (ms style)") //3,4, or 5 tabs
 	{
 		if(StringtoInteger(y) > 4)
-			fValue = "5";
+		fValue = "5";
 		if(StringtoInteger(y) < 4)
-			fValue = "3";
+		fValue = "3";
 	}
 	else if(x == "Volume") //range 0 to 1
 	{
 		if(StringtoInteger(y) > 1)
-			fValue = "1";
+		fValue = "1";
 		if(StringtoInteger(y) < 0)
-			fValue = "0";
+		fValue = "0";
 	}
 	else if((x == "MainMenuTab1-Function") | (x == "MainMenuTab2-Function") | (x == "MainMenuTab3-Function") | (x == "MainMenuTab4-Function") | (x == "MainMenuTab5-Function")) //add () to end of function
 	{
@@ -732,9 +778,9 @@ function safetyCheck(x,y) //x is item and y is value
 	else if(x == "Port")
 	{
 		if(StringtoInteger(y) > 65536)
-			fValue = "21";
+		fValue = "21";
 		if(StringtoInteger(y) < 1)
-			fValue = "21";
+		fValue = "21";
 	}
 	return fValue;
 }
@@ -758,7 +804,7 @@ function updateText()
 	var c = theConfigPanel.children[0].children[0];
 	var loopLength = configList.length;
 	if(loopLength > 11)
-		loopLength = 12;
+	loopLength = 12;
 	for(var i = 0; i < loopLength; i = i + 1)
 	{
 		//left slots
@@ -770,24 +816,34 @@ function updateText()
 		}
 		//right slots
 		if(inLV2 == true)
-			c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[i]);
+		{
+			var cValue = getConfigMenuValue(configValues[i]);
+			if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
+			{
+				c.theRightSlots.children[i].children[0].geometry.text = PathEllipsis(cValue);
+			}
+			else
+			{
+				c.theRightSlots.children[i].children[0].geometry.text =  cValue;
+			}
+		}
 	}
 	if(configList.length > 12)
-		c.theDownArrow.visible = true;
+	c.theDownArrow.visible = true;
 }
-
+   
 function getConfigMenuValue(x)
 {
 	var dud = " ";
 	if(x == "-blank-")
-		return dud;
-		
+	return dud;
+	
 	var vFile;
 	if(cerbiosSettings == true)
-		vFile = "C:\\Cerbios.temp";
+	vFile = "C:\\Cerbios.temp";
 	else
-		vFile = "Q:\\system\\config.temp";
-
+	vFile = "Q:\\system\\config.temp";
+	
 	var vSection = x.substr(0,x.indexOf("-"));
 	var vValue = x.substr(x.indexOf("-") + 1, x.length());
 	var info = new Settings;
@@ -800,10 +856,10 @@ function setConfigMenuValue(x,y)
 {
 	var vFile;
 	if(cerbiosSettings == true)
-		vFile = "C:\\Cerbios.temp";
+	vFile = "C:\\Cerbios.temp";
 	else
-		vFile = "Q:\\system\\config.temp";
-
+	vFile = "Q:\\system\\config.temp";
+	
 	var vSection = x.substr(0,x.indexOf("-"));
 	var vValue = x.substr(x.indexOf("-") + 1, x.length());
 	var info = new Settings;
@@ -830,67 +886,67 @@ function clearText()
 
 DEF theConfigPanel Level
 {
-    archive "config.xip"
-
-    children
-    [
+	archive "config.xip"
+	
+	children
+	[
 		Inline
 		{
-			url "config/default.xap"		
+			url "config/default.xap"        
 			function onLoad()
-			{	
+			{   
 				var c = theConfigPanel.children[0].children[0];
 				buildconfigList();
 				inSubs = true;
 				tabSlot(0);
 				c.theLeftSlots.children[0].children[0].appearance.name = "NavType";
 				c.GlobeIcon.visible = true;
-			}		
+			}       
 		}
-    ]
-
-    shell Transform
-    {
-        scale 7 7 7 //150
-        translation 108.8 1.022000 -223.050006
-        children
-        [
-            Waver
-            {
-                rpm 0.75
-                children
-                [
-                    Shape
-                    {
-                        appearance Appearance
-                        {
-                            material MaxMaterial { name "InnerWall_01" }
-                            texture ImageTexture
-                            {
-                                alpha true
-                                url "cellwall.xbx"
-                            }
-                        }
-                        geometry USE theCellWallMesh
-                    }
-                    Shape
-                    {
-                        appearance Appearance { material MaxMaterial { name "InnerWall_02" } }
-                        geometry Sphere { radius 1 }
-                    }
-                ]
-            }
-        ]
-    }
-
-    path Viewpoint
-    {
+	]
+	
+	shell Transform
+	{
+		scale 7 7 7 //150
+		translation 108.8 1.022000 -223.050006
+		children
+		[
+			Waver
+			{
+				rpm 0.75
+				children
+				[
+					Shape
+					{
+						appearance Appearance
+						{
+							material MaxMaterial { name "InnerWall_01" }
+							texture ImageTexture
+							{
+								alpha true
+								url "cellwall.xbx"
+							}
+						}
+						geometry USE theCellWallMesh
+					}
+					Shape
+					{
+						appearance Appearance { material MaxMaterial { name "InnerWall_02" } }
+						geometry Sphere { radius 1 }
+					}
+				]
+			}
+		]
+	}
+	
+	path Viewpoint
+	{
 		position 107.8 1.422000 -219.050006
 		orientation 0.03682 0.9993 0.00299 -0.1622
 		fieldOfView 1.287
-    jump false
-    }
-
+		jump false
+	}
+	
 	control DEF theSettings34Joystick Joystick
 	{
 		function OnADown()
@@ -923,7 +979,7 @@ DEF theConfigPanel Level
 					tabSlot(LV2Hold);
 					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
 				}
-
+				
 				else if(configList[LV1Item] == "BSX Main Menu Orbs")
 				{
 					BuildBSXMMList();
@@ -938,6 +994,7 @@ DEF theConfigPanel Level
 				}
 				else if(configList[LV1Item] == "Quick Launch")
 				{
+					inQuickLaunchMenu = true;
 					BuildQLList();
 					tabSlot(LV2Hold);
 					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
@@ -957,14 +1014,13 @@ DEF theConfigPanel Level
 			}
 			else if(inLV2 == true)
 			{
-				settChanged = true;
 				eval(configSelect[LV2Item]);
 			}
 		}
 		
 		function OnLeftThumbMoveDown()
 		{
-				selectConfigDown();
+			selectConfigDown();
 		}
 		
 		function OnLeftThumbMoveUp()
@@ -978,6 +1034,7 @@ DEF theConfigPanel Level
 			c.MU_back_pod_HL.children[0].appearance.material.param = 1;
 			if(inSubs == false)
 			{
+				inQuickLaunchMenu = false;
 				cerbiosSettings = false;
 				skinSettings = false;
 				inLV2  = false;
@@ -992,9 +1049,9 @@ DEF theConfigPanel Level
 			else
 			{
 				if(settChanged == true)
-					AskQuestion("Would you like to save settings?", "theUIXConfigInline.children[0].saveSettings()", "theUIXConfigInline.children[0].deleteTemps()", 1);
+				AskQuestion("Would you like to save settings?", "theUIXConfigInline.children[0].saveSettings()", "theUIXConfigInline.children[0].deleteTemps()", 1);
 				else if(settChanged == false)
-					leaveConfig();
+				leaveConfig();
 				//theHardDrive.DeleteThisFile( "Q:\\system\\config.temp" );
 				//GoBackToMain();
 				//theMainMenu.GoTo();
@@ -1003,28 +1060,23 @@ DEF theConfigPanel Level
 		
 		function OnWhiteDown()
 		{
-		//toggleBacking();
-
-theConfig.DebugOutput( configList[LV1Item] );
-
-
+			//toggleBacking();
+			//theConfig.DebugOutput( configList[LV1Item] );
 		}
-		 
-
 	}
-
-
+	
+	
 	function OnActivate()
 	{
-	if(theHardDrive.FileExists( "Q:\\system\\config.temp" ) == true)
+		if(theHardDrive.FileExists( "Q:\\system\\config.temp" ) == true)
 		theHardDrive.DeleteThisFile( "Q:\\system\\config.temp" );
-	theHardDrive.CopyThisFile( "Q:\\system\\config.ini", "Q:\\system\\config.temp" );
-	
-	if(theHardDrive.FileExists( "C:\\Cerbios.temp" ) == true)
+		theHardDrive.CopyThisFile( "Q:\\system\\config.ini", "Q:\\system\\config.temp" );
+		
+		if(theHardDrive.FileExists( "C:\\Cerbios.temp" ) == true)
 		theHardDrive.DeleteThisFile( "C:\\Cerbios.temp" );
-	theHardDrive.CopyThisFile( "C:\\Cerbios.ini", "C:\\Cerbios.temp" );
+		theHardDrive.CopyThisFile( "C:\\Cerbios.ini", "C:\\Cerbios.temp" );
 	}
-
+	
 }
 
 function saveSettings()
@@ -1041,10 +1093,10 @@ function saveSettings()
 		theHardDrive.CopyThisFile( "C:\\Cerbios.temp", "C:\\Cerbios.ini" );
 		theHardDrive.DeleteThisFile( "C:\\Cerbios.temp" );
 	}
-
-
-        AskQuestion("Settings saved! Would you like to reboot now?", "theConfig.Reset()", "theUIXConfigInline.children[0].leaveConfig()", 1);
-
+	
+	
+	AskQuestion("Settings saved! Would you like to reboot now?", "theConfig.Reset()", "theUIXConfigInline.children[0].leaveConfig()", 1);
+	
 	//TellUser("Settings saved!  You may have to reboot for new settings to take effect.","theUIXConfigInline.children[0].leaveConfig()");
 }
 
@@ -1058,7 +1110,7 @@ function deleteTemps()
 function leaveConfig()
 {
 	theSettingsSubMenuOut.Play();
-
+	
 	GoToSettings();
 }
 
@@ -1066,7 +1118,7 @@ function selectConfigDown()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var curItem;
-	var curHold;	
+	var curHold;    
 	if(inSubs == true)
 	{
 		curItem = LV1Item;
@@ -1079,12 +1131,12 @@ function selectConfigDown()
 	}
 	
 	if(curItem + 1 == configList.length) //end of list
-		return;
-		
+	return;
+	
 	PlaySoundMenuChange();
 	if(curHold == 11) //SCROLL MENU DOWN
 	{
-		c.theUpArrow.visible = true;		
+		c.theUpArrow.visible = true;        
 		if(configList.length > curItem + 1)
 		{
 			curItem = curItem + 1;
@@ -1092,25 +1144,25 @@ function selectConfigDown()
 			{
 				c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + (i - 11)];
 				if(inLV2 == true)
-					c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
+				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
 			}
-
+			
 		}
 		if(configList.length == curItem + 1)
-			c.theDownArrow.visible = false;
-	}	
-
+		c.theDownArrow.visible = false;
+	}   
+	
 	else if(curHold < 11)
 	{
 		unTabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";		
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";        
 		curItem = curItem + 1;
 		curHold = curHold + 1;
 		
 		tabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";		
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";       
 	}
-
+	
 	if(inSubs == true)
 	{
 		LV1Item = curItem;
@@ -1121,14 +1173,14 @@ function selectConfigDown()
 		LV2Item = curItem;
 		LV2Hold = curHold;
 	}
-
+	
 }
 
 function selectConfigUp()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var curItem;
-	var curHold;	
+	var curHold;    
 	if(inSubs == true)
 	{
 		curItem = LV1Item;
@@ -1141,7 +1193,7 @@ function selectConfigUp()
 	}
 	
 	if(curItem == 0) 
-		return;
+	return;
 	
 	PlaySoundMenuChange();
 	if(curItem > 0)
@@ -1156,24 +1208,24 @@ function selectConfigUp()
 				{
 					c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + i];
 					if(inLV2 == true)
-						c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
+					c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
 				}
 			}
 			if(curItem == 0)
-				c.theUpArrow.visible = false;
+			c.theUpArrow.visible = false;
 		}
 		else
 		{
 			unTabSlot(curHold);
-			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";			
+			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";            
 			curItem = curItem - 1;
 			curHold = curHold - 1;
 			
 			tabSlot(curHold);
 			c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";
 		}
-	}	
-
+	}   
+	
 	if(inSubs == true)
 	{
 		LV1Item = curItem;
@@ -1184,7 +1236,7 @@ function selectConfigUp()
 		LV2Item = curItem;
 		LV2Hold = curHold;
 	}
-
+	
 }
 
 function scrollConfigDown()
@@ -1193,9 +1245,9 @@ function scrollConfigDown()
 	
 	var curItem;
 	if(inSubs == true)
-		curItem = LV1Item;
+	curItem = LV1Item;
 	else if(inLV2 == true)
-		curItem = LV2Item;
+	curItem = LV2Item;
 	
 	c.theUpArrow.visible = true;
 	
@@ -1206,16 +1258,16 @@ function scrollConfigDown()
 		{
 			c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + (i - 11)];
 			if(inLV2 == true)
-				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
+			c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
 		}
 		
 		if(inSubs == true)
-			LV1Item = curItem;
+		LV1Item = curItem;
 		else if(inLV2 == true)
-			LV2Item = curItem;
+		LV2Item = curItem;
 	}
 	if(configList.length == curItem + 1)
-		c.theDownArrow.visible = false;
+	c.theDownArrow.visible = false;
 }
 
 function scrollConfigUp()
@@ -1224,12 +1276,12 @@ function scrollConfigUp()
 	
 	var curItem;
 	if(inSubs == true)
-		curItem = LV1Item;
+	curItem = LV1Item;
 	else if(inLV2 == true)
-		curItem = LV2Item;
-		
+	curItem = LV2Item;
+	
 	c.theDownArrow.visible = true;
-		
+	
 	if(curItem != 0)
 	{
 		curItem = curItem - 1;
@@ -1237,16 +1289,16 @@ function scrollConfigUp()
 		{
 			c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + i];
 			if(inLV2 == true)
-				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
+			c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
 		}
 		
 		if(inSubs == true)
-			LV1Item = curItem;
+		LV1Item = curItem;
 		else if(inLV2 == true)
-			LV2Item = curItem;
+		LV2Item = curItem;
 	}
 	if(curItem == 0)
-		c.theUpArrow.visible = false;
+	c.theUpArrow.visible = false;
 }
 
 function updateHeaders()
@@ -1283,8 +1335,8 @@ function toggleBGMesh()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-
-	     if(b.toLowerCase() == "dna") { refreshMenu("DNA V2"); }
+	
+	if(b.toLowerCase() == "dna") { refreshMenu("DNA V2"); }
 	else if(b.toLowerCase() == "dna v2") { refreshMenu("Chains"); }
 	else if(b.toLowerCase() == "chains") { refreshMenu("Spirals"); }
 	else if(b.toLowerCase() == "spirals") { refreshMenu("Squigles"); }
@@ -1296,94 +1348,94 @@ function toggleBGMesh()
 }
 function toggleINDFan()
 {
-  var c = theConfigPanel.children[0].children[0];
-  var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-
-  if(b.toLowerCase() == "10") 
-  { 
-       refreshMenu("20"); 
-  }
-  else if(b.toLowerCase() == "20") 
-  { 
-       refreshMenu("30");
-  }
-  else if(b.toLowerCase() == "30") 
-  { 
-       refreshMenu("40"); 
-  }
-  else if(b.toLowerCase() == "40") 
-  { 
-       refreshMenu("50");
-  }
-   else if(b.toLowerCase() == "50") 
-  { 
-       refreshMenu("10");
-  }
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	
+	if(b.toLowerCase() == "10") 
+	{ 
+		refreshMenu("20"); 
+	}
+	else if(b.toLowerCase() == "20") 
+	{ 
+		refreshMenu("30");
+	}
+	else if(b.toLowerCase() == "30") 
+	{ 
+		refreshMenu("40"); 
+	}
+	else if(b.toLowerCase() == "40") 
+	{ 
+		refreshMenu("50");
+	}
+	else if(b.toLowerCase() == "50") 
+	{ 
+		refreshMenu("10");
+	}
 }
 
 function toggleFan()
 {
-  var c = theConfigPanel.children[0].children[0];
-  var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-
-  if(b.toLowerCase() == "20") 
-  { 
-       refreshMenu("30"); 
-       theConfig.SetFanSpeed(30);
-  }
-  else if(b.toLowerCase() == "30") 
-  { 
-       refreshMenu("40");
-       theConfig.SetFanSpeed(40);
-  }
-  else if(b.toLowerCase() == "40") 
-  { 
-       refreshMenu("50"); 
-       theConfig.SetFanSpeed(50);
-  }
-  else if(b.toLowerCase() == "50") 
-  { 
-       refreshMenu("60");
-       theConfig.SetFanSpeed(60);
-  }
-  else if(b.toLowerCase() == "60") 
-  { 
-       refreshMenu("70"); 
-       theConfig.SetFanSpeed(70);
-  }
-  else if(b.toLowerCase() == "70") 
-  { 
-       refreshMenu("80"); 
-       theConfig.SetFanSpeed(80);
-  }
-  else if(b.toLowerCase() == "80") 
-  { 
-       refreshMenu("90"); 
-       theConfig.SetFanSpeed(90);
-  }
-  else if(b.toLowerCase() == "90") 
-  { 
-       refreshMenu("100"); 
-       theConfig.SetFanSpeed(100);
-  }
-  else if(b.toLowerCase() == "100") 
-  { 
-       refreshMenu("20"); 
-       theConfig.SetFanSpeed(20);
-  }
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	
+	if(b.toLowerCase() == "20") 
+	{ 
+		refreshMenu("30"); 
+		theConfig.SetFanSpeed(30);
+	}
+	else if(b.toLowerCase() == "30") 
+	{ 
+		refreshMenu("40");
+		theConfig.SetFanSpeed(40);
+	}
+	else if(b.toLowerCase() == "40") 
+	{ 
+		refreshMenu("50"); 
+		theConfig.SetFanSpeed(50);
+	}
+	else if(b.toLowerCase() == "50") 
+	{ 
+		refreshMenu("60");
+		theConfig.SetFanSpeed(60);
+	}
+	else if(b.toLowerCase() == "60") 
+	{ 
+		refreshMenu("70"); 
+		theConfig.SetFanSpeed(70);
+	}
+	else if(b.toLowerCase() == "70") 
+	{ 
+		refreshMenu("80"); 
+		theConfig.SetFanSpeed(80);
+	}
+	else if(b.toLowerCase() == "80") 
+	{ 
+		refreshMenu("90"); 
+		theConfig.SetFanSpeed(90);
+	}
+	else if(b.toLowerCase() == "90") 
+	{ 
+		refreshMenu("100"); 
+		theConfig.SetFanSpeed(100);
+	}
+	else if(b.toLowerCase() == "100") 
+	{ 
+		refreshMenu("20"); 
+		theConfig.SetFanSpeed(20);
+	}
 }
 function toggleHD()
 {
-   var c = theConfigPanel.children[0].children[0];
-   var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-   if(b.toLowerCase() == "memory") { refreshMenu("Music"); }
-   else if(b.toLowerCase() == "music") { refreshMenu("Settings"); }
-   else if(b.toLowerCase() == "settings") { refreshMenu("Memory"); }
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "memory") { refreshMenu("Music"); }
+	else if(b.toLowerCase() == "music") { refreshMenu("Settings"); }
+	else if(b.toLowerCase() == "settings") { refreshMenu("Memory"); }
 }
 function toggleBSXHD()
 {
-   var c = theConfigPanel.children[0].children[0];
-   var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
-   if(b.toLowerCase() == "rezn8") { refreshMenu("BSX"); }
-   else if(b.toLowerCase() == "bsx") { refreshMenu("REZN8"); }
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "rezn8") { refreshMenu("BSX"); }
+	else if(b.toLowerCase() == "bsx") { refreshMenu("REZN8"); }
 }
