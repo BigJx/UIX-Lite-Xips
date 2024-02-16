@@ -16,6 +16,7 @@ var TempTitleList;
 var CurFillDir;
 var b_onScreen;
 var tempIconPath;
+var LastTitleLaunched;
 
 var invis;
 
@@ -244,6 +245,8 @@ function EnterMusicPlay()
 	//c.MenuMetaText.text = "\r.: Free Space :." + "\rC: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total") + "\rE: " + FormatDriveSpace("E:\\", "free") + " of " + FormatDriveSpace("E:\\", "total") + "\rF: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total");
 	//c.MenuMetaText.text = "\r.: Free Space :." + "\rF: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total");
 	ShowMusicPlayWithSubs();
+	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
+
 }
 
 //sets up the root menu text etc.
@@ -346,7 +349,7 @@ DEF theMusicPlayWithSubs Level
 				//c.New_Line02.visible = false; //NEW//
 				c.MenuMetaText.text = ""; //NEW//
 
-						EnterMusicPlay();
+				EnterMusicPlay();
 			}
 		}
 	]
@@ -501,6 +504,61 @@ DEF theMusicPlayWithSubs Level
 			}
 		}
 		
+		function OnXDown()
+		{
+			if(LastTitleLaunched != "")
+			{
+				PlaySoundA();
+				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
+				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
+				AskQuestion("You are about to launch " + y + " from the " + x + " folder.\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);
+			}
+		}
+		
+		function OnLeftThumbMoveRight()  
+		{ 
+			if (bMusicPlayWithSubsVisible0 == false)
+			{
+				var a = (TempTitleList.length - 1);
+				if (nPlayCursor0 + 9 <= a)
+				{
+					nPlayCursor0 = nPlayCursor0 + 9;
+				}
+				else if(nPlayCursor0 == a)
+				{
+					return;
+				} 
+				else if(a - nPlayCursor0 < 9)
+				{
+					nPlayCursor0 = a;
+				}
+				PlaySoundMenuChange();
+				UpdateTrackList();
+			}
+		}
+		
+		function OnLeftThumbMoveLeft()  
+		{  
+			if (bMusicPlayWithSubsVisible0 == false)
+			{
+				var a = (TempTitleList.length - 1);
+				if (nPlayCursor0 - 9 >= 0)
+				{
+					nPlayCursor0 = nPlayCursor0 - 9;
+				}
+				else if(nPlayCursor0 == 0)
+				{
+					return;
+				} 
+				else if(nPlayCursor0 - 9 < 9)
+				{
+					nPlayCursor0 = 0;
+				}
+				PlaySoundMenuChange();
+				UpdateTrackList();
+			}
+		}
+		
 		function OnLeftThumbMoveUp()
 		{
 			if (bMusicPlayWithSubsVisible0)
@@ -514,18 +572,16 @@ DEF theMusicPlayWithSubs Level
 			}
 			else
 			{
+				var a = (TempTitleList.length - 1);
 				if (nPlayCursor0 <= 0)
 				{
-					nPlayCursor0 = 0;
+					nPlayCursor0 = a;
 				}
 				else
 				{
-					if(nPlayCursor0 != 0)
-					{
-						PlaySoundMenuChange();
-						nPlayCursor0 = nPlayCursor0 - 1;
-					}
+					nPlayCursor0 = nPlayCursor0 - 1;
 				}
+				PlaySoundMenuChange();
 				UpdateTrackList();
 			}
 		}
@@ -546,18 +602,15 @@ DEF theMusicPlayWithSubs Level
 			else
 			{
 				var a = (TempTitleList.length - 1);
-				if (nPlayCursor0 < 0)
-				nPlayCursor0 = 0;
-				
 				if (nPlayCursor0 == a)
 				{
-					return;
+					nPlayCursor0 = 0;
 				}
 				else
 				{
-					PlaySoundMenuChange();
 					nPlayCursor0 = nPlayCursor0 + 1;
 				}
+				PlaySoundMenuChange();
 				UpdateTrackList();
 			}
 		}

@@ -1205,7 +1205,10 @@ function LaunchItem(x,y)
 		if(DriveExists[i])
 		{
 			var sPath = DriveList[i] + RelativePath + "\\" + FolderName + "\\default.xbe";
-			if (theHardDrive.FileExists(sPath)) ExecuteFile(sPath);
+			if (theHardDrive.FileExists(sPath)) {
+				SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
+				ExecuteFile(sPath);
+			}
 		}
 	}
 }
