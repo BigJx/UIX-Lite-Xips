@@ -10,15 +10,14 @@ var b_two;
 var b_three;
 var b_four;
 var b_five;
-var b_onScreen;
 var CurrentSection;
 var TempTitleList;
 var CurFillDir;
-var b_onScreen;
 var tempIconPath;
+var arrMenuNames;
+var arrMenuPaths;
+var TotalSections;
 var LastTitleLaunched;
-
-var invis;
 
 var currentselection;
 DEF theGlobal Transform
@@ -54,7 +53,6 @@ function initialize()
 
 function UpdateTrackList()
 {
-	TempTitleList = FillMenuList(CurFillDir);
 	var c = theMusicPlayWithSubs.children[0].children[0];
 	var str = "";
 	c.LowerPanelText.text = subTitle0;
@@ -68,9 +66,7 @@ function UpdateTrackList()
 
 	nPreviousPlayCursor0 = nPlayCursor0;
 
-	var nTracks0;
-	var nSoundtrack0 = 5;
-	nTracks0 = TempTitleList.length;
+	var nTracks0 = TempTitleList.length;
 
 	if (nPlayScroll0 > 0)
 		c.MU_morearrow_up.visible = true;
@@ -96,22 +92,10 @@ function UpdateTrackList()
 		}
 		else
 		{
-
-			var strHL0 = "";
-
 			var strName0, strTime0;
-			if (nSoundtrack0 < 0)
-			{
-				strName0 = strTrack0;
-				strTime0 = "test2?";
-			}
-			else
-			{
-				strName0 = TempTitleList[n];
-				if (strName0 == "")
-					strName0 = strTrack0;
-				strTime0 = "";
-			}
+			strName0 = TempTitleList[n];
+			strTime0 = "";
+
 
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
 			c.TrackNumbers.children[i].children[0].geometry.text = strTime0;
@@ -128,12 +112,6 @@ function UpdateTrackList()
 				c.TrackNames.children[i].children[0].appearance.name = "NavType";
 				c.TrackNumbers.children[i].children[0].appearance.name = "NavType";
 			}
-
-			str = str + strHL0 + strName0 + strHL0;
-			str = str + "\t";
-			str = str + strHL0 + strTime0 + strHL0;
-			str = str + "\r";
-
 		}
 	}
 
@@ -217,31 +195,60 @@ function StartMusicEditor()
 
 function EnterMusicPlay()
 {
-	b_onScreen = true;
-
-
+	var c = theMusicPlayWithSubs.children[0].children[0];
+	TotalSections = 0;
+	arrMenuNames = new Array;
+	arrMenuPaths = new Array;
+	c.theMenuButtons.children[0].visible = false;
+	c.theMenuButtons.children[1].visible = false;
+	c.theMenuButtons.children[2].visible = false;
+	c.theMenuButtons.children[3].visible = false;
+	c.theMenuButtons.children[4].visible = false;
 	b_one = GetSavedValue("Applications Menu","Name");  //get button names for titlemenus from config
 	b_two = GetSavedValue("Dashboards Menu","Name");
 	b_three = GetSavedValue("Emulators Menu","Name");
 	b_four = GetSavedValue("Games Menu","Name");
-	b_five = "none";
-	invis = false;
-
-	bMusicPlayWithSubsVisible0 = true;
+	b_five = GetSavedValue("Homebrew Menu","Name");
+	if(b_five == "") b_five = "none";
+	
+	if(b_one != "none")
+	{
+		arrMenuNames[TotalSections] = b_one;
+		arrMenuPaths[TotalSections] = GetSavedValue("Applications Menu","Path");
+		TotalSections = TotalSections + 1;
+	}
+	if(b_two != "none")
+	{
+		arrMenuNames[TotalSections] = b_two;
+		arrMenuPaths[TotalSections] = GetSavedValue("Dashboards Menu","Path");
+		TotalSections = TotalSections + 1;
+	}
+	if( b_three != "none")
+	{
+		arrMenuNames[TotalSections] = b_three;
+		arrMenuPaths[TotalSections] = GetSavedValue("Emulators Menu","Path");
+		TotalSections = TotalSections + 1;
+	}
+	if( b_four != "none")
+	{
+		arrMenuNames[TotalSections] = b_four;
+		arrMenuPaths[TotalSections] = GetSavedValue("Games Menu","Path");
+		TotalSections = TotalSections + 1;
+	}
+	if( b_five != "none")
+	{
+		arrMenuNames[TotalSections] = b_five;
+		arrMenuPaths[TotalSections] = GetSavedValue("Homebrew Menu","Path");
+		TotalSections = TotalSections + 1;
+	}
+	
 	nCurMusicPlayWithSubsItem0 = 0;
 	nPlayCursor0 = 0;
 	nPreviousPlayCursor0 = 0;
 	nPlayScroll0 = 0;
 	nPlayVisible0 = 9;
-	nPlayScroll0 = 0;   
-
-
-	var a = GetSavedValue("Main Menu Button 3 Settings","Number of SubMenus");
-	var nSoundtrack0 = ReturnInteger(a);
-
-
-	var c = theMusicPlayWithSubs.children[0].children[0];
-	c.TitleText1.text = "Xbox Hard Drive";      //menu title
+	
+	c.TitleText1.text = theTranslator.Translate("Xbox Hard Disk");     //menu title
 	//c.MenuMetaText.text = "\r.: Free Space :." + "\rC: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total") + "\rE: " + FormatDriveSpace("E:\\", "free") + " of " + FormatDriveSpace("E:\\", "total") + "\rF: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total");
 	//c.MenuMetaText.text = "\r.: Free Space :." + "\rF: " + FormatDriveSpace("F:\\", "free") + " of " + FormatDriveSpace("F:\\", "total");
 	ShowMusicPlayWithSubs();
@@ -253,9 +260,11 @@ function EnterMusicPlay()
 function UpdateMusicPlayWithSubs()
 {
 	var c = theMusicPlayWithSubs.children[0].children[0];
-
-	for (var i = 0; i < 5; i = i + 1)
+	
+	for (var i = 0; i < TotalSections; i = i + 1)
 	{
+		c.theMenuButtons.children[i].visible = true;
+		c.theMenuButtons.children[i].children[1].children[0].geometry.text = arrMenuNames[i];
 		if (i == nCurMusicPlayWithSubsItem0)
 		{
 			c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
@@ -269,58 +278,9 @@ function UpdateMusicPlayWithSubs()
 			c.theMenuButtons.children[i].children[1].children[0].appearance.name = "NavType";
 		}
 	}
-	if( b_one == "none")
-	{
-		b_one = "";
-		c.theMenuButtons.children[0].visible = false;
-	}
-	else { c.theMenuButtons.children[0].visible = true; }
-
-	if(b_two == "none")
-	{
-		b_two = "";
-		c.theMenuButtons.children[1].visible = false;
-	}
-	else { c.theMenuButtons.children[1].visible = true; }
-
-	if( b_three == "none")
-	{
-		b_three = "";
-		c.theMenuButtons.children[2].visible = false;
-	}
-	else { c.theMenuButtons.children[2].visible = true; }
-
-	if( b_four == "none")
-	{
-		b_four = "";
-		c.theMenuButtons.children[3].visible = false;
-	}
-	else { c.theMenuButtons.children[3].visible = true; }
-
-	if( b_five == "none")
-	{
-		b_five = "";
-		c.theMenuButtons.children[4].visible = false;
-	}
-	else if( b_five == "") { c.theMenuButtons.children[4].visible = false; }
-	else { c.theMenuButtons.children[4].visible = true; }
-
-	c.theMenuButtons.children[0].children[1].children[0].geometry.text = b_one;
-	c.theMenuButtons.children[1].children[1].children[0].geometry.text = b_two;
-	c.theMenuButtons.children[2].children[1].children[0].geometry.text = b_three;
-	c.theMenuButtons.children[3].children[1].children[0].geometry.text = b_four;
-	c.theMenuButtons.children[4].children[1].children[0].geometry.text = b_five;
-
-	c._button_surround.visible = true;
-	//c.New_Line11.visible = true;
-	c._button_surround_0.visible = false;
-
-	if (nCurMusicPlayWithSubsItem0 == 0) { currentselection = b_one; }
-	else if (nCurMusicPlayWithSubsItem0 == 1) { currentselection = b_two; }
-	else if (nCurMusicPlayWithSubsItem0 == 2) { currentselection = b_three; }
-	else if (nCurMusicPlayWithSubsItem0 == 3) { currentselection = b_four; }
-	else if (nCurMusicPlayWithSubsItem0 == 4) { currentselection = b_five; }
-
+	c._button_surround.visible = (TotalSections >= 3);
+	//c.New_Line11.visible = (TotalSections >= 3);
+	c._button_surround_0.visible = (TotalSections < 3);
 }
 
 DEF theMusicPlayWithSubs Level
@@ -421,61 +381,18 @@ DEF theMusicPlayWithSubs Level
 
 			if (bMusicPlayWithSubsVisible0)
 			{
-				if (nCurMusicPlayWithSubsItem0 == 0)
+				var a = arrMenuNames[nCurMusicPlayWithSubsItem0];
+				if(a == "")
 				{
-					if(b_one == "") { return; }
-					else
-					{
-						CurFillDir = GetSavedValue("Applications Menu","Path");
-						subTitle0 = GetSavedValue("Applications Menu","Name");
-						thePlayerPanelIn.Play();
-						StartMusicEditor();
-					}
+					return;
 				}
-				else if (nCurMusicPlayWithSubsItem0 == 1)
+				else
 				{
-					if(b_two == "") { return; }
-					else
-					{
-						CurFillDir = GetSavedValue("Dashboards Menu","Path");
-						subTitle0 = GetSavedValue("Dashboards Menu","Name");
-						thePlayerPanelIn.Play();
-						StartMusicEditor();
-					}
-				}
-				else if (nCurMusicPlayWithSubsItem0 == 2)
-				{
-					if(b_three == "") { return; }
-					else
-					{
-						CurFillDir = GetSavedValue("Emulators Menu","Path");
-						subTitle0 = GetSavedValue("Emulators Menu","Name");
-						thePlayerPanelIn.Play();
-						StartMusicEditor();
-					}
-				}
-				else if (nCurMusicPlayWithSubsItem0 == 3)
-				{
-					if(b_four == "") { return; }
-					else
-					{
-						CurFillDir = GetSavedValue("Games Menu","Path");
-						subTitle0 = GetSavedValue("Games Menu","Name");
-						thePlayerPanelIn.Play();
-						StartMusicEditor();
-					}
-				}
-				else if (nCurMusicPlayWithSubsItem0 == 4)
-				{
-					if(b_five == "") { return; }
-					else
-					{
-						CurFillDir = GetSavedValue("Games Menu","Path");
-						subTitle0 = GetSavedValue("Games Menu","Name");
-						thePlayerPanelIn.Play();
-						StartMusicEditor();
-						
-					}
+					CurFillDir = arrMenuPaths[nCurMusicPlayWithSubsItem0];
+					subTitle0 = a;
+					TempTitleList = FillMenuList(CurFillDir);
+					thePlayerPanelIn.Play();
+					StartMusicEditor();
 				}
 			}
 			else
@@ -590,9 +507,7 @@ DEF theMusicPlayWithSubs Level
 		{
 			if (bMusicPlayWithSubsVisible0)
 			{
-				var nMenuItemCount = ReturnInteger(GetSavedValue("Main Menu Button 3 Settings","Number of SubMenus"));
-				
-				if (nCurMusicPlayWithSubsItem0 < nMenuItemCount - 1)
+				if (nCurMusicPlayWithSubsItem0 < TotalSections - 1)
 				{
 					PlaySoundMenuChange();
 					nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 + 1;
@@ -626,10 +541,3 @@ DEF theMusicPlayWithSubs Level
 	}
 }
 
-function IconsOnScreen()
-{
-	b_onScreen = true;
-	var c = theMusicPlayWithSubs.children[0].children[0];
-	c.theIcons.visible = false; 
-	//UpdateTrackList();
-}

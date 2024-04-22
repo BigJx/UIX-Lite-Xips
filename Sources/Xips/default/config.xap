@@ -249,16 +249,6 @@ function buildHDList()
 	configValues[i] = "Hard Drive-BSX Style";
 	configSelect[i] = "toggleBSXHD()";
 	i = i + 1;  
-	configList[i] = "Games Menu Title";
-	configValues[i] = "Games Menu-Name";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Games Menu Path";
-	configValues[i] = "Games Menu-Path";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
 	configList[i] = "Applications Menu Title";
 	configValues[i] = "Applications Menu-Name";
 	configSelect[i] = "configKeyb()";
@@ -289,6 +279,26 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
+	configList[i] = "Games Menu Title";
+	configValues[i] = "Games Menu-Name";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Games Menu Path";
+	configValues[i] = "Games Menu-Path";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Homebrew Menu Title";
+	configValues[i] = "Homebrew Menu-Name";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Homebrew Menu Path";
+	configValues[i] = "Homebrew Menu-Path";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+
 	clearText();
 	updateText();
 }
